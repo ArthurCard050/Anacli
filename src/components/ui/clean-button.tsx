@@ -62,7 +62,7 @@ const CleanButton = React.forwardRef<HTMLButtonElement, CleanButtonProps>(
       >
         {/* Subtle shine effect */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12"
+          className="absolute inset-0 bg-white/10 -skew-x-12"
           initial={{ x: "-100%" }}
           whileHover={{ x: "100%" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}

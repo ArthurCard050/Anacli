@@ -4,6 +4,7 @@ import { Calendar, ArrowRight, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 const news = [
   {
@@ -34,7 +35,7 @@ const news = [
 
 const NewsSection = () => {
   return (
-    <section className="relative py-16 md:py-20 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden">
+    <section className="relative py-16 md:py-20 bg-gray-50 overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -61,13 +62,13 @@ const NewsSection = () => {
             viewport={{ once: true }}
           >
             Notícias e &nbsp;
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               Atualizações
             </span>
           </motion.h2>
 
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-6"
+            className="w-24 h-1 bg-accent mx-auto mb-6"
             initial={{ width: 0 }}
             whileInView={{ width: "6rem" }}
             transition={{ duration: 1, delay: 0.4 }}
@@ -101,14 +102,16 @@ const NewsSection = () => {
                 <CardContent className="p-0 flex flex-col h-full">
                   {/* Image */}
                   <div className="relative aspect-[16/10] overflow-hidden">
-                    <img
+                    <OptimizedImage
                       src={item.image}
                       alt={item.title}
+                      width={640}
+                      height={400}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
 
                     {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                     {/* Category Badge */}
                     <div className="absolute top-4 left-4">

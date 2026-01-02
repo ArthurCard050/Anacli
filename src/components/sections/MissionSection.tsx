@@ -8,7 +8,7 @@ const MissionSection = () => {
   return (
     <section id="sobre" className="relative py-20 md:py-32 overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/5 to-secondary/10">
+      <div className="absolute inset-0 bg-primary/5">
         {/* Animated Sine Wave Lines */}
         <svg className="absolute inset-0 w-full h-full opacity-20" viewBox="0 0 1200 800" preserveAspectRatio="none">
           <defs>
@@ -118,13 +118,13 @@ const MissionSection = () => {
           >
             Excelência técnica,
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               responsabilidade humana.
             </span>
           </motion.h2>
 
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-8"
+            className="w-24 h-1 bg-accent mx-auto mb-8"
             initial={{ width: 0 }}
             whileInView={{ width: "6rem" }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -162,7 +162,7 @@ const MissionSection = () => {
               viewport={{ once: true }}
               whileHover={{ y: -8 }}
             >
-              <div className="bg-gradient-to-br from-primary/10 to-primary/5 backdrop-blur-sm rounded-3xl p-8 h-full flex flex-col justify-center border border-primary/20 group-hover:border-primary/30 transition-all duration-300 min-h-[300px]">
+              <div className="bg-primary/10 backdrop-blur-sm rounded-3xl p-8 h-full flex flex-col justify-center border border-primary/20 group-hover:border-primary/30 transition-all duration-300 min-h-[300px]">
                 <div className="w-20 h-20 mb-8 rounded-3xl bg-primary/20 flex items-center justify-center group-hover:bg-primary/30 transition-colors duration-300">
                   <Users className="w-10 h-10 text-primary" />
                 </div>
@@ -192,7 +192,7 @@ const MissionSection = () => {
                 viewport={{ once: true }}
                 whileHover={{ y: -8 }}
               >
-                <div className="bg-gradient-to-br from-secondary/10 to-secondary/5 backdrop-blur-sm rounded-3xl p-6 h-full flex flex-col justify-center border border-secondary/20 group-hover:border-secondary/30 transition-all duration-300 min-h-[140px]">
+                <div className="bg-secondary/10 backdrop-blur-sm rounded-3xl p-6 h-full flex flex-col justify-center border border-secondary/20 group-hover:border-secondary/30 transition-all duration-300 min-h-[140px]">
                   <div className="w-14 h-14 mb-4 rounded-2xl bg-secondary/20 flex items-center justify-center group-hover:bg-secondary/30 transition-colors duration-300">
                     <Shield className="w-7 h-7 text-secondary-foreground" />
                   </div>
@@ -217,7 +217,7 @@ const MissionSection = () => {
                 viewport={{ once: true }}
                 whileHover={{ y: -8 }}
               >
-                <div className="bg-gradient-to-br from-accent/10 to-accent/5 backdrop-blur-sm rounded-3xl p-6 h-full flex flex-col justify-center border border-accent/20 group-hover:border-accent/30 transition-all duration-300 min-h-[140px]">
+                <div className="bg-accent/10 backdrop-blur-sm rounded-3xl p-6 h-full flex flex-col justify-center border border-accent/20 group-hover:border-accent/30 transition-all duration-300 min-h-[140px]">
                   <div className="w-14 h-14 mb-4 rounded-2xl bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300">
                     <Award className="w-7 h-7 text-accent" />
                   </div>
@@ -297,7 +297,7 @@ const MissionSection = () => {
               viewport={{ once: true }}
               whileHover={{ y: -8 }}
             >
-              <div className="bg-gradient-to-br from-accent/10 to-accent/5 backdrop-blur-sm rounded-3xl p-8 transition-all duration-300 border border-accent/20 group-hover:border-accent/30 h-full min-h-[140px] flex items-center justify-center">
+              <div className="bg-accent/10 backdrop-blur-sm rounded-3xl p-8 transition-all duration-300 border border-accent/20 group-hover:border-accent/30 h-full min-h-[140px] flex items-center justify-center">
                 <div className="flex items-center gap-8">
                   <div className="w-20 h-20 rounded-3xl bg-accent/20 flex items-center justify-center group-hover:bg-accent/30 transition-colors duration-300 flex-shrink-0">
                     <Shield className="w-10 h-10 text-accent" />
@@ -332,7 +332,7 @@ const MissionSection = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           viewport={{ once: true }}
         >
-          <div className="bg-gradient-to-r from-primary/10 to-accent/10 backdrop-blur-sm rounded-3xl p-12 border border-primary/20">
+          <div className="bg-primary/10 backdrop-blur-sm rounded-3xl p-12 border border-primary/20">
             <motion.p
               className="text-lg text-gray-700 leading-relaxed mb-8"
               initial={{ opacity: 0 }}

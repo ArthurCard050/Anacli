@@ -6,7 +6,7 @@ import { ArrowLeft, Home } from 'lucide-react'
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-white via-primary/5 to-secondary/10">
+    <div className="min-h-screen flex items-center justify-center bg-primary/5">
       <div className="text-center px-6 max-w-2xl mx-auto">
         <div className="mb-8">
           <h1 className="text-9xl font-bold text-primary/20 mb-4">404</h1>

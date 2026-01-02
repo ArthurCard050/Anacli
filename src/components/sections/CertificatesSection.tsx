@@ -1,6 +1,8 @@
 'use client';
 
 import { motion } from "framer-motion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 
 const certificates = [
   {
@@ -58,13 +60,13 @@ const CertificatesSection = () => {
             >
               Certificações e
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+              <span className="text-accent">
                 Acreditações
               </span>
             </motion.h2>
 
             <motion.div
-              className="w-20 h-1 bg-gradient-to-r from-primary to-accent"
+              className="w-20 h-1 bg-accent"
               initial={{ width: 0 }}
               whileInView={{ width: "5rem" }}
               transition={{ duration: 1, delay: 0.4 }}
@@ -82,7 +84,7 @@ const CertificatesSection = () => {
             </motion.p>
 
             <motion.div
-              className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-primary/10 to-accent/10 rounded-full border border-primary/20"
+              className="inline-flex items-center gap-3 px-6 py-3 bg-primary/10 rounded-full border border-primary/20"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
@@ -118,16 +120,18 @@ const CertificatesSection = () => {
                   className="relative w-16 h-16 lg:w-20 lg:h-20 mb-4 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-primary/30 transition-all duration-300"
                   whileHover={{ scale: 1.1, rotate: 2 }}
                 >
-                  <img
+                  <OptimizedImage
                     src={cert.logo}
                     alt={`Certificado ${cert.name}`}
+                    width={56}
+                    height={56}
                     className="w-12 h-12 lg:w-14 lg:h-14 object-contain filter group-hover:brightness-110 transition-all duration-300"
                     style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(7471%) hue-rotate(326deg) brightness(106%) contrast(143%)' }}
                   />
 
                   {/* Glow effect */}
                   <motion.div
-                    className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="absolute inset-0 rounded-xl bg-primary/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     initial={{ scale: 0.8 }}
                     whileHover={{ scale: 1.1 }}
                   />

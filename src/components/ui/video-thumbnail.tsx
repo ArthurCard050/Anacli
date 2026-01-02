@@ -32,7 +32,7 @@ export function VideoThumbnail({ thumbnail, title, onClick, className = "" }: Vi
       </div>
 
       {/* Gradient overlay for better text readability */}
-      <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-4">
+      <div className="absolute bottom-0 left-0 right-0 bg-black/60 p-4">
         <h3 className="text-white text-sm font-medium">{title}</h3>
       </div>
     </button>

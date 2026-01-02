@@ -43,8 +43,8 @@ All colors MUST be HSL.
     --radius: 0.75rem;
 
     /* Custom Anacli Design Tokens */
-    --gradient-hero: linear-gradient(135deg, hsl(68 68% 95%), hsl(65 53% 87%));
-    --gradient-olive-white: linear-gradient(180deg, hsl(0 0% 100%), hsl(65 53% 95%));
+    --hero-bg: 68 68% 95%; /* Light olive for hero background */
+    --section-bg: 65 53% 95%; /* Light secondary for section backgrounds */
 
     /* Spacing System */
     --section-spacing: 5rem;

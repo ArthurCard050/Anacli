@@ -71,7 +71,7 @@ const WaveButton = React.forwardRef<HTMLButtonElement, WaveButtonProps>(
 
         {/* Animated background gradient */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
+          className="absolute inset-0 bg-white/10"
           animate={{
             x: ["-100%", "100%"],
           }}

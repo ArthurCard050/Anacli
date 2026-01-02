@@ -87,7 +87,7 @@ const InstagramVideoCarousel = ({
         <div className="space-y-8 max-w-7xl mx-auto px-6 lg:px-0 lg:pl-[max(1.5rem,calc((100vw-80rem)/2))]">
           <h2 className="text-4xl md:text-5xl font-bold">
             <span className="text-gray-900">Siga </span>
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               @lab_anacli
             </span>
           </h2>
@@ -126,7 +126,7 @@ const InstagramVideoCarousel = ({
             size="lg"
             icon={<Instagram className="w-5 h-5" />}
             iconPosition="left"
-            className="bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 focus:ring-pink-500"
+            className="bg-accent hover:bg-accent/90 focus:ring-accent"
             onClick={() => window.open(instagramUrl, '_blank')}
           >
             Seguir no Instagram
@@ -209,7 +209,7 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
       
       {/* Efeito de brilho no hover */}
-      <div className="absolute inset-0 bg-gradient-to-t from-transparent via-white/0 to-white/0 group-hover:via-white/10 group-hover:to-white/5 transition-all duration-300" />
+      <div className="absolute inset-0 bg-white/0 group-hover:bg-white/10 transition-all duration-300" />
       
       <div className="absolute inset-0 flex items-center justify-center">
         <div className="bg-white/20 backdrop-blur-sm rounded-full p-4 group-hover:bg-white/30 group-hover:scale-110 transition-all duration-300">
@@ -219,7 +219,7 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
         </div>
       </div>
       
-      <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+      <div className="absolute bottom-0 left-0 right-0 p-4 bg-black/80">
         <h3 className="text-white text-sm font-medium text-left leading-tight group-hover:text-white/90 transition-colors duration-300">
           {video.title}
         </h3>

@@ -35,7 +35,7 @@ const MorphingButton = React.forwardRef<HTMLButtonElement, MorphingButtonProps>(
       >
         {/* Background morphing effect */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-primary to-accent"
+          className="absolute inset-0 bg-primary"
           initial={{ scale: 0, borderRadius: "100%" }}
           animate={{ 
             scale: isHovered ? 1 : 0,
@@ -46,7 +46,7 @@ const MorphingButton = React.forwardRef<HTMLButtonElement, MorphingButtonProps>(
 
         {/* Liquid morphing background */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-accent/80 to-primary/80"
+          className="absolute inset-0 bg-accent/80"
           animate={{
             borderRadius: isHovered 
               ? ["1rem", "2rem 0.5rem", "0.5rem 2rem", "1rem"]

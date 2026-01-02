@@ -50,7 +50,7 @@ const ContactSection = () => {
   return (
     <section id="contato" className="relative py-20 md:py-32 overflow-hidden overflow-x-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/5 to-secondary/10">
+      <div className="absolute inset-0 bg-primary/5">
         {/* Glow orbs with Anacli colors */}
         <div className="absolute top-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-20 w-80 h-80 bg-accent/5 rounded-full blur-3xl" />
@@ -61,12 +61,12 @@ const ContactSection = () => {
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
             Nossas &nbsp;
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               Unidades
             </span>
           </h2>
 
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto mb-6" />
+          <div className="w-24 h-1 bg-accent mx-auto mb-6" />
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Encontre a unidade mais próxima de você e agende seus exames.
@@ -89,7 +89,7 @@ const ContactSection = () => {
                     className="w-full h-full object-cover object-center"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+                  <div className="absolute inset-0 bg-black/40" />
                 </div>
 
                 {/* Content */}

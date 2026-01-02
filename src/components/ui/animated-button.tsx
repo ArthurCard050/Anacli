@@ -29,7 +29,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
     const variants = {
       primary: "bg-accent hover:bg-accent/90 text-white shadow-lg hover:shadow-xl",
       secondary: "bg-primary-dark hover:bg-primary-dark/90 text-white shadow-lg hover:shadow-xl",
-      gradient: "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl",
+      gradient: "bg-accent hover:bg-accent/90 text-white shadow-lg hover:shadow-xl",
       glow: "bg-accent text-white shadow-lg hover:shadow-accent/25 hover:shadow-2xl border border-accent/20",
       ripple: "bg-primary text-white shadow-lg hover:shadow-xl relative"
     };
@@ -74,7 +74,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
         {/* Gradient overlay animation */}
         {variant === "gradient" && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full"
+            className="absolute inset-0 bg-white/10 -skew-x-12 -translate-x-full group-hover:translate-x-full"
             transition={{ duration: 0.8 }}
           />
         )}
@@ -82,7 +82,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
         {/* Glow effect */}
         {variant === "glow" && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-accent/50 to-primary/50 blur-xl opacity-0 group-hover:opacity-100"
+            className="absolute inset-0 bg-accent/50 blur-xl opacity-0 group-hover:opacity-100"
             transition={{ duration: 0.3 }}
           />
         )}
@@ -112,7 +112,7 @@ const AnimatedButton = React.forwardRef<HTMLButtonElement, AnimatedButtonProps>(
 
         {/* Shine effect */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%]"
+          className="absolute inset-0 bg-white/20 -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%]"
           transition={{ duration: 0.6, ease: "easeInOut" }}
         />
       </motion.button>

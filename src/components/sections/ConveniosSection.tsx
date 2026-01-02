@@ -54,13 +54,13 @@ const ConveniosSection = () => {
           >
             Atendemos os
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               principais convênios.
             </span>
           </motion.h2>
 
           <motion.div
-            className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto"
+            className="w-24 h-1 bg-accent mx-auto"
             initial={{ width: 0 }}
             whileInView={{ width: "6rem" }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -75,16 +75,16 @@ const ConveniosSection = () => {
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
           }}>
             {/* Enhanced gradient overlays for smooth fade effect - matching section background */}
-            <div className="absolute left-0 top-0 z-10 h-full w-40 bg-gradient-to-r from-secondary/0 via-secondary/00 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-10 h-full w-40 bg-gradient-to-l from-secondary/0 via-secondary/00 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-10 h-full w-40 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-10 h-full w-40 bg-white/0 pointer-events-none"></div>
 
             {/* Additional stronger fade layers */}
-            <div className="absolute left-0 top-0 z-20 h-full w-24 bg-gradient-to-r from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-20 h-full w-24 bg-gradient-to-l from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-20 h-full w-24 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-20 h-full w-24 bg-white/0 pointer-events-none"></div>
 
             {/* Outer edge strong fade */}
-            <div className="absolute left-0 top-0 z-30 h-full w-12 bg-gradient-to-r from-secondary/0 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-30 h-full w-12 bg-gradient-to-l from-secondary/0 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-30 h-full w-12 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-30 h-full w-12 bg-white/0 pointer-events-none"></div>
 
             <Marquee pauseOnHover className="[--duration:40s] py-6">
               {conveniosFileira1.map((convenio, index) => (
@@ -118,16 +118,16 @@ const ConveniosSection = () => {
             WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%)'
           }}>
             {/* Enhanced gradient overlays for smooth fade effect - matching section background */}
-            <div className="absolute left-0 top-0 z-10 h-full w-40 bg-gradient-to-r from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-10 h-full w-40 bg-gradient-to-l from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-10 h-full w-40 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-10 h-full w-40 bg-white/0 pointer-events-none"></div>
 
             {/* Additional stronger fade layers */}
-            <div className="absolute left-0 top-0 z-20 h-full w-24 bg-gradient-to-r from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-20 h-full w-24 bg-gradient-to-l from-secondary/0 via-secondary/0 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-20 h-full w-24 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-20 h-full w-24 bg-white/0 pointer-events-none"></div>
 
             {/* Outer edge strong fade */}
-            <div className="absolute left-0 top-0 z-30 h-full w-12 bg-gradient-to-r from-secondary/0 to-transparent pointer-events-none"></div>
-            <div className="absolute right-0 top-0 z-30 h-full w-12 bg-gradient-to-l from-secondary/0 to-transparent pointer-events-none"></div>
+            <div className="absolute left-0 top-0 z-30 h-full w-12 bg-white/0 pointer-events-none"></div>
+            <div className="absolute right-0 top-0 z-30 h-full w-12 bg-white/0 pointer-events-none"></div>
 
             <Marquee pauseOnHover reverse className="[--duration:45s] py-12">
               {conveniosFileira2.map((convenio, index) => (

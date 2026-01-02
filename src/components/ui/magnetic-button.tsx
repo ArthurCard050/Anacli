@@ -38,7 +38,7 @@ const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButtonProps>(
       <motion.button
         ref={buttonRef}
         className={cn(
-          "relative bg-gradient-to-r from-primary to-accent text-white font-semibold px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group",
+          "relative bg-accent text-white font-semibold px-8 py-4 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden group",
           className
         )}
         onMouseMove={handleMouseMove}
@@ -59,7 +59,7 @@ const MagneticButton = React.forwardRef<HTMLButtonElement, MagneticButtonProps>(
       >
         {/* Background glow effect */}
         <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-primary/80 to-accent/80 blur-xl opacity-0 group-hover:opacity-100"
+          className="absolute inset-0 bg-accent/80 blur-xl opacity-0 group-hover:opacity-100"
           transition={{ duration: 0.3 }}
         />
 

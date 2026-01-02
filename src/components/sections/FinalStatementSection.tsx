@@ -1,12 +1,13 @@
 'use client';
 
 import { motion } from "framer-motion";
+import OptimizedImage from "@/components/ui/OptimizedImage";
 import { MapPin, Phone } from "lucide-react";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
 
 const FinalStatementSection = () => {
   return (
-    <section className="relative py-20 bg-gradient-to-br from-white via-primary/5 to-secondary/10 overflow-hidden">
+    <section className="relative py-20 bg-primary/5 overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-20 right-20 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
@@ -25,11 +26,11 @@ const FinalStatementSection = () => {
           <h2 className="text-4xl md:text-6xl font-bold mb-6 text-gray-900">
             <span className="text-gray-900">Excelência em análises clínicas</span>
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+            <span className="text-accent">
               é a nossa tradição.
             </span>
           </h2>
-          <div className="w-24 h-1 bg-gradient-to-r from-primary to-accent mx-auto" />
+          <div className="w-24 h-1 bg-accent mx-auto" />
         </motion.div>
 
         {/* Contact CTA */}
@@ -80,9 +81,11 @@ const FinalStatementSection = () => {
           viewport={{ once: true }}
         >
           <div className="flex justify-center mb-4">
-            <img
+            <OptimizedImage
               src="/assets/logo02.svg"
               alt="Anacli Laboratório"
+              width={96}
+              height={96}
               className="h-24 w-auto"
             />
           </div>

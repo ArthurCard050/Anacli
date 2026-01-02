@@ -70,7 +70,7 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white border-t border-primary/20 rounded-t-[20px] md:rounded-t-[40px] lg:rounded-t-[64px]">
+    <footer className="bg-gray-900 text-white border-t border-primary/20 rounded-t-[20px] md:rounded-t-[40px] lg:rounded-t-[64px]">
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
@@ -126,7 +126,7 @@ const Footer = () => {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
             {/* GPTW Highlight Card */}
             <div className="flex-shrink-0">
-              <div className="inline-flex items-center gap-4 bg-gradient-to-r from-primary/20 to-accent/20 rounded-2xl p-6 border border-white/10">
+              <div className="inline-flex items-center gap-4 bg-primary/20 rounded-2xl p-6 border border-white/10">
                 <img
                   src="/assets/certificados/GPTW.svg"
                   alt="Great Place to Work"
@@ -174,7 +174,7 @@ const Footer = () => {
               key={index}
               href={social.href}
               aria-label={social.label}
-              className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-gradient-to-r hover:from-primary hover:to-accent flex items-center justify-center transition-all duration-300 group"
+              className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-accent flex items-center justify-center transition-all duration-300 group"
             >
               <social.icon className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
             </a>

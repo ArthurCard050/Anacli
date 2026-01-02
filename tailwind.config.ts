@@ -70,9 +70,7 @@ export default {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
       backgroundImage: {
-        'gradient-hero': 'var(--gradient-hero)',
-        'gradient-olive-white': 'var(--gradient-olive-white)',
-        'gradient-dark': 'var(--gradient-dark)',
+        // Removido gradientes - usando cores sólidas
       },
       boxShadow: {
         'elegant': 'var(--shadow-elegant)',

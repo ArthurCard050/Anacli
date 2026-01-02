@@ -53,7 +53,7 @@ const differentialsData = [
 
 const HybridBentoSection = () => {
   return (
-    <section className="relative py-12 md:py-32 overflow-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100">
+    <section className="relative py-12 md:py-32 overflow-hidden bg-gray-50">
       {/* Animated flowing lines background */}
       <div className="absolute inset-0 opacity-20">
         <svg className="absolute inset-0 w-full h-full" viewBox="0 0 1200 800" preserveAspectRatio="none">
@@ -105,11 +105,11 @@ const HybridBentoSection = () => {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                 Como podemos
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                <span className="text-accent">
                   ajudar você?
                 </span>
               </h2>
-              <div className="w-16 h-1 bg-gradient-to-r from-primary to-accent mx-auto"></div>
+              <div className="w-16 h-1 bg-accent mx-auto"></div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
@@ -145,18 +145,18 @@ const HybridBentoSection = () => {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
                 Por que escolher
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                <span className="text-accent">
                   a Anacli?
                 </span>
               </h2>
-              <div className="w-16 h-1 bg-gradient-to-r from-primary to-accent mx-auto"></div>
+              <div className="w-16 h-1 bg-accent mx-auto"></div>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               {differentialsData.map((differential, index) => (
                 <motion.div
                   key={index}
-                  className="bg-gradient-to-br from-primary/10 to-accent/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20 text-center"
+                  className="bg-primary/10 backdrop-blur-sm rounded-xl p-4 border border-primary/20 text-center"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
@@ -189,11 +189,11 @@ const HybridBentoSection = () => {
               <h2 className="text-5xl font-bold text-gray-900 mb-6">
                 Como podemos
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
+                <span className="text-accent">
                   ajudar você?
                 </span>
               </h2>
-              <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent"></div>
+              <div className="w-20 h-1 bg-accent"></div>
             </div>
 
             <div className="space-y-0">
@@ -207,7 +207,7 @@ const HybridBentoSection = () => {
                   viewport={{ once: true }}
                   whileHover={{ x: 8 }}
                 >
-                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="absolute left-0 top-0 bottom-0 w-1 bg-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
 
                   <div className="relative z-10 flex items-start gap-4">
                     <motion.div
@@ -272,7 +272,7 @@ const HybridBentoSection = () => {
                 }}
                 transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
               >
-                <div className="w-full h-full bg-gradient-to-br from-accent/95 to-accent/90 rounded-3xl"></div>
+                <div className="w-full h-full bg-accent rounded-3xl"></div>
               </motion.div>
 
               <div className="relative z-10 p-8">
@@ -284,7 +284,7 @@ const HybridBentoSection = () => {
                       a Anacli?
                     </span>
                   </h2>
-                  <div className="w-20 h-1 bg-gradient-to-r from-primary to-accent"></div>
+                  <div className="w-20 h-1 bg-accent"></div>
                 </div>
 
                 <div className="space-y-6">
@@ -335,7 +335,7 @@ const HybridBentoSection = () => {
             viewport={{ once: true }}
           >
             <div className="relative">
-              <div className="w-full h-px bg-gradient-to-r from-transparent via-primary to-transparent mb-6"></div>
+              <div className="w-full h-px bg-primary mb-6"></div>
               <p className="text-base lg:text-lg text-gray-600 font-medium max-w-2xl mx-auto">
                 Excelência técnica e cuidado humano: é isso que nos torna únicos.
               </p>

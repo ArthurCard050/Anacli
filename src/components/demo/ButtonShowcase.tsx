@@ -6,7 +6,7 @@ import { WaveButton } from "@/components/ui/wave-button";
 
 const ButtonShowcase = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-8">
+    <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold text-center mb-12 text-gray-800">
           Showcase dos Botões Animados
@@ -120,7 +120,7 @@ const ButtonShowcase = () => {
               hoverText="Portal do Paciente 🚀"
               icon={<Star className="w-4 h-4" />}
               hoverIcon={<ArrowRight className="w-4 h-4" />}
-              className="bg-gradient-to-r from-purple-500 to-pink-500"
+              className="bg-purple-500"
             >
               Acesse seus Resultados
             </MorphingButton>
@@ -128,7 +128,7 @@ const ButtonShowcase = () => {
             <WaveButton
               variant="primary"
               icon={<Building2 className="w-4 h-4" />}
-              className="bg-gradient-to-r from-green-500 to-blue-500"
+              className="bg-green-500"
             >
               🏥 Nossas Unidades
             </WaveButton>

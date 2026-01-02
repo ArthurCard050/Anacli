@@ -48,7 +48,7 @@ const  HierarchicalButton = React.forwardRef<HTMLButtonElement, HierarchicalButt
     // Hierarquia de importância com cores e estilos específicos da Anacli
     const hierarchies = {
       // Botão mais importante - Ações principais (CTA, Agendar, Contatar)
-      primary: "bg-gradient-to-r from-primary to-accent hover:from-primary/90 hover:to-accent/90 text-white shadow-lg hover:shadow-xl hover:shadow-primary/25 focus:ring-primary border-0",
+      primary: "bg-accent hover:bg-accent/90 text-white shadow-lg hover:shadow-xl hover:shadow-primary/25 focus:ring-primary border-0",
 
       // Botão secundário - Ações importantes mas não críticas (Ver mais, Localização) - Hover/Active inverte cores
       secondary: "bg-accent hover:bg-white active:!bg-white text-white hover:text-accent active:!text-accent border border-accent hover:border-accent active:!border-accent shadow-md hover:shadow-lg focus:ring-primary transition-colors duration-150",
@@ -130,11 +130,11 @@ const  HierarchicalButton = React.forwardRef<HTMLButtonElement, HierarchicalButt
         {hierarchy === "primary" && (
           <>
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full"
+              className="absolute inset-0 bg-white/20 -skew-x-12 -translate-x-full group-hover:translate-x-full"
               transition={{ duration: 0.8 }}
             />
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-primary/50 to-accent/50 blur-xl opacity-0 group-hover:opacity-30"
+              className="absolute inset-0 bg-accent/50 blur-xl opacity-0 group-hover:opacity-30"
               transition={{ duration: 0.3 }}
             />
           </>
@@ -143,7 +143,7 @@ const  HierarchicalButton = React.forwardRef<HTMLButtonElement, HierarchicalButt
         {/* Efeito sutil para botões secundários */}
         {hierarchy === "secondary" && (
           <motion.div
-            className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-full"
+            className="absolute inset-0 bg-white/10 -skew-x-12 -translate-x-full group-hover:translate-x-full"
             transition={{ duration: 0.6 }}
           />
         )}
