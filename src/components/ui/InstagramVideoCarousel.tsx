@@ -15,7 +15,6 @@ interface VideoData {
   id: number
   title: string
   videoSrc: string
-  thumbnail?: string // Tornando opcional para compatibilidade
 }
 
 interface InstagramVideoCarouselProps {
