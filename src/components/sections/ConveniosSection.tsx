@@ -168,6 +168,7 @@ const ConveniosSection = () => {
             size="lg"
             icon={<ArrowRight className="w-4 h-4" />}
             iconPosition="right"
+            onClick={() => window.location.href = '/convenios'}
           >
             Ver todos os Convênios
           </HierarchicalButton>

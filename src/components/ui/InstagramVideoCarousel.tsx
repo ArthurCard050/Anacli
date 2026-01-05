@@ -14,7 +14,6 @@ import 'swiper/css/navigation'
 interface VideoData {
   id: number
   title: string
-  thumbnail: string
   videoSrc: string
 }
 
@@ -202,10 +201,15 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
       onClick={onClick}
       className="group relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl"
     >
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-300 group-hover:scale-110"
-        style={{ backgroundImage: `url(${video.thumbnail})` }}
+      {/* Video element with poster (first frame) */}
+      <video
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+        src={video.videoSrc}
+        preload="metadata"
+        muted
+        playsInline
       />
+      
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
       
       {/* Efeito de brilho no hover */}

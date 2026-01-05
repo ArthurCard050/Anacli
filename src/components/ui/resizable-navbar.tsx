@@ -21,11 +21,11 @@ interface ResizableNavbarProps {
 const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
   className,
   navItems = [
-    { name: "Sobre", link: "#sobre" },
+    { name: "Sobre", link: "/sobre" },
     { name: "Exames", link: "#exames" },
-    { name: "Convênios", link: "#convenios" },
-    { name: "Estrutura", link: "#estrutura" },
-    { name: "Certificações", link: "#certificacoes" },
+    { name: "Convênios", link: "/convenios" },
+    { name: "FAQ", link: "/faq" },
+    { name: "Certificações", link: "/certificacoes" },
     { name: "Contato", link: "#contato" },
   ],
 }) => {
@@ -123,14 +123,10 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
           <div className="flex h-20 items-center justify-between">
             {/* Logo */}
             <motion.a
-              href="#"
+              href="/"
               className="flex items-center gap-3 cursor-pointer"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
             >
               <OptimizedImage
                 src="/assets/logo.svg"

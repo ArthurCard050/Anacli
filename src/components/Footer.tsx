@@ -9,9 +9,9 @@ const Footer = () => {
     {
       title: "Sobre",
       links: [
-        { label: "Institucional", href: "#sobre" },
-        { label: "Nossa História", href: "#sobre" },
-        { label: "Certificações", href: "#certificacoes" },
+        { label: "Institucional", href: "/sobre" },
+        { label: "Nossa História", href: "/sobre" },
+        { label: "Certificações", href: "/certificacoes" },
       ],
     },
     {
@@ -23,10 +23,10 @@ const Footer = () => {
       ],
     },
     {
-      title: "Estrutura",
+      title: "Serviços",
       links: [
-        { label: "Infraestrutura", href: "#estrutura" },
-        { label: "Convênios", href: "#convenios" },
+        { label: "FAQ", href: "/faq" },
+        { label: "Convênios", href: "/convenios" },
         { label: "Unidades", href: "#contato" },
       ],
     },
@@ -76,12 +76,8 @@ const Footer = () => {
           {/* Brand */}
           <div className="lg:col-span-1">
             <a
-              href="#"
+              href="/"
               className="inline-block mb-4 cursor-pointer"
-              onClick={(e) => {
-                e.preventDefault();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
             >
               <img
                 src="/assets/logo.svg"

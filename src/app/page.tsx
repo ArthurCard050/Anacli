@@ -34,11 +34,6 @@ const ContactSection = dynamic(() => import('@/components/sections/ContactSectio
   ssr: false
 })
 
-const FinalStatementSection = dynamic(() => import('@/components/sections/FinalStatementSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
-})
-
 // Componente de loading otimizado
 const SectionSkeleton = () => (
   <div className="w-full h-96 bg-gray-100 animate-pulse rounded-lg mx-auto max-w-7xl" />
@@ -66,9 +61,6 @@ export default function HomePage() {
         </Suspense>
         <Suspense fallback={<SectionSkeleton />}>
           <ContactSection />
-        </Suspense>
-        <Suspense fallback={<SectionSkeleton />}>
-          <FinalStatementSection />
         </Suspense>
       </main>
       <Footer />

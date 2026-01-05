@@ -16,7 +16,9 @@ export function useIsMobile(): boolean {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth <= 768);
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth <= 768);
+      }
     };
 
     checkMobile();
@@ -27,9 +29,14 @@ export function useIsMobile(): boolean {
       resizeTimeout = setTimeout(checkMobile, 150);
     };
 
-    window.addEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('resize', handleResize);
+    }
+    
     return () => {
-      window.removeEventListener('resize', handleResize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
       clearTimeout(resizeTimeout);
     };
   }, []);
@@ -46,15 +53,17 @@ export function useReducedMotion(): boolean {
   const [prefersReduced, setPrefersReduced] = useState(false);
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mediaQuery.matches);
+    if (typeof window !== 'undefined') {
+      const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      setPrefersReduced(mediaQuery.matches);
 
-    const handleChange = (event: MediaQueryListEvent) => {
-      setPrefersReduced(event.matches);
-    };
+      const handleChange = (event: MediaQueryListEvent) => {
+        setPrefersReduced(event.matches);
+      };
 
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.addEventListener('change', handleChange);
+      return () => mediaQuery.removeEventListener('change', handleChange);
+    }
   }, []);
 
   // Mobile SEMPRE desabilita animações
