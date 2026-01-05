@@ -10,28 +10,23 @@ import MissionSection from '@/components/sections/MissionSection'
 
 // Lazy load componentes não críticos com Next.js dynamic
 const ConveniosSection = dynamic(() => import('@/components/sections/ConveniosSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
+  loading: () => <SectionSkeleton />
 })
 
 const HybridBentoSection = dynamic(() => import('@/components/sections/HybridBentoSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
+  loading: () => <SectionSkeleton />
 })
 
 const NewsSection = dynamic(() => import('@/components/sections/NewsSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
+  loading: () => <SectionSkeleton />
 })
 
 const InstagramSection = dynamic(() => import('@/components/sections/InstagramSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
+  loading: () => <SectionSkeleton />
 })
 
 const ContactSection = dynamic(() => import('@/components/sections/ContactSection'), {
-  loading: () => <SectionSkeleton />,
-  ssr: false
+  loading: () => <SectionSkeleton />
 })
 
 // Componente de loading otimizado

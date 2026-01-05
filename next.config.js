@@ -30,65 +30,9 @@ const nextConfig = {
       }
     ],
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    contentSecurityPolicy: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:;",
   },
-  experimental: {
-    optimizePackageImports: [
-      'framer-motion', 
-      'lucide-react', 
-      '@radix-ui/react-dialog', 
-      '@radix-ui/react-toast',
-      'swiper',
-      'swiper/react',
-      'swiper/modules'
-    ],
-  },
-  // Otimizações de build para reduzir JavaScript legado
-  webpack: (config, { dev, isServer }) => {
-    if (!dev) {
-      // Otimizar chunks
-      config.optimization.splitChunks = {
-        ...config.optimization.splitChunks,
-        chunks: 'all',
-        cacheGroups: {
-          ...config.optimization.splitChunks.cacheGroups,
-          // Separar vendors grandes
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            priority: 10,
-            reuseExistingChunk: true,
-          },
-          // Separar framer-motion
-          framerMotion: {
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            name: 'framer-motion',
-            priority: 20,
-            reuseExistingChunk: true,
-          },
-          // Separar CSS
-          styles: {
-            name: 'styles',
-            test: /\.(css|scss|sass)$/,
-            chunks: 'all',
-            enforce: true,
-            priority: 30,
-          },
-        },
-      }
-      
-      config.optimization.minimize = true
-      
-      // Remover polyfills desnecessários
-      config.resolve.fallback = {
-        ...config.resolve.fallback,
-        fs: false,
-        net: false,
-        tls: false,
-      }
-    }
-    return config
-  },
+  // Remover otimizações experimentais que podem causar problemas
   poweredByHeader: false,
   compress: true,
 }
