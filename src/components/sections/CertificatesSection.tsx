@@ -126,7 +126,6 @@ const CertificatesSection = () => {
                     width={56}
                     height={56}
                     className="w-12 h-12 lg:w-14 lg:h-14 object-contain filter group-hover:brightness-110 transition-all duration-300"
-                    style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(7471%) hue-rotate(326deg) brightness(106%) contrast(143%)' }}
                   />
 
                   {/* Glow effect */}

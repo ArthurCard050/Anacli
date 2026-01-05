@@ -19,7 +19,6 @@ const InstagramVideoCarousel = dynamic(() => import('./InstagramVideoCarousel'),
 interface VideoData {
   id: number
   title: string
-  thumbnail: string
   videoSrc: string
 }
 
