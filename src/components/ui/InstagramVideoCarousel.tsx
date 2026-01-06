@@ -15,6 +15,7 @@ interface VideoData {
   id: number
   title: string
   videoSrc: string
+  thumbnail?: string
 }
 
 interface InstagramVideoCarouselProps {
@@ -195,21 +196,38 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, onClick }: VideoCardProps) => {
+  const [imageError, setImageError] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+  
   return (
     <button
       type="button"
       onClick={onClick}
-      className="group relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl"
+      className="group relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl bg-gradient-to-br from-primary/10 to-accent/10"
     >
-      {/* Video element with poster (first frame) */}
+      {/* Video element como thumbnail */}
       <video
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         src={video.videoSrc}
         preload="metadata"
         muted
         playsInline
-        poster={`${video.videoSrc}#t=0.1`}
+        onLoadedData={() => setVideoLoaded(true)}
+        style={{ 
+          opacity: videoLoaded ? 1 : 0,
+          transition: 'opacity 0.3s ease'
+        }}
       />
+      
+      {/* Loading placeholder */}
+      {!videoLoaded && (
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
+          <div className="text-center text-white/80">
+            <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-sm">Carregando...</p>
+          </div>
+        </div>
+      )}
       
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
       
