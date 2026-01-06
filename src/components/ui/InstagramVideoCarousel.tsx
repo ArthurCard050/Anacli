@@ -205,10 +205,6 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
     const videoName = videoSrc.split('/').pop() || '';
     const thumbnailName = videoThumbnailMap[videoName as keyof typeof videoThumbnailMap] || 'video-1.webp';
     const thumbnailPath = `/assets/reels/thumbnails/${thumbnailName}`;
-    console.log('Video:', videoSrc);
-    console.log('Video name:', videoName);
-    console.log('Thumbnail name:', thumbnailName);
-    console.log('Thumbnail path:', thumbnailPath);
     return thumbnailPath;
   };
 
@@ -227,11 +223,9 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
           alt={video.title}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           onLoad={() => {
-            console.log('Thumbnail loaded:', thumbnailPath);
             setImageLoaded(true);
           }}
           onError={() => {
-            console.log('Thumbnail error:', thumbnailPath);
             setImageError(true);
           }}
           style={{ 
