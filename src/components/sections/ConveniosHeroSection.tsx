@@ -8,11 +8,11 @@ const ConveniosHeroSection = () => {
   const shouldAnimate = useShouldAnimate();
 
   // Componente wrapper que usa motion apenas se shouldAnimate for true
-  const MotionWrapper = ({ children, ...motionProps }: any) => {
+  const MotionWrapper = ({ children, className, ...motionProps }: any) => {
     if (shouldAnimate) {
-      return <motion.div {...motionProps}>{children}</motion.div>;
+      return <motion.div className={className} {...motionProps}>{children}</motion.div>;
     }
-    return <div className={motionProps.className}>{children}</div>;
+    return <div className={className}>{children}</div>;
   };
 
   return (

@@ -38,6 +38,14 @@ const ConveniosGallerySection = () => {
   const [selectedCategory, setSelectedCategory] = useState("Todos");
   const [showNotFound, setShowNotFound] = useState(false);
 
+  // Componente wrapper que usa motion apenas se shouldAnimate for true
+  const MotionWrapper = ({ children, className, ...motionProps }: any) => {
+    if (shouldAnimate) {
+      return <motion.div className={className} {...motionProps}>{children}</motion.div>;
+    }
+    return <div className={className}>{children}</div>;
+  };
+
   // Filtrar convênios baseado na pesquisa e categoria
   const filteredConvenios = useMemo(() => {
     let filtered = convenios;
@@ -76,12 +84,12 @@ const ConveniosGallerySection = () => {
     <section className="py-12 sm:py-16 md:py-20 lg:py-32 bg-white">
       <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
-        <motion.div
+        <MotionWrapper
           className="text-center mb-12 sm:mb-16"
-          initial={shouldAnimate ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-          whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-          transition={shouldAnimate ? { duration: 0.8 } : undefined}
-          viewport={{ once: true }}
+          initial={shouldAnimate ? { opacity: 0, y: 30 } : {}}
+          whileInView={shouldAnimate ? { opacity: 1, y: 0 } : {}}
+          transition={shouldAnimate ? { duration: 0.8 } : {}}
+          viewport={shouldAnimate ? { once: true } : {}}
         >
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
             Nossos{" "}
@@ -92,7 +100,7 @@ const ConveniosGallerySection = () => {
             Consulte se o seu plano de saúde está credenciado conosco. 
             Utilize a barra de pesquisa ou navegue pelas categorias.
           </p>
-        </motion.div>
+        </MotionWrapper>
 
         {/* Search Bar */}
         <div className="max-w-2xl mx-auto mb-8 sm:mb-12">
@@ -218,13 +226,14 @@ const ConveniosGallerySection = () => {
             ))}
           </div>
         )}
+        
         {/* CTA Section - Moved from ConveniosContactSection */}
-        <motion.div
+        <MotionWrapper
           className="text-center mt-12 sm:mt-16"
-          initial={shouldAnimate ? { opacity: 0, y: 30 } : { opacity: 1, y: 0 }}
-          whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
-          transition={shouldAnimate ? { duration: 0.8, delay: 0.8 } : undefined}
-          viewport={{ once: true }}
+          initial={shouldAnimate ? { opacity: 0, y: 30 } : {}}
+          whileInView={shouldAnimate ? { opacity: 1, y: 0 } : {}}
+          transition={shouldAnimate ? { duration: 0.8, delay: 0.8 } : {}}
+          viewport={shouldAnimate ? { once: true } : {}}
         >
           <div className="bg-primary/10 rounded-3xl p-8 sm:p-12 border border-primary/20">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
@@ -255,7 +264,7 @@ const ConveniosGallerySection = () => {
               </HierarchicalButton>
             </div>
           </div>
-        </motion.div>
+        </MotionWrapper>
       </div>
     </section>
   );
