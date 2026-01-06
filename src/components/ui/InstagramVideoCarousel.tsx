@@ -221,6 +221,8 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
         <img
           src={thumbnailPath}
           alt={video.title}
+          loading="lazy"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
           onLoad={() => {
             setImageLoaded(true);
@@ -241,6 +243,7 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
           preload="metadata"
           muted
           playsInline
+          onLoadedData={() => setImageLoaded(true)}
         />
       )}
       

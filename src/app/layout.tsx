@@ -163,6 +163,11 @@ export default function RootLayout({
         {/* Logo com prioridade baixa */}
         <link rel="preload" href="/assets/logo.svg" as="image" type="image/svg+xml" fetchPriority="low" />
         
+        {/* Preload dos primeiros thumbnails de vídeo para melhor performance */}
+        <link rel="preload" href="/assets/reels/thumbnails/video-1.webp" as="image" type="image/webp" fetchPriority="low" />
+        <link rel="preload" href="/assets/reels/thumbnails/video-2.webp" as="image" type="image/webp" fetchPriority="low" />
+        <link rel="preload" href="/assets/reels/thumbnails/video-3.webp" as="image" type="image/webp" fetchPriority="low" />
+        
         {/* Sitemap */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       </head>
