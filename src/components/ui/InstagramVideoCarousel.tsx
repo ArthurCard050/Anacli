@@ -196,8 +196,38 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, onClick }: VideoCardProps) => {
-  const [imageError, setImageError] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const handleLoadedData = () => setVideoLoaded(true);
+    const handleLoadedMetadata = () => setVideoLoaded(true);
+    const handleCanPlay = () => setVideoLoaded(true);
+    
+    // Timeout de segurança - se não carregar em 3 segundos, mostra mesmo assim
+    const timeout = setTimeout(() => {
+      setVideoLoaded(true);
+    }, 3000);
+
+    videoElement.addEventListener('loadeddata', handleLoadedData);
+    videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
+    videoElement.addEventListener('canplay', handleCanPlay);
+
+    // Se o vídeo já estiver carregado
+    if (videoElement.readyState >= 2) {
+      setVideoLoaded(true);
+    }
+
+    return () => {
+      clearTimeout(timeout);
+      videoElement.removeEventListener('loadeddata', handleLoadedData);
+      videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      videoElement.removeEventListener('canplay', handleCanPlay);
+    };
+  }, []);
   
   return (
     <button
@@ -207,15 +237,15 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
     >
       {/* Video element como thumbnail */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         src={video.videoSrc}
         preload="metadata"
         muted
         playsInline
-        onLoadedData={() => setVideoLoaded(true)}
         style={{ 
           opacity: videoLoaded ? 1 : 0,
-          transition: 'opacity 0.3s ease'
+          transition: 'opacity 0.5s ease'
         }}
       />
       
@@ -223,8 +253,8 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
       {!videoLoaded && (
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
           <div className="text-center text-white/80">
-            <div className="w-16 h-16 border-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-sm">Carregando...</p>
+            <div className="w-12 h-12 border-3 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-3"></div>
+            <p className="text-xs">Carregando vídeo...</p>
           </div>
         </div>
       )}
