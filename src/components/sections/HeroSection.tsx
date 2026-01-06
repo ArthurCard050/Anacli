@@ -10,6 +10,14 @@ import { useShouldAnimate } from "@/hooks/useReducedMotion";
 const HeroSection = () => {
   const shouldAnimate = useShouldAnimate(); // Desktop = true, Mobile = false
 
+  // Componente wrapper que usa motion apenas se shouldAnimate for true
+  const MotionWrapper = ({ children, ...motionProps }: any) => {
+    if (shouldAnimate) {
+      return <motion.div {...motionProps}>{children}</motion.div>;
+    }
+    return <div className={motionProps.className}>{children}</div>;
+  };
+
   return (
     <section className="relative min-h-screen overflow-hidden bg-gray-50 rounded-b-[20px] md:rounded-b-[40px] lg:rounded-b-[128px] border-b border-gray-200">
       {/* Background with glow effect */}
@@ -19,14 +27,14 @@ const HeroSection = () => {
 
       {/* Clean background without accent */}
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-32 sm:pt-24 lg:pt-28 pb-8 sm:pb-12 lg:pb-20 min-h-screen">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 sm:pt-24 lg:pt-28 pb-8 sm:pb-12 lg:pb-20 min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-24 items-center h-full">
           {/* Left Content */}
-          <motion.div
+          <MotionWrapper
             className="space-y-6 sm:space-y-8 max-w-full lg:max-w-[585px] text-center lg:text-left"
-            initial={shouldAnimate ? { opacity: 0, x: -50 } : { opacity: 1, x: 0 }}
-            animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
-            transition={shouldAnimate ? { duration: 0.8, ease: "easeOut" } : undefined}
+            initial={shouldAnimate ? { opacity: 0, x: -50 } : {}}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : {}}
+            transition={shouldAnimate ? { duration: 0.8, ease: "easeOut" } : {}}
           >
             {/* Welcome Text */}
             <div className="space-y-4 sm:space-y-6">
@@ -36,21 +44,23 @@ const HeroSection = () => {
                 </GlowBadge>
               </div>
 
-              <motion.h1
+              <MotionWrapper
                 className="text-4xl md:text-7xl font-bold text-gray-900 mb-6"
-                initial={shouldAnimate ? { opacity: 0, scale: 0.9 } : { opacity: 1, scale: 1 }}
-                whileInView={shouldAnimate ? { opacity: 1, scale: 1 } : undefined}
-                transition={shouldAnimate ? { duration: 0.8, delay: 0.2 } : undefined}
-                viewport={{ once: true }}
+                initial={shouldAnimate ? { opacity: 0, scale: 0.9 } : {}}
+                whileInView={shouldAnimate ? { opacity: 1, scale: 1 } : {}}
+                transition={shouldAnimate ? { duration: 0.8, delay: 0.2 } : {}}
+                viewport={shouldAnimate ? { once: true } : {}}
               >
-                Compromisso
-                <br />
-                & Tradição
-                <br />
-                <span className="text-accent">
-                  em Saúde
-                </span>
-              </motion.h1>
+                <h1>
+                  Compromisso
+                  <br />
+                  & Tradição
+                  <br />
+                  <span className="text-accent">
+                    em Saúde
+                  </span>
+                </h1>
+              </MotionWrapper>
 
               {/* Linha decorativa */}
               <div className="w-24 h-1 bg-accent mx-auto lg:mx-0"></div>
@@ -133,14 +143,14 @@ const HeroSection = () => {
                 Mais de 5 mil pacientes confiam na gente todos os meses.
               </p>
             </div>
-          </motion.div>
+          </MotionWrapper>
 
           {/* Right Content - Cards */}
-          <motion.div
+          <MotionWrapper
             className="relative flex flex-col lg:flex-row gap-4 sm:gap-6 lg:gap-[30px] items-center lg:items-start w-full"
-            initial={shouldAnimate ? { opacity: 0, x: 50 } : { opacity: 1, x: 0 }}
-            animate={shouldAnimate ? { opacity: 1, x: 0 } : undefined}
-            transition={shouldAnimate ? { duration: 0.8, delay: 0.2, ease: "easeOut" } : undefined}
+            initial={shouldAnimate ? { opacity: 0, x: 50 } : {}}
+            animate={shouldAnimate ? { opacity: 1, x: 0 } : {}}
+            transition={shouldAnimate ? { duration: 0.8, delay: 0.2, ease: "easeOut" } : {}}
           >
             {/* Left Column */}
             <div className="flex flex-col gap-4 sm:gap-6 lg:gap-[30px] w-full lg:w-[341.98px]">
@@ -158,10 +168,10 @@ const HeroSection = () => {
               </div>
 
               {/* Results Access Card */}
-              <motion.div
+              <MotionWrapper
                 className="bg-accent rounded-3xl p-7 shadow-2xl relative overflow-hidden min-h-[200px] flex flex-col justify-center"
-                whileHover={{ scale: 1.02, y: -4 }}
-                transition={{ duration: 0.3 }}
+                whileHover={shouldAnimate ? { scale: 1.02, y: -4 } : {}}
+                transition={shouldAnimate ? { duration: 0.3 } : {}}
               >
                 {/* Background decorative elements */}
                 <div className="absolute inset-0 bg-black/10"></div>
@@ -200,7 +210,7 @@ const HeroSection = () => {
                     </HierarchicalButton>
                   </div>
                 </div>
-              </motion.div>
+              </MotionWrapper>
             </div>
 
             {/* Right Column - Interior Card - LCP Element Mobile */}
@@ -226,7 +236,7 @@ const HeroSection = () => {
                 fetchPriority="high"
               />
             </div>
-          </motion.div>
+          </MotionWrapper>
         </div>
       </div>
     </section>

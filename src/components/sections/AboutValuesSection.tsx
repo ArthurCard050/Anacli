@@ -1,12 +1,8 @@
 'use client';
 
-import { motion } from "framer-motion";
 import { Eye, Target, Heart, Shield, Users, Award } from "lucide-react";
-import { useShouldAnimate } from "@/hooks/useReducedMotion";
 
 const AboutValuesSection = () => {
-  const shouldAnimate = useShouldAnimate();
-
   const coreValues = [
     {
       title: "Visão",

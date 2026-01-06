@@ -17,7 +17,7 @@ const AboutHeroSection = () => {
 
       {/* Clean background without accent */}
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-32 sm:pt-24 lg:pt-28 pb-8 sm:pb-12 lg:pb-20 min-h-screen">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 sm:pt-24 lg:pt-28 pb-8 sm:pb-12 lg:pb-20 min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 sm:gap-12 lg:gap-16 items-center h-full">
           {/* Left Content */}
           <div className="lg:col-span-2 space-y-6 sm:space-y-8 text-center lg:text-left order-1">
