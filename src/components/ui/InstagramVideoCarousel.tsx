@@ -6,6 +6,7 @@ import { Navigation } from 'swiper/modules'
 import { Instagram, ChevronLeft, ChevronRight, Play } from 'lucide-react'
 import type { Swiper as SwiperType } from 'swiper'
 import { HierarchicalButton } from "@/components/ui/hierarchical-button"
+import videoThumbnailMap from '@/data/video-thumbnail-map.json'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -199,10 +200,16 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
   
-  // Função para gerar caminho do thumbnail
+  // Função para gerar caminho do thumbnail usando mapeamento
   const getThumbnailPath = (videoSrc: string) => {
-    const videoName = videoSrc.split('/').pop()?.replace('.mp4', '.webp') || '';
-    return `/assets/reels/thumbnails/${videoName}`;
+    const videoName = videoSrc.split('/').pop() || '';
+    const thumbnailName = videoThumbnailMap[videoName as keyof typeof videoThumbnailMap] || 'video-1.webp';
+    const thumbnailPath = `/assets/reels/thumbnails/${thumbnailName}`;
+    console.log('Video:', videoSrc);
+    console.log('Video name:', videoName);
+    console.log('Thumbnail name:', thumbnailName);
+    console.log('Thumbnail path:', thumbnailPath);
+    return thumbnailPath;
   };
 
   const thumbnailPath = getThumbnailPath(video.videoSrc);
@@ -219,8 +226,14 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
           src={thumbnailPath}
           alt={video.title}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          onLoad={() => setImageLoaded(true)}
-          onError={() => setImageError(true)}
+          onLoad={() => {
+            console.log('Thumbnail loaded:', thumbnailPath);
+            setImageLoaded(true);
+          }}
+          onError={() => {
+            console.log('Thumbnail error:', thumbnailPath);
+            setImageError(true);
+          }}
           style={{ 
             opacity: imageLoaded ? 1 : 0,
             transition: 'opacity 0.3s ease'
@@ -242,7 +255,7 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
           <div className="text-center text-white/80">
             <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-xs">Carregando...</p>
+            <p className="text-xs">Carregando thumbnail...</p>
           </div>
         </div>
       )}
