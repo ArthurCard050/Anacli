@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Navigation } from 'swiper/modules'
 import { Instagram, ChevronLeft, ChevronRight, Play } from 'lucide-react'
@@ -197,15 +197,11 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, onClick }: VideoCardProps) => {
-  const [imageError, setImageError] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
   // Função para gerar caminho do thumbnail usando mapeamento
   const getThumbnailPath = (videoSrc: string) => {
     const videoName = videoSrc.split('/').pop() || '';
     const thumbnailName = videoThumbnailMap[videoName as keyof typeof videoThumbnailMap] || 'video-1.webp';
-    const thumbnailPath = `/assets/reels/thumbnails/${thumbnailName}`;
-    return thumbnailPath;
+    return `/assets/reels/thumbnails/${thumbnailName}`;
   };
 
   const thumbnailPath = getThumbnailPath(video.videoSrc);
@@ -216,46 +212,12 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
       onClick={onClick}
       className="group relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl bg-gradient-to-br from-primary/10 to-accent/10"
     >
-      {/* Thumbnail Image */}
-      {!imageError ? (
-        <img
-          src={thumbnailPath}
-          alt={video.title}
-          loading="lazy"
-          decoding="async"
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          onLoad={() => {
-            setImageLoaded(true);
-          }}
-          onError={() => {
-            setImageError(true);
-          }}
-          style={{ 
-            opacity: imageLoaded ? 1 : 0,
-            transition: 'opacity 0.3s ease'
-          }}
-        />
-      ) : (
-        /* Fallback: Video element como backup */
-        <video
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-          src={video.videoSrc}
-          preload="metadata"
-          muted
-          playsInline
-          onLoadedData={() => setImageLoaded(true)}
-        />
-      )}
-      
-      {/* Loading placeholder - só mostra se imagem não carregou ainda */}
-      {!imageLoaded && !imageError && (
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
-          <div className="text-center text-white/80">
-            <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-2"></div>
-            <p className="text-xs">Carregando thumbnail...</p>
-          </div>
-        </div>
-      )}
+      {/* Thumbnail Image - simples e direto */}
+      <img
+        src={thumbnailPath}
+        alt={video.title}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+      />
       
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />
       
