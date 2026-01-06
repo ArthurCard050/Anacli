@@ -196,38 +196,16 @@ interface VideoCardProps {
 }
 
 const VideoCard = ({ video, onClick }: VideoCardProps) => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement) return;
+  // Função para gerar caminho do thumbnail
+  const getThumbnailPath = (videoSrc: string) => {
+    const videoName = videoSrc.split('/').pop()?.replace('.mp4', '.webp') || '';
+    return `/assets/reels/thumbnails/${videoName}`;
+  };
 
-    const handleLoadedData = () => setVideoLoaded(true);
-    const handleLoadedMetadata = () => setVideoLoaded(true);
-    const handleCanPlay = () => setVideoLoaded(true);
-    
-    // Timeout de segurança - se não carregar em 3 segundos, mostra mesmo assim
-    const timeout = setTimeout(() => {
-      setVideoLoaded(true);
-    }, 3000);
-
-    videoElement.addEventListener('loadeddata', handleLoadedData);
-    videoElement.addEventListener('loadedmetadata', handleLoadedMetadata);
-    videoElement.addEventListener('canplay', handleCanPlay);
-
-    // Se o vídeo já estiver carregado
-    if (videoElement.readyState >= 2) {
-      setVideoLoaded(true);
-    }
-
-    return () => {
-      clearTimeout(timeout);
-      videoElement.removeEventListener('loadeddata', handleLoadedData);
-      videoElement.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      videoElement.removeEventListener('canplay', handleCanPlay);
-    };
-  }, []);
+  const thumbnailPath = getThumbnailPath(video.videoSrc);
   
   return (
     <button
@@ -235,26 +213,36 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
       onClick={onClick}
       className="group relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300 hover:shadow-xl bg-gradient-to-br from-primary/10 to-accent/10"
     >
-      {/* Video element como thumbnail */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-        src={video.videoSrc}
-        preload="metadata"
-        muted
-        playsInline
-        style={{ 
-          opacity: videoLoaded ? 1 : 0,
-          transition: 'opacity 0.5s ease'
-        }}
-      />
+      {/* Thumbnail Image */}
+      {!imageError ? (
+        <img
+          src={thumbnailPath}
+          alt={video.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          onLoad={() => setImageLoaded(true)}
+          onError={() => setImageError(true)}
+          style={{ 
+            opacity: imageLoaded ? 1 : 0,
+            transition: 'opacity 0.3s ease'
+          }}
+        />
+      ) : (
+        /* Fallback: Video element como backup */
+        <video
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+          src={video.videoSrc}
+          preload="metadata"
+          muted
+          playsInline
+        />
+      )}
       
-      {/* Loading placeholder */}
-      {!videoLoaded && (
+      {/* Loading placeholder - só mostra se imagem não carregou ainda */}
+      {!imageLoaded && !imageError && (
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center">
           <div className="text-center text-white/80">
-            <div className="w-12 h-12 border-3 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-3"></div>
-            <p className="text-xs">Carregando vídeo...</p>
+            <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-2"></div>
+            <p className="text-xs">Carregando...</p>
           </div>
         </div>
       )}
