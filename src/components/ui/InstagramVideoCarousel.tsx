@@ -208,6 +208,7 @@ const VideoCard = ({ video, onClick }: VideoCardProps) => {
         preload="metadata"
         muted
         playsInline
+        poster={`${video.videoSrc}#t=0.1`}
       />
       
       <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-colors duration-300" />

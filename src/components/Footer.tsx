@@ -74,7 +74,7 @@ const Footer = () => {
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
-          <div className="lg:col-span-1">
+          <div className="lg:col-span-1 text-center">
             <a
               href="/"
               className="inline-block mb-4 cursor-pointer"
@@ -82,7 +82,7 @@ const Footer = () => {
               <img
                 src="/assets/logo.svg"
                 alt="Anacli - Laboratório de Análises Clínicas"
-                className="h-12 w-auto mb-2 hover:opacity-80 transition-opacity"
+                className="h-12 w-auto mb-2 hover:opacity-80 transition-opacity mx-auto"
               />
               <div className="text-xs text-gray-400 tracking-wide select-none">
                 Excelência em Análises Clínicas
@@ -95,7 +95,7 @@ const Footer = () => {
 
           {/* Footer Links */}
           {footerSections.map((section, index) => (
-            <div key={index}>
+            <div key={index} className="text-center">
               <h4 className="font-bold text-white mb-4">{section.title}</h4>
               <ul className="space-y-2">
                 {section.links.map((link, linkIndex) => (

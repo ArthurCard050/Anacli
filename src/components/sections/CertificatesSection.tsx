@@ -120,13 +120,18 @@ const CertificatesSection = () => {
                   className="relative w-16 h-16 lg:w-20 lg:h-20 mb-4 rounded-xl bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-primary/30 transition-all duration-300"
                   whileHover={{ scale: 1.1, rotate: 2 }}
                 >
-                  <OptimizedImage
-                    src={cert.logo}
-                    alt={`Certificado ${cert.name}`}
-                    width={56}
-                    height={56}
-                    className="w-12 h-12 lg:w-14 lg:h-14 object-contain filter group-hover:brightness-110 transition-all duration-300"
-                  />
+                  <div 
+                    className="w-12 h-12 lg:w-14 lg:h-14 flex items-center justify-center"
+                    style={{ filter: 'brightness(0) saturate(100%) invert(13%) sepia(100%) saturate(7500%) hue-rotate(335deg) brightness(100%) contrast(100%)' }}
+                  >
+                    <OptimizedImage
+                      src={cert.logo}
+                      alt={`Certificado ${cert.name}`}
+                      width={56}
+                      height={56}
+                      className="w-full h-full object-contain transition-all duration-300"
+                    />
+                  </div>
 
                   {/* Glow effect */}
                   <motion.div

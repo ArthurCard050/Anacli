@@ -14,7 +14,7 @@ const ConveniosHeroSection = () => {
         {/* Simplified background - no animated effects for cleaner look */}
       </div>
 
-      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-40 sm:pt-36 lg:pt-40 pb-8 sm:pb-12 lg:pb-20 min-h-[60vh] flex items-center justify-center">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 pt-24 sm:pt-28 lg:pt-40 pb-8 sm:pb-12 lg:pb-20 min-h-[60vh] flex items-center justify-center">
         <div className="max-w-4xl mx-auto text-center">
           {/* Content */}
           <motion.div

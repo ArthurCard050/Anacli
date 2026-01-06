@@ -1,18 +1,15 @@
 'use client';
 
-import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 import OptimizedImage from "@/components/ui/OptimizedImage";
-import { useShouldAnimate } from "@/hooks/useReducedMotion";
 
 const AboutGallerySection = () => {
-  const shouldAnimate = useShouldAnimate();
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [touchStart, setTouchStart] = useState<number | null>(null);
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
 
-  // Placeholder images - você vai substituir pelos caminhos reais
+  // Imagens da galeria
   const galleryImages = [
     {
       src: "/assets/unidade.avif",
