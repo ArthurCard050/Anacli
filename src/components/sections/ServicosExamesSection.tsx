@@ -233,7 +233,7 @@ const ServicosExamesSection = () => {
         {searchTerm && (
           <div className="text-center mb-6">
             <p className="text-gray-600">
-              {filteredCategories.reduce((acc, cat) => acc + cat.exames.length, 0)} exame(s) encontrado(s) para "{searchTerm}"
+              {filteredCategories.reduce((acc, cat) => acc + cat.exames.length, 0)} exame(s) encontrado(s) para &ldquo;{searchTerm}&rdquo;
             </p>
           </div>
         )}
@@ -285,7 +285,7 @@ const ServicosExamesSection = () => {
         {filteredCategories.length === 0 && (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg">
-              Nenhum exame encontrado para "{searchTerm}"
+              Nenhum exame encontrado para &ldquo;{searchTerm}&rdquo;
             </p>
             <button
               onClick={clearSearch}
