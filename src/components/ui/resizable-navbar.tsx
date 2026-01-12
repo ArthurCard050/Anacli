@@ -22,11 +22,11 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
   className,
   navItems = [
     { name: "Sobre", link: "/sobre" },
-    { name: "Exames", link: "#exames" },
+    { name: "Serviços", link: "/servicos" },
     { name: "Convênios", link: "/convenios" },
     { name: "FAQ", link: "/faq" },
     { name: "Certificações", link: "/certificacoes" },
-    { name: "Contato", link: "#contato" },
+    { name: "Contato", link: "/contato" },
   ],
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);

@@ -15,11 +15,11 @@ const Footer = () => {
       ],
     },
     {
-      title: "Exames",
+      title: "Serviços",
       links: [
-        { label: "Análises Clínicas", href: "#exames" },
-        { label: "Toxicológicos", href: "#exames" },
-        { label: "Check-up", href: "#exames" },
+        { label: "Análises Clínicas", href: "/servicos#exames" },
+        { label: "Toxicológicos", href: "/servicos#servicos" },
+        { label: "Check-up", href: "/servicos#servicos" },
       ],
     },
     {
