@@ -14,7 +14,7 @@ export default function HeroSection() {
   const featuredProducts = mockPackages.filter(pkg => pkg.featured).slice(0, 3);
 
   return (
-    <section className="pt-20 md:pt-24 pb-8 md:pb-12 bg-gray-50">
+    <section className="pt-20 md:pt-24 pb-8 md:pb-12 bg-gradient-to-b from-gray-50 to-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Coluna Esquerda - Ação */}
@@ -93,7 +93,7 @@ export default function HeroSection() {
                 >
                   <div className="flex gap-4 p-4">
                     <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <div className="absolute inset-0 bg-primary/10" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20" />
                       {product.discount && (
                         <div className="absolute top-2 left-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
                           {product.discount}

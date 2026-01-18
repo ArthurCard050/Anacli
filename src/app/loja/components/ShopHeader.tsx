@@ -5,12 +5,15 @@ import Image from 'next/image';
 import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { useCart } from '../context/CartContext';
 
 export default function ShopHeader() {
   const [searchQuery, setSearchQuery] = useState('');
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [showMegaMenu, setShowMegaMenu] = useState(false);
+  
+  const { itemCount, openCart } = useCart();
 
   // Smart Sticky Header - esconde ao rolar para baixo, mostra ao rolar para cima
   useEffect(() => {
@@ -43,7 +46,7 @@ export default function ShopHeader() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm transition-transform duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 transition-transform duration-300 ${
         isVisible ? 'translate-y-0' : '-translate-y-full'
       }`}
     >
@@ -152,13 +155,16 @@ export default function ShopHeader() {
             <Button
               variant="ghost"
               size="icon"
+              onClick={openCart}
               className="relative hover:bg-gray-100 transition-all hover:scale-110"
               aria-label="Carrinho"
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent text-white text-xs flex items-center justify-center font-medium shadow-lg animate-pulse">
-                0
-              </span>
+              {itemCount > 0 && (
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-accent text-white text-xs flex items-center justify-center font-medium shadow-lg animate-pulse">
+                  {itemCount}
+                </span>
+              )}
             </Button>
           </div>
         </div>

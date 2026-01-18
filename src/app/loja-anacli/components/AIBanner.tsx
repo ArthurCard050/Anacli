@@ -5,9 +5,9 @@ import { Button } from '@/components/ui/button';
 
 export default function AIBanner() {
   return (
-    <section className="py-8 bg-accent/5">
+    <section className="py-8 bg-gradient-to-r from-accent/5 via-primary/5 to-accent/5">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="relative overflow-hidden rounded-2xl bg-accent p-8 md:p-12">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-accent to-accent/90 p-8 md:p-12 shadow-xl">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0" style={{
@@ -38,7 +38,7 @@ export default function AIBanner() {
             <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 size="lg"
-                className="bg-white text-accent hover:bg-gray-50 font-semibold rounded-xl h-12 px-8"
+                className="bg-white text-accent hover:bg-gray-50 font-semibold rounded-xl shadow-lg h-12 px-8"
               >
                 <Camera className="mr-2 h-5 w-5" />
                 Experimentar agora

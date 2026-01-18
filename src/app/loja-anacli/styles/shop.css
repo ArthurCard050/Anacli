@@ -1,0 +1,236 @@
+/* Estilos específicos da Loja Anacli */
+
+/* Animações suaves para cards de produtos */
+@keyframes cardHover {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-4px);
+  }
+}
+
+.product-card:hover {
+  animation: cardHover 0.3s ease forwards;
+}
+
+/* Efeito de shimmer para loading de imagens */
+@keyframes shimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+.skeleton-loader {
+  animation: shimmer 1.2s ease-in-out infinite;
+  background: linear-gradient(
+    to right,
+    #f6f7f8 0%,
+    #edeef1 20%,
+    #f6f7f8 40%,
+    #f6f7f8 100%
+  );
+  background-size: 800px 104px;
+}
+
+/* Badge de desconto pulsante */
+@keyframes pulse-badge {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.discount-badge {
+  animation: pulse-badge 2s ease-in-out infinite;
+}
+
+/* Efeito de foco acessível */
+.shop-input:focus-visible {
+  outline: 2px solid hsl(68 68% 45%);
+  outline-offset: 2px;
+}
+
+/* Transições suaves para botões */
+.shop-button {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.shop-button:active {
+  transform: scale(0.98);
+}
+
+/* Estilo para contador do carrinho */
+.cart-badge {
+  box-shadow: 0 2px 8px rgba(255, 0, 104, 0.3);
+}
+
+/* Grid responsivo de produtos */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .products-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Estilo para tags de exames */
+.exam-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  background-color: hsl(68 68% 95%);
+  color: hsl(68 68% 35%);
+  transition: all 0.2s;
+}
+
+.exam-tag:hover {
+  background-color: hsl(68 68% 45%);
+  color: white;
+}
+
+/* Estilo para preço com desconto */
+.price-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+.original-price {
+  font-size: 0.875rem;
+  color: hsl(0 0% 60%);
+  text-decoration: line-through;
+}
+
+.current-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(68 68% 45%);
+}
+
+/* Estilo para seção de preparação do exame */
+.preparation-list {
+  list-style: none;
+  padding: 0;
+}
+
+.preparation-list li {
+  position: relative;
+  padding-left: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.preparation-list li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: hsl(68 68% 45%);
+  font-weight: bold;
+}
+
+/* Estilo para filtros */
+.filter-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 1px solid hsl(0 0% 90%);
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.filter-chip:hover {
+  border-color: hsl(68 68% 45%);
+  background: hsl(68 68% 98%);
+}
+
+.filter-chip.active {
+  border-color: hsl(68 68% 45%);
+  background: hsl(68 68% 45%);
+  color: white;
+}
+
+/* Estilo para modal de upload */
+.upload-zone {
+  border: 2px dashed hsl(0 0% 80%);
+  border-radius: 0.75rem;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.upload-zone:hover,
+.upload-zone.drag-over {
+  border-color: hsl(335 100% 50%);
+  background: hsl(335 100% 98%);
+}
+
+/* Estilo para breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: hsl(0 0% 60%);
+}
+
+.breadcrumb a {
+  color: hsl(0 0% 60%);
+  transition: color 0.2s;
+}
+
+.breadcrumb a:hover {
+  color: hsl(68 68% 45%);
+}
+
+.breadcrumb-separator {
+  color: hsl(0 0% 80%);
+}
+
+/* Estilo para empty state */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-state-icon {
+  width: 4rem;
+  height: 4rem;
+  margin: 0 auto 1rem;
+  color: hsl(0 0% 80%);
+}
+
+/* Otimizações de performance */
+.will-change-transform {
+  will-change: transform;
+}
+
+.gpu-accelerated {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Print styles para pedidos */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: block !important;
+  }
+}
