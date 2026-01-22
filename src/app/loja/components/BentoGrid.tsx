@@ -4,37 +4,18 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import { Clock, Calendar, Plus, Check, Info, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { mockExams, mockPackages, examCategories } from '../data/mock-products';
+import { mockExams, mockPackages } from '../data/mock-products';
 import { useCart } from '../context/CartContext';
 import type { Exam, ExamPackage } from '../types';
 
-type FilterCategory = 'todos' | 'check-up' | 'mulher' | 'homem' | 'vitaminas' | 'cardiaco' | 'diabetes' | 'tireoide';
-
 export default function BentoGrid() {
-  const [activeFilter, setActiveFilter] = useState<FilterCategory>('todos');
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   const { addItem } = useCart();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  const getFilteredProducts = () => {
-    let exams = [...mockExams];
-    let packages = [...mockPackages];
-    if (activeFilter !== 'todos') {
-      if (activeFilter === 'mulher') {
-        exams = exams.filter(e => e.tags?.some(t => t.toLowerCase().includes('mulher')));
-        packages = packages.filter(p => p.slug.includes('mulher'));
-      } else if (activeFilter === 'homem') {
-        exams = exams.filter(e => e.tags?.some(t => t.toLowerCase().includes('homem')));
-        packages = packages.filter(p => p.slug.includes('homem'));
-      } else {
-        exams = exams.filter(e => e.category === activeFilter);
-        packages = packages.filter(p => p.slug.includes(activeFilter));
-      }
-    }
-    return { exams, packages };
-  };
-
-  const { exams, packages } = getFilteredProducts();
+  // Usar todos os produtos sem filtro
+  const exams = mockExams;
+  const packages = mockPackages;
 
   const handleAddItem = (id: string, type: 'exam' | 'package') => {
     addItem(id, type);
@@ -174,16 +155,6 @@ export default function BentoGrid() {
         <div className="text-center mb-8 md:mb-12">
           <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos Exames e Pacotes</h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">Escolha entre exames individuais ou pacotes completos com desconto</p>
-        </div>
-
-        {/* Filtros */}
-        <div className="flex flex-wrap justify-center gap-2 md:gap-3 mb-8 md:mb-12">
-          {examCategories.slice(0, 6).map((category) => (
-            <button key={category.value} onClick={() => setActiveFilter(category.value as FilterCategory)}
-              className={`px-4 md:px-6 py-2 md:py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${
-                activeFilter === category.value ? 'bg-primary text-white scale-105' : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}>{category.label}</button>
-          ))}
         </div>
 
         {/* 3 Pacotes Fixos */}

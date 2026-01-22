@@ -150,7 +150,7 @@ export default function SearchDropdown() {
       {/* Sem resultados */}
       {isOpen && query.length >= 2 && results.length === 0 && (
         <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-2xl border border-gray-200 p-6 text-center z-50">
-          <p className="text-gray-600">Nenhum exame encontrado para "{query}"</p>
+          <p className="text-gray-600">Nenhum exame encontrado para &quot;{query}&quot;</p>
           <p className="text-sm text-gray-500 mt-2">Tente buscar por outro termo</p>
         </div>
       )}

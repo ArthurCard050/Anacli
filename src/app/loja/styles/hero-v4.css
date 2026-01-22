@@ -1,0 +1,236 @@
+/* Hero Section V4 - Bold Wave Styles */
+
+/* Efeito de Ondas Animadas no Fundo - Simplificado */
+.wave-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.03) 25%, 
+    rgba(255, 255, 255, 0.06) 50%, 
+    rgba(255, 255, 255, 0.03) 75%, 
+    transparent 100%
+  );
+  animation: wave-move 6s ease-in-out infinite;
+}
+
+.wave-1 {
+  animation-delay: 0s;
+  opacity: 1;
+}
+
+.wave-2 {
+  animation-delay: -2s;
+  opacity: 0.7;
+  animation-duration: 8s;
+}
+
+.wave-3 {
+  animation-delay: -4s;
+  opacity: 0.5;
+  animation-duration: 10s;
+}
+
+@keyframes wave-move {
+  0%, 100% {
+    transform: translateX(0%) rotate(0deg);
+  }
+  25% {
+    transform: translateX(5%) rotate(1deg);
+  }
+  50% {
+    transform: translateX(10%) rotate(0deg);
+  }
+  75% {
+    transform: translateX(5%) rotate(-1deg);
+  }
+}
+
+/* Padrão de Ondas SVG */
+.wave-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20s-20 8.954-20 20 8.954 20 20 20 20-8.954 20-20zm0 0c0 11.046 8.954 20 20 20s20-8.954 20-20-8.954-20-20-20-20 8.954-20 20z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  animation: wave-pattern-move 20s linear infinite;
+}
+
+@keyframes wave-pattern-move {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 60px 60px;
+  }
+}
+
+/* Cards Flutuantes */
+.hero-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.hero-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Destaque (Principal) */
+.hero-card-featured {
+  border: 2px solid #FF0055;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card-featured::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #FF0055, #FF0055);
+}
+
+.hero-card-featured:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 30px 60px rgba(255, 0, 85, 0.2);
+}
+
+/* Animações de Entrada */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-card {
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+.hero-card:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.hero-card:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.hero-card:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* Efeitos de Hover nos Ícones */
+.hero-card .w-16.h-16 {
+  transition: all 0.3s ease;
+}
+
+.hero-card:hover .w-16.h-16 {
+  transform: scale(1.1);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hero-card {
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero-card:hover {
+    transform: translateY(-4px);
+  }
+  
+  .hero-card-featured:hover {
+    transform: translateY(-6px);
+  }
+}
+
+/* Efeitos de Focus para Acessibilidade */
+.hero-card:focus-within {
+  outline: 2px solid #FF0055;
+  outline-offset: 4px;
+}
+
+/* Animação do Badge IA */
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* Efeitos de Drag and Drop */
+.hero-card [data-dragging="true"] {
+  background: rgba(255, 0, 85, 0.05);
+  border-color: #FF0055;
+  transform: scale(1.02);
+}
+
+/* Gradiente de Texto para Títulos */
+.gradient-text {
+  background: linear-gradient(135deg, #FF0055, #FF0055);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Efeito de Glow Suave */
+.glow-soft {
+  box-shadow: 0 0 20px rgba(255, 0, 85, 0.1);
+}
+
+/* Estados de Loading */
+.loading-state {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-state::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Melhorias de Performance */
+.hero-card {
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Dark Mode Support (futuro) */
+@media (prefers-color-scheme: dark) {
+  .hero-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+}

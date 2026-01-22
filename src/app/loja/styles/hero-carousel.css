@@ -1,0 +1,178 @@
+/* Hero Carousel - Estilo Mercado Livre Simplificado */
+
+/* Transições suaves para mudança de slides */
+.hero-carousel-container {
+  transition: all 0.5s ease-in-out;
+}
+
+/* Efeito de gradient Mercado Livre estendido */
+.hero-banner-gradient-extended {
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 40%,
+    rgba(255, 255, 255, 0.1) 60%,
+    rgba(255, 255, 255, 0.4) 75%,
+    rgba(255, 255, 255, 0.7) 85%,
+    rgba(255, 255, 255, 0.9) 95%,
+    #ffffff 100%
+  );
+  height: calc(100% + 8rem); /* Estende além do banner */
+  position: absolute;
+  bottom: -8rem;
+  left: 0;
+  right: 0;
+  pointer-events: none;
+  z-index: 15;
+}
+
+/* Efeito de hover nos cards */
+.hero-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* Botões de navegação */
+.nav-button {
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+  transform: scale(1.05);
+  backdrop-filter: blur(16px);
+}
+
+/* Indicadores de slide */
+.slide-indicator {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-indicator.active {
+  transform: scale(1.25);
+}
+
+/* Esconder scrollbar horizontal */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Smooth scrolling para mobile carousel */
+.scrollbar-hide {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Snap scrolling para mobile */
+.snap-x {
+  scroll-snap-type: x mandatory;
+}
+
+.snap-start {
+  scroll-snap-align: start;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hero-carousel-container {
+    height: 200px;
+  }
+  
+  .hero-banner-gradient-extended {
+    height: calc(100% + 6rem);
+    bottom: -6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-carousel-container {
+    height: 180px;
+  }
+  
+  .hero-banner-gradient-extended {
+    height: calc(100% + 5rem);
+    bottom: -5rem;
+  }
+}
+
+/* Estados de focus para acessibilidade */
+.nav-button:focus,
+.slide-indicator:focus {
+  outline: 2px solid #A6C022;
+  outline-offset: 4px;
+}
+
+/* Melhorias de performance */
+.hero-carousel-container,
+.hero-card,
+.nav-button {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Efeito de loading suave */
+.hero-carousel-container.loading {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.hero-carousel-container.loaded {
+  opacity: 1;
+}
+
+/* Placeholder para imagens */
+.banner-placeholder {
+  background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* Animação sutil nos cards */
+@keyframes card-float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+.hero-card:hover {
+  animation: card-float 2s ease-in-out infinite;
+}
+
+/* Efeito de ripple nos botões */
+.ripple-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple-effect::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple-effect:active::before {
+  width: 300px;
+  height: 300px;
+}

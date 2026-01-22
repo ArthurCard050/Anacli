@@ -1,0 +1,254 @@
+/* Hero Section V5 - Anacli Brand Colors */
+
+/* Background com cor magenta */
+.hero-anacli-bg {
+  background: #FF0068;
+  position: relative;
+  overflow: visible;
+}
+
+/* Removido efeito de partículas animadas - fundo limpo */
+
+/* Tipografia do Hero - Fonte padrão */
+.hero-anacli-bg h1 {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.hero-anacli-bg h2 {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Barra de busca com efeito glassmorphism */
+.hero-search-bar {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.hero-search-bar:focus-within {
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+/* Card de upload com glassmorphism */
+.hero-upload-card {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 2px dashed rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+.hero-upload-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.hero-upload-card.dragging {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.02);
+}
+
+.hero-upload-card.uploaded {
+  background: rgba(34, 197, 94, 0.2);
+  border-color: rgba(34, 197, 94, 0.6);
+}
+
+/* Wave divider melhorado - Efeito na borda inferior */
+.hero-wave-divider {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+  z-index: 5;
+}
+
+.hero-wave-divider svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 96px;
+}
+
+.hero-wave-divider .shape-fill {
+  fill: #FFFFFF;
+}
+
+/* Cards de exames com efeito de saída da borda */
+.hero-exam-card {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  position: relative;
+  z-index: 20;
+  margin-bottom: 2rem; /* Adiciona espaço inferior */
+}
+
+.hero-exam-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.18);
+}
+
+/* Ícones dos cards */
+.hero-card-icon {
+  transition: all 0.3s ease;
+}
+
+.hero-exam-card:hover .hero-card-icon {
+  transform: scale(1.1);
+}
+
+/* Animações de entrada - Simplificadas */
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-anacli-bg h1 {
+  animation: fadeInDown 0.6s ease-out;
+}
+
+.hero-anacli-bg h2 {
+  animation: fadeInDown 0.6s ease-out 0.1s both;
+}
+
+.hero-anacli-bg p {
+  animation: fadeInDown 0.6s ease-out 0.2s both;
+}
+
+.hero-search-bar {
+  animation: slideInUp 0.6s ease-out 0.3s both;
+}
+
+.hero-upload-card {
+  animation: slideInUp 0.6s ease-out 0.4s both;
+}
+
+.hero-exam-card {
+  animation: slideInUp 0.6s ease-out both;
+}
+
+.hero-exam-card:nth-child(1) {
+  animation-delay: 0.5s;
+}
+
+.hero-exam-card:nth-child(2) {
+  animation-delay: 0.6s;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .hero-anacli-bg {
+    overflow: visible;
+    padding-bottom: 2rem;
+    padding-top: 2rem;
+  }
+  
+  .hero-wave-divider svg {
+    height: 60px;
+  }
+  
+  /* Garante que os cards não apareçam no mobile dentro do hero */
+  .hero-exam-card {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-wave-divider svg {
+    height: 40px;
+  }
+  
+  .hero-anacli-bg {
+    padding-top: 1.5rem;
+  }
+}
+
+/* Estados de focus para acessibilidade */
+.hero-search-bar input:focus {
+  outline: 2px solid #A6C022;
+  outline-offset: 2px;
+}
+
+.hero-upload-card:focus-within {
+  outline: 2px solid #A6C022;
+  outline-offset: 4px;
+}
+
+/* Efeito de pulse no botão de busca */
+.hero-search-button {
+  transition: all 0.3s ease;
+}
+
+.hero-search-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(166, 192, 34, 0.3);
+}
+
+/* Melhorias de performance */
+.hero-anacli-bg,
+.hero-exam-card,
+.hero-upload-card,
+.hero-search-bar {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* Efeito de loading nos cards */
+.hero-exam-card.loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-exam-card.loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Tema escuro (futuro) */
+@media (prefers-color-scheme: dark) {
+  .hero-exam-card {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
