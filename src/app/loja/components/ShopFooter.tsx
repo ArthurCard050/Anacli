@@ -89,11 +89,11 @@ export default function ShopFooter() {
               className="inline-block mb-4 cursor-pointer"
             >
               <Image
-                src="/assets/logo.svg"
+                src="/assets/Logo-Hor-branca.svg"
                 alt="Anacli - Laboratório de Análises Clínicas"
                 width={120}
                 height={48}
-                className="h-12 w-auto mb-2 brightness-0 invert hover:opacity-80 transition-opacity mx-auto"
+                className="h-12 w-auto mb-2 hover:opacity-80 transition-opacity mx-auto"
               />
               <div className="text-xs text-gray-400 tracking-wide select-none">
                 Loja Online de Exames

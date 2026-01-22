@@ -4,7 +4,7 @@ import { Camera, Zap, Brain, CheckCircle, ArrowUpRight, X } from 'lucide-react';
 import { useState } from 'react';
 
 // Componente Banner - Com texto real e imagem normal
-function Banner({ backgroundImage = "/assets/loja/3.webp" }) {
+function Banner({ backgroundImage = "/assets/loja/ia-banner-leitura.webp" }) {
   const [showModal, setShowModal] = useState(false);
   
   // SVG path para o background rosa customizado
@@ -266,7 +266,7 @@ export default function AIBanner() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-center">
           <Banner 
-            backgroundImage="/assets/loja/3.webp"
+            backgroundImage="/assets/loja/ia-banner-leitura.webp"
           />
         </div>
       </div>

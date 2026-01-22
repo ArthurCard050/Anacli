@@ -209,108 +209,117 @@ export default function HeroCarousel() {
             <div className="grid grid-cols-5 gap-4 max-w-7xl mx-auto">
               
               {/* Card 1 - Pacote Check-up Básico */}
-              <div className="bg-white rounded-xl border-2 border-accent p-5 hover:border-accent/80 transition-all duration-300 hover:-translate-y-1 relative">
+              <div className="bg-white rounded-xl border-2 border-accent p-5 hover:border-accent/80 transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-[280px]">
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2">
                   <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">OFERTA</span>
                 </div>
-                <div className="text-center space-y-3">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
                     <img 
-                      src="/assets/loja/2.webp" 
+                      src="/assets/loja/hero/checkup-basico.webp" 
                       alt="Check-up Básico"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="text-base font-bold text-accent">CHECK-UP BÁSICO</h3>
-                  <div className="space-y-1">
+                  <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 280,00</p>
                     <p className="text-accent font-bold text-lg">R$ 199,00</p>
                   </div>
-                  <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-lg text-xs font-semibold py-2">
+                  <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 2 - Pacote Check-up Completo */}
-              <div className="bg-white rounded-xl border-2 border-primary p-5 hover:border-primary/80 transition-all duration-300 hover:-translate-y-1 relative">
+              <div className="bg-white rounded-xl border-2 border-primary p-5 hover:border-primary/80 transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-[280px]">
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2">
                   <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">COMPLETO</span>
                 </div>
-                <div className="text-center space-y-3">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/checkup-completo.webp" 
                       alt="Check-up Completo"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="text-base font-bold text-primary">CHECK-UP COMPLETO</h3>
-                  <div className="space-y-1">
+                  <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 450,00</p>
                     <p className="text-primary font-bold text-lg">R$ 329,00</p>
                   </div>
-                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold py-2">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 3 - Exames Rápidos */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                <div className="text-center space-y-3">
+              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px]">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/exames-rapidos.webp" 
                       alt="Exames Rápidos"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="text-base font-bold text-primary">EXAMES RÁPIDOS</h3>
-                  <p className="text-gray-600 text-xs">
-                    Resultados em até 24 horas
-                  </p>
-                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold py-2">
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">
+                      Resultados em até 24 horas
+                    </p>
+                  </div>
+                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold h-9 mt-auto">
                     Ver exames
                   </Button>
                 </div>
               </div>
 
-              {/* Card 4 - Laboratório Acreditado */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                <div className="text-center space-y-3">
+              {/* Card 4 - IA Leitura de Exames */}
+              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-[#FF006A]/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px] relative">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
+                  <span className="bg-[#FF006A] text-white text-xs font-bold px-3 py-1 rounded-full">IA</span>
+                </div>
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
                     <img 
-                      src="/assets/loja/2.webp" 
-                      alt="Laboratório Acreditado"
+                      src="/assets/loja/hero/ia.webp" 
+                      alt="IA Leitura de Exames"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="text-base font-bold text-primary">LABORATÓRIO ACREDITADO</h3>
-                  <p className="text-gray-600 text-xs">
-                    Qualidade certificada
-                  </p>
-                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold py-2">
-                    Ver certificações
+                  <h3 className="text-base font-bold text-[#FF006A]">LEITURA DE EXAMES</h3>
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">
+                      Tecnologia avançada para análise precisa
+                    </p>
+                  </div>
+                  <Button className="w-full bg-[#FF006A]/20 hover:bg-[#FF006A]/30 text-[#FF006A] border border-[#FF006A]/30 rounded-lg text-xs font-semibold h-9 mt-auto">
+                    Saiba mais
                   </Button>
                 </div>
               </div>
 
               {/* Card 5 - Coleta Domiciliar */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1">
-                <div className="text-center space-y-3">
+              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px]">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/coleta-domiciliar.webp" 
                       alt="Coleta Domiciliar"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="text-base font-bold text-primary">COLETA DOMICILIAR</h3>
-                  <p className="text-gray-600 text-xs">
-                    Na sua casa ou empresa
-                  </p>
-                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold py-2">
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">
+                      Na sua casa ou empresa
+                    </p>
+                  </div>
+                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold h-9 mt-auto">
                     Agendar coleta
                   </Button>
                 </div>
@@ -343,120 +352,131 @@ export default function HeroCarousel() {
             >
               
               {/* Card 1 - Pacote Check-up Básico */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-accent p-4 snap-start relative">
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-accent p-4 snap-start relative flex flex-col h-[240px]">
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2">
                   <span className="bg-accent text-white text-xs font-bold px-2 py-1 rounded-full">OFERTA</span>
                 </div>
-                <div className="text-center space-y-3">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/2.webp" 
+                      src="/assets/loja/hero/checkup-basico.webp" 
                       alt="Check-up Básico"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-accent text-sm">CHECK-UP BÁSICO</h3>
-                  <div className="space-y-1">
+                  <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 280,00</p>
                     <p className="text-accent font-bold text-base">R$ 199,00</p>
                   </div>
-                  <Button className="w-full bg-accent text-white rounded-lg text-xs py-2 h-auto font-semibold">
+                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 2 - Pacote Check-up Completo */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-primary p-4 snap-start relative">
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-primary p-4 snap-start relative flex flex-col h-[240px]">
                 <div className="absolute -top-2 left-1/2 -translate-x-1/2">
                   <span className="bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">COMPLETO</span>
                 </div>
-                <div className="text-center space-y-3">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/checkup-completo.webp" 
                       alt="Check-up Completo"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-primary text-sm">CHECK-UP COMPLETO</h3>
-                  <div className="space-y-1">
+                  <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 450,00</p>
                     <p className="text-primary font-bold text-base">R$ 329,00</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs py-2 h-auto font-semibold">
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 3 - Exames Rápidos */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start">
-                <div className="text-center space-y-3">
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/exames-rapidos.webp" 
                       alt="Exames Rápidos"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-primary text-sm">EXAMES RÁPIDOS</h3>
-                  <p className="text-gray-600 text-xs">Resultados em até 24 horas</p>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs py-2 h-auto font-semibold">
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">Resultados em até 24 horas</p>
+                  </div>
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Ver exames
                   </Button>
                 </div>
               </div>
 
-              {/* Card 4 - Laboratório Acreditado */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start">
-                <div className="text-center space-y-3">
+              {/* Card 4 - IA Leitura de Exames */}
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px] relative">
+                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
+                  <span className="bg-[#FF006A] text-white text-xs font-bold px-2 py-1 rounded-full">IA</span>
+                </div>
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/2.webp" 
-                      alt="Laboratório Acreditado"
+                      src="/assets/loja/hero/ia.webp" 
+                      alt="IA Leitura de Exames"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-primary text-sm">LABORATÓRIO ACREDITADO</h3>
-                  <p className="text-gray-600 text-xs">Qualidade certificada</p>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs py-2 h-auto font-semibold">
-                    Ver certificações
+                  <h3 className="font-bold text-[#FF006A] text-sm">IA LEITURA DE EXAMES</h3>
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">Tecnologia avançada para análise precisa</p>
+                  </div>
+                  <Button className="w-full bg-[#FF006A] text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                    Saiba mais
                   </Button>
                 </div>
               </div>
 
               {/* Card 5 - Coleta Domiciliar */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start">
-                <div className="text-center space-y-3">
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/1.webp" 
+                      src="/assets/loja/hero/coleta-domiciliar.webp" 
                       alt="Coleta Domiciliar"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-primary text-sm">COLETA DOMICILIAR</h3>
-                  <p className="text-gray-600 text-xs">Na sua casa ou empresa</p>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs py-2 h-auto font-semibold">
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">Na sua casa ou empresa</p>
+                  </div>
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Agendar coleta
                   </Button>
                 </div>
               </div>
 
-              {/* Card 6 - Pacotes Promocionais (Extra para mostrar o scroll) */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start">
-                <div className="text-center space-y-3">
+              {/* Card 6 - Pacotes Promocionais */}
+              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
+                <div className="text-center space-y-3 flex-1 flex flex-col">
                   <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
                     <img 
-                      src="/assets/loja/2.webp" 
+                      src="/assets/loja/hero/checkup-basico.webp" 
                       alt="Pacotes Promocionais"
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <h3 className="font-bold text-primary text-sm">PACOTES PROMOCIONAIS</h3>
-                  <p className="text-gray-600 text-xs">Economia de até 40%</p>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs py-2 h-auto font-semibold">
+                  <div className="flex-1">
+                    <p className="text-gray-600 text-xs">Economia de até 40%</p>
+                  </div>
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Ver pacotes
                   </Button>
                 </div>

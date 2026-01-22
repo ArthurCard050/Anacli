@@ -61,11 +61,11 @@ export default function ShopHeader() {
             <div className="flex-shrink-0">
               <a href="/loja" className="flex items-center transition-transform hover:scale-105">
                 <Image
-                  src="/assets/logo.svg"
+                  src="/assets/Logo-Hor-branca.svg"
                   alt="Anacli"
                   width={120}
                   height={40}
-                  className="h-8 md:h-10 w-auto brightness-0 invert"
+                  className="h-8 md:h-10 w-auto"
                   priority
                 />
               </a>
