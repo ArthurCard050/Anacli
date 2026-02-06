@@ -8,6 +8,7 @@ import WhatsAppFAB from './components/WhatsAppFAB';
 import ShopFooter from './components/ShopFooter';
 import { CartProvider } from './context/CartContext';
 import './styles/hero-carousel.css';
+import './styles/mega-menu.css';
 
 export default function LojaAnacli() {
   return (

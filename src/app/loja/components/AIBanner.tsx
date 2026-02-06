@@ -105,50 +105,50 @@ function Banner({ backgroundImage = "/assets/loja/3.webp" }) {
 
       {/* Layout Mobile */}
       <div className="lg:hidden w-full">
-        <div className="bg-[#FF006A] rounded-3xl p-6 mb-6 relative overflow-hidden">
+        <div className="bg-[#FF006A] rounded-2xl p-4 mb-4 relative overflow-hidden">
           {/* Conteúdo Mobile */}
           <div className="relative z-10">
-            <h2 className="text-2xl font-bold text-white mb-3">
+            <h2 className="text-xl font-bold text-white mb-2">
               Envie a foto da sua receita
             </h2>
             
-            <p className="text-base text-white/90 mb-6">
+            <p className="text-sm text-white/90 mb-4">
               Nossa IA lê automaticamente e agenda seus exames em segundos
             </p>
 
             {/* Botão Principal Mobile */}
-            <button className="group relative bg-white text-[#FF006A] font-semibold rounded-2xl h-12 px-6 flex items-center gap-3 transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden w-full justify-center mb-6">
+            <button className="group relative bg-white text-[#FF006A] font-semibold rounded-xl h-10 px-4 flex items-center gap-2 transition-all duration-300 shadow-lg hover:shadow-xl overflow-hidden w-full justify-center mb-4">
               {/* Gradient overlay no hover */}
-              <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-white to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl"></div>
               
               {/* Shimmer effect */}
               <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"></div>
               
               {/* Conteúdo do botão */}
-              <div className="relative flex items-center gap-3 z-10">
-                <div className="p-1.5 bg-[#FF006A]/10 rounded-full group-hover:bg-[#FF006A]/20 transition-colors duration-300">
-                  <Camera className="h-4 w-4 group-hover:scale-110 transition-transform duration-300" />
+              <div className="relative flex items-center gap-2 z-10">
+                <div className="p-1 bg-[#FF006A]/10 rounded-full group-hover:bg-[#FF006A]/20 transition-colors duration-300">
+                  <Camera className="h-3 w-3 group-hover:scale-110 transition-transform duration-300" />
                 </div>
-                <span className="group-hover:translate-x-1 transition-transform duration-300">
+                <span className="text-sm group-hover:translate-x-1 transition-transform duration-300">
                   Experimentar agora
                 </span>
               </div>
             </button>
 
             {/* Benefícios Mobile */}
-            <div className="grid grid-cols-3 gap-3 text-center mb-4">
+            <div className="grid grid-cols-3 gap-2 text-center mb-3">
               <div className="flex flex-col items-center gap-1 text-white">
-                <Brain className="h-5 w-5 opacity-80" />
+                <Brain className="h-4 w-4 opacity-80" />
                 <span className="text-xs font-medium">Leitura Inteligente</span>
               </div>
               
               <div className="flex flex-col items-center gap-1 text-white">
-                <Zap className="h-5 w-5 opacity-80" />
+                <Zap className="h-4 w-4 opacity-80" />
                 <span className="text-xs font-medium">Super Rápido</span>
               </div>
               
               <div className="flex flex-col items-center gap-1 text-white">
-                <CheckCircle className="h-5 w-5 opacity-80" />
+                <CheckCircle className="h-4 w-4 opacity-80" />
                 <span className="text-xs font-medium">Fácil de Usar</span>
               </div>
             </div>
@@ -156,7 +156,7 @@ function Banner({ backgroundImage = "/assets/loja/3.webp" }) {
             {/* Botão "Como funciona" mobile */}
             <button 
               onClick={() => setShowModal(true)}
-              className="w-full text-center text-white/80 text-sm underline hover:text-white transition-colors duration-200"
+              className="w-full text-center text-white/80 text-xs underline hover:text-white transition-colors duration-200"
             >
               Como funciona?
             </button>
@@ -164,7 +164,7 @@ function Banner({ backgroundImage = "/assets/loja/3.webp" }) {
         </div>
 
         {/* Imagem Mobile */}
-        <div className="w-full h-48 bg-gray-300 rounded-2xl overflow-hidden">
+        <div className="w-full h-36 bg-gray-300 rounded-xl overflow-hidden">
           <img
             alt="Tecnologia IA Anacli"
             className="w-full h-full object-cover"

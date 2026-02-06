@@ -58,7 +58,7 @@ export default function HeroCarousel() {
 
     const handleScroll = () => {
       const scrollLeft = carousel.scrollLeft;
-      const cardWidth = 192 + 16; // w-48 + gap-4
+      const cardWidth = 160 + 12; // w-40 + gap-3
       const newIndex = Math.round(scrollLeft / cardWidth);
       setCurrentCardIndex(newIndex);
     };
@@ -90,7 +90,7 @@ export default function HeroCarousel() {
     const carousel = carouselRef.current;
     if (!carousel) return;
     
-    const cardWidth = 192 + 16; // w-48 + gap-4
+    const cardWidth = 160 + 12; // w-40 + gap-3
     carousel.scrollTo({
       left: index * cardWidth,
       behavior: 'smooth'
@@ -103,7 +103,7 @@ export default function HeroCarousel() {
       
       {/* Hero Banner Carousel - Estilo Mercado Livre */}
       <section 
-        className="relative w-full h-48 sm:h-56 lg:h-[700px] overflow-hidden bg-gray-50 mt-[88px] md:mt-20"
+        className="relative w-full overflow-hidden bg-gray-50 mt-[120px] md:mt-20"
         onMouseEnter={() => {
           setIsAutoPlaying(false);
           setShowArrows(true);
@@ -113,94 +113,136 @@ export default function HeroCarousel() {
           setShowArrows(false);
         }}
       >
-        {/* Slides Container */}
-        <div className="relative w-full h-full">
-          {slides.map((slide, index) => (
-            <div
-              key={slide.id}
-              className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
-                index === currentSlide ? 'opacity-100' : 'opacity-0'
-              }`}
-            >
-              {/* Imagem do banner - SEM gradient overlay no mobile, COM gradient no desktop */}
-              <div 
-                className="w-full h-full bg-gray-200 relative"
-                style={{
-                  backgroundImage: `url(${slide.image})`,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  backgroundRepeat: 'no-repeat'
-                }}
+        {/* Container do Hero - Mobile com frame, Desktop normal */}
+        <div className="lg:h-[700px] h-auto">
+          {/* Mobile Frame Container */}
+          <div className="lg:hidden px-4 pt-4 pb-0">
+            <div className="relative w-full h-48 rounded-2xl overflow-hidden shadow-lg">
+              {/* Slides Container Mobile */}
+              {slides.map((slide, index) => (
+                <div
+                  key={slide.id}
+                  className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+                    index === currentSlide ? 'opacity-100' : 'opacity-0'
+                  }`}
+                >
+                  <div 
+                    className="w-full h-full bg-gray-200 relative"
+                    style={{
+                      backgroundImage: `url(${slide.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat'
+                    }}
+                  />
+                </div>
+              ))}
+              
+              {/* Mobile Arrows - Dentro do frame */}
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevSlide}
+                className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+                aria-label="Banner anterior"
               >
-                {/* Gradient overlay apenas no desktop */}
-                <div className="hidden lg:block absolute inset-0 bg-gradient-to-b from-transparent from-40% via-gray-50/10 via-60% via-gray-50/30 via-75% to-gray-50 pointer-events-none z-10"></div>
+                <ChevronLeft className="h-4 w-4 text-gray-700" />
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={nextSlide}
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
+                aria-label="Próximo banner"
+              >
+                <ChevronRight className="h-4 w-4 text-gray-700" />
+              </Button>
+
+              {/* Slide Indicators Mobile */}
+              <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1 z-50">
+                {slides.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => goToSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentSlide
+                        ? 'bg-white scale-125 shadow-lg'
+                        : 'bg-white/60 hover:bg-white/80'
+                    }`}
+                    aria-label={`Ir para banner ${index + 1}`}
+                  />
+                ))}
               </div>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Navigation Arrows - Estilo Mercado Livre */}
-        <div className={`hidden lg:block transition-opacity duration-300 ${showArrows ? 'opacity-100' : 'opacity-0'}`}>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevSlide}
-            className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-md transition-all duration-200 hover:scale-105 z-40 border border-gray-200"
-            aria-label="Banner anterior"
-            style={{ top: '35%' }} // Posiciona na área da imagem, não dos cards
-          >
-            <ChevronLeft className="h-6 w-6 text-gray-700" />
-          </Button>
+          {/* Desktop Hero - Mantém o comportamento original */}
+          <div className="hidden lg:block relative w-full h-full">
+            {slides.map((slide, index) => (
+              <div
+                key={slide.id}
+                className={`absolute inset-0 transition-opacity duration-500 ease-in-out ${
+                  index === currentSlide ? 'opacity-100' : 'opacity-0'
+                }`}
+              >
+                {/* Imagem do banner - COM gradient no desktop */}
+                <div 
+                  className="w-full h-full bg-gray-200 relative"
+                  style={{
+                    backgroundImage: `url(${slide.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                >
+                  {/* Gradient overlay apenas no desktop */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent from-40% via-gray-50/10 via-60% via-gray-50/30 via-75% to-gray-50 pointer-events-none z-10"></div>
+                </div>
+              </div>
+            ))}
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextSlide}
-            className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-md transition-all duration-200 hover:scale-105 z-40 border border-gray-200"
-            aria-label="Próximo banner"
-            style={{ top: '35%' }} // Posiciona na área da imagem, não dos cards
-          >
-            <ChevronRight className="h-6 w-6 text-gray-700" />
-          </Button>
-        </div>
+            {/* Navigation Arrows - Desktop */}
+            <div className={`transition-opacity duration-300 ${showArrows ? 'opacity-100' : 'opacity-0'}`}>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={prevSlide}
+                className="absolute left-4 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-md transition-all duration-200 hover:scale-105 z-40 border border-gray-200"
+                aria-label="Banner anterior"
+                style={{ top: '35%' }}
+              >
+                <ChevronLeft className="h-6 w-6 text-gray-700" />
+              </Button>
 
-        {/* Mobile Arrows - Sempre visíveis no mobile */}
-        <div className="lg:hidden">
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={prevSlide}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
-            aria-label="Banner anterior"
-          >
-            <ChevronLeft className="h-4 w-4 text-gray-700" />
-          </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={nextSlide}
+                className="absolute right-4 w-12 h-12 bg-white hover:bg-gray-50 rounded-full shadow-md transition-all duration-200 hover:scale-105 z-40 border border-gray-200"
+                aria-label="Próximo banner"
+                style={{ top: '35%' }}
+              >
+                <ChevronRight className="h-6 w-6 text-gray-700" />
+              </Button>
+            </div>
 
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextSlide}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/90 hover:bg-white backdrop-blur-sm rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-50"
-            aria-label="Próximo banner"
-          >
-            <ChevronRight className="h-4 w-4 text-gray-700" />
-          </Button>
-        </div>
-
-        {/* Slide Indicators */}
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-50">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                index === currentSlide
-                  ? 'bg-white scale-125 shadow-lg'
-                  : 'bg-white/60 hover:bg-white/80'
-              }`}
-              aria-label={`Ir para banner ${index + 1}`}
-            />
-          ))}
+            {/* Slide Indicators Desktop */}
+            <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-50">
+              {slides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? 'bg-white scale-125 shadow-lg'
+                      : 'bg-white/60 hover:bg-white/80'
+                  }`}
+                  aria-label={`Ir para banner ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Cards Desktop - Posicionados SOBRE o Hero (como estava antes) */}
@@ -330,153 +372,143 @@ export default function HeroCarousel() {
       </section>
 
       {/* Cards Section Mobile - Carrossel Horizontal (Estilo Mercado Livre) */}
-      <section className="bg-white py-6 lg:hidden">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white py-4 lg:hidden">
+        <div className="w-full pl-4">
           
-          {/* Banner de Benefício - Estilo Mercado Livre */}
-          <div className="bg-gray-50 rounded-xl p-4 mb-6 text-center">
-            <div className="flex items-center justify-center gap-2 text-primary">
-              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">✓</span>
-              </div>
-              <span className="font-semibold text-sm">Exames rápidos por ser sua primeira compra</span>
-            </div>
-          </div>
-
           {/* Cards Carousel Mobile - Horizontal Scroll */}
           <div className="relative">
             <div 
               ref={carouselRef}
-              className="flex gap-4 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory" 
+              className="flex gap-3 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory" 
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               
               {/* Card 1 - Pacote Check-up Básico */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-accent p-4 snap-start relative flex flex-col h-[240px]">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-accent text-white text-xs font-bold px-2 py-1 rounded-full">OFERTA</span>
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start relative flex flex-col h-[200px] shadow-sm">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
+                  <span className="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">OFERTA</span>
                 </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/checkup-basico.webp" 
                       alt="Check-up Básico"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-accent text-sm">CHECK-UP BÁSICO</h3>
+                  <h3 className="font-bold text-accent text-xs">CHECK-UP BÁSICO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 280,00</p>
-                    <p className="text-accent font-bold text-base">R$ 199,00</p>
+                    <p className="text-accent font-bold text-sm">R$ 199,00</p>
                   </div>
-                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 2 - Pacote Check-up Completo */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border-2 border-primary p-4 snap-start relative flex flex-col h-[240px]">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-bold px-2 py-1 rounded-full">COMPLETO</span>
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start relative flex flex-col h-[200px] shadow-sm">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
+                  <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">COMPLETO</span>
                 </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/checkup-completo.webp" 
                       alt="Check-up Completo"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-primary text-sm">CHECK-UP COMPLETO</h3>
+                  <h3 className="font-bold text-primary text-xs">CHECK-UP COMPLETO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 450,00</p>
-                    <p className="text-primary font-bold text-base">R$ 329,00</p>
+                    <p className="text-primary font-bold text-sm">R$ 329,00</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 3 - Exames Rápidos */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/exames-rapidos.webp" 
                       alt="Exames Rápidos"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-primary text-sm">EXAMES RÁPIDOS</h3>
+                  <h3 className="font-bold text-primary text-xs">EXAMES RÁPIDOS</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">Resultados em até 24 horas</p>
+                    <p className="text-gray-600 text-xs">Resultados em 24h</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Ver exames
                   </Button>
                 </div>
               </div>
 
               {/* Card 4 - IA Leitura de Exames */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px] relative">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-[#FF006A] text-white text-xs font-bold px-2 py-1 rounded-full">IA</span>
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm relative">
+                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
+                  <span className="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">IA</span>
                 </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/ia.webp" 
                       alt="IA Leitura de Exames"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-[#FF006A] text-sm">IA LEITURA DE EXAMES</h3>
+                  <h3 className="font-bold text-accent text-xs">IA LEITURA</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">Tecnologia avançada para análise precisa</p>
+                    <p className="text-gray-600 text-xs">Análise precisa</p>
                   </div>
-                  <Button className="w-full bg-[#FF006A] text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Saiba mais
                   </Button>
                 </div>
               </div>
 
               {/* Card 5 - Coleta Domiciliar */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/coleta-domiciliar.webp" 
                       alt="Coleta Domiciliar"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-primary text-sm">COLETA DOMICILIAR</h3>
+                  <h3 className="font-bold text-primary text-xs">COLETA DOMICILIAR</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">Na sua casa ou empresa</p>
+                    <p className="text-gray-600 text-xs">Em casa ou empresa</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Agendar coleta
                   </Button>
                 </div>
               </div>
 
               {/* Card 6 - Pacotes Promocionais */}
-              <div className="flex-shrink-0 w-48 bg-white rounded-xl border border-gray-200 p-4 snap-start flex flex-col h-[240px]">
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-16 h-16 mx-auto rounded-lg overflow-hidden">
+              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm mr-4">
+                <div className="text-center space-y-2 flex-1 flex flex-col">
+                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
                     <img 
                       src="/assets/loja/hero/checkup-basico.webp" 
                       alt="Pacotes Promocionais"
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <h3 className="font-bold text-primary text-sm">PACOTES PROMOCIONAIS</h3>
+                  <h3 className="font-bold text-primary text-xs">PACOTES</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">Economia de até 40%</p>
+                    <p className="text-gray-600 text-xs">Economia até 40%</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Ver pacotes
                   </Button>
                 </div>
@@ -484,12 +516,12 @@ export default function HeroCarousel() {
             </div>
 
             {/* Interactive Scroll Indicators */}
-            <div className="flex justify-center mt-4 gap-2">
+            <div className="flex justify-center mt-3 gap-1">
               {[0, 1, 2, 3, 4, 5].map((index) => (
                 <button
                   key={index}
                   onClick={() => scrollToCard(index)}
-                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                     index === currentCardIndex
                       ? 'bg-primary scale-125'
                       : 'bg-gray-300 hover:bg-gray-400'

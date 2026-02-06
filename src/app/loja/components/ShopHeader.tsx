@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X } from 'lucide-react';
+import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
@@ -12,6 +12,7 @@ export default function ShopHeader() {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   const { itemCount, openCart } = useCart();
 
@@ -28,13 +29,110 @@ export default function ShopHeader() {
   }, []);
 
   const examCategories = [
-    { name: 'Check-ups Completos', icon: Stethoscope, color: 'text-primary', items: ['Check-up Básico', 'Check-up Premium', 'Check-up Executivo'] },
-    { name: 'Exames de Sangue', icon: Droplet, color: 'text-red-500', items: ['Hemograma', 'Glicemia', 'Colesterol', 'Vitaminas'] },
-    { name: 'Exames de Imagem', icon: Activity, color: 'text-blue-500', items: ['Ultrassom', 'Raio-X', 'Tomografia', 'Ressonância'] },
-    { name: 'Cardiologia', icon: Heart, color: 'text-pink-500', items: ['ECG', 'Holter', 'Teste Ergométrico'] },
-    { name: 'Neurologia', icon: Brain, color: 'text-purple-500', items: ['EEG', 'Doppler Cerebral'] },
-    { name: 'Oftalmologia', icon: Eye, color: 'text-cyan-500', items: ['Acuidade Visual', 'Tonometria', 'Fundo de Olho'] },
+    { 
+      name: 'Check-ups Completos', 
+      icon: Shield, 
+      color: 'text-emerald-600', 
+      bgColor: 'bg-emerald-50',
+      items: [
+        { name: 'Check-up Básico', icon: Stethoscope },
+        { name: 'Check-up Premium', icon: Target },
+        { name: 'Check-up Executivo', icon: Zap }
+      ]
+    },
+    { 
+      name: 'Exames de Sangue', 
+      icon: Droplet, 
+      color: 'text-red-600', 
+      bgColor: 'bg-red-50',
+      items: [
+        { name: 'Hemograma', icon: TestTube },
+        { name: 'Glicemia', icon: TestTube },
+        { name: 'Colesterol', icon: TestTube },
+        { name: 'Vitaminas', icon: TestTube }
+      ]
+    },
+    { 
+      name: 'Exames de Imagem', 
+      icon: Activity, 
+      color: 'text-blue-600', 
+      bgColor: 'bg-blue-50',
+      items: [
+        { name: 'Ultrassom', icon: Activity },
+        { name: 'Raio-X', icon: Activity },
+        { name: 'Tomografia', icon: Activity },
+        { name: 'Ressonância', icon: Activity }
+      ]
+    },
+    { 
+      name: 'Cardiologia', 
+      icon: Heart, 
+      color: 'text-pink-600', 
+      bgColor: 'bg-pink-50',
+      items: [
+        { name: 'ECG', icon: Heart },
+        { name: 'Holter', icon: Heart },
+        { name: 'Teste Ergométrico', icon: Heart }
+      ]
+    },
+    { 
+      name: 'Neurologia', 
+      icon: Brain, 
+      color: 'text-purple-600', 
+      bgColor: 'bg-purple-50',
+      items: [
+        { name: 'EEG', icon: Brain },
+        { name: 'Doppler Cerebral', icon: Brain }
+      ]
+    },
+    { 
+      name: 'Oftalmologia', 
+      icon: Eye, 
+      color: 'text-cyan-600', 
+      bgColor: 'bg-cyan-50',
+      items: [
+        { name: 'Acuidade Visual', icon: Eye },
+        { name: 'Tonometria', icon: Eye },
+        { name: 'Fundo de Olho', icon: Eye }
+      ]
+    },
   ];
+
+  // Funções para controlar o menu com clique
+  const toggleMenu = () => {
+    setShowMegaMenu(!showMegaMenu);
+  };
+
+  const closeMenu = () => {
+    setShowMegaMenu(false);
+  };
+
+  // Fechar menu ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      if (!target.closest('.mega-menu-container')) {
+        setShowMegaMenu(false);
+      }
+    };
+
+    if (showMegaMenu) {
+      document.addEventListener('click', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, [showMegaMenu]);
+
+  // Cleanup do timeout
+  useEffect(() => {
+    return () => {
+      if (menuTimeoutRef.current) {
+        clearTimeout(menuTimeoutRef.current);
+      }
+    };
+  }, []);
 
   return (
     <header 
@@ -75,44 +173,71 @@ export default function ShopHeader() {
           {/* Navigation - Desktop */}
           <nav className="hidden lg:flex items-center gap-8">
             <div 
-              className="relative"
-              onMouseEnter={() => setShowMegaMenu(true)}
-              onMouseLeave={() => setShowMegaMenu(false)}
+              className="mega-menu-container relative"
             >
-              <button className="flex items-center gap-1 text-white hover:text-white/80 transition-colors font-medium">
+              <button 
+                onClick={toggleMenu}
+                className="flex items-center gap-1 text-white hover:text-white/80 transition-colors font-medium py-4"
+              >
                 Exames
-                <ChevronDown className="h-4 w-4" />
+                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showMegaMenu ? 'rotate-180' : ''}`} />
               </button>
 
               {/* Mega Menu */}
               {showMegaMenu && (
-                <div className="absolute top-full left-0 mt-2 w-[800px] bg-white rounded-2xl shadow-2xl border border-gray-100 p-8 animate-in fade-in slide-in-from-top-2 duration-200">
-                  <div className="grid grid-cols-3 gap-6">
-                    {examCategories.map((category) => (
-                      <div key={category.name} className="space-y-3">
-                        <div className="flex items-center gap-2 mb-3">
-                          <category.icon className={`h-5 w-5 ${category.color}`} />
-                          <h3 className="font-semibold text-gray-900">{category.name}</h3>
-                        </div>
-                        <ul className="space-y-2">
-                          {category.items.map((item) => (
-                            <li key={item}>
-                              <a 
-                                href="#" 
-                                className="text-sm text-gray-600 hover:text-primary transition-colors block py-1"
-                              >
-                                {item}
-                              </a>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
+                <div 
+                  className="mega-menu-dropdown w-[900px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden mega-menu-enter"
+                >
+                  {/* Header do Menu */}
+                  <div className="bg-gray-50 p-6 border-b border-gray-200">
+                    <h2 className="text-xl font-bold mb-2 text-gray-900">Nossos Exames</h2>
+                    <p className="text-gray-600 text-sm">Escolha entre mais de 200 tipos de exames disponíveis</p>
                   </div>
-                  <div className="mt-6 pt-6 border-t border-gray-100">
-                    <a href="#" className="text-sm font-medium text-primary hover:text-primary/80 transition-colors">
-                      Ver todos os exames →
-                    </a>
+
+                  {/* Conteúdo do Menu */}
+                  <div className="p-8 bg-white">
+                    <div className="grid grid-cols-3 gap-8">
+                      {examCategories.map((category, index) => (
+                        <div key={category.name} className={`group stagger-animation`}>
+                          <div className={`menu-category-header flex items-center gap-3 mb-4 p-3 rounded-xl ${category.bgColor} group-hover:shadow-md transition-all duration-200`}>
+                            <div className={`p-2 rounded-lg bg-white shadow-sm`}>
+                              <category.icon className={`h-5 w-5 ${category.color}`} />
+                            </div>
+                            <h3 className="font-semibold text-gray-900 text-sm">{category.name}</h3>
+                          </div>
+                          <ul className="space-y-2 pl-2">
+                            {category.items.map((item) => (
+                              <li key={item.name}>
+                                <a 
+                                  href="#" 
+                                  onClick={closeMenu}
+                                  className="menu-category-item menu-clickable-area text-sm text-gray-600 hover:text-primary transition-colors block py-1.5 px-2 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                                >
+                                  <item.icon className="h-3 w-3 text-gray-400" />
+                                  {item.name}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    {/* Footer do Menu */}
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                        <Microscope className="h-4 w-4" />
+                        <span>Mais de 200 exames disponíveis</span>
+                      </div>
+                      <a 
+                        href="#" 
+                        onClick={closeMenu}
+                        className="menu-clickable-area inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10"
+                      >
+                        Ver todos os exames
+                        <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
+                      </a>
+                    </div>
                   </div>
                 </div>
               )}
@@ -192,117 +317,128 @@ export default function ShopHeader() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-accent border-t border-white/20 shadow-lg">
-          <div className="container mx-auto px-4 py-4">
-            <nav className="space-y-4">
-              {/* Exames Section */}
-              <div className="space-y-3">
-                <h3 className="font-semibold text-white text-lg">Exames</h3>
-                <div className="grid grid-cols-1 gap-3 pl-4">
-                  {examCategories.map((category) => (
-                    <div key={category.name} className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <category.icon className={`h-4 w-4 text-white`} />
-                        <span className="font-medium text-white text-sm">{category.name}</span>
-                      </div>
-                      <div className="pl-6 space-y-1">
-                        {category.items.map((item) => (
-                          <a 
-                            key={item}
-                            href="#" 
-                            className="block text-sm text-white/80 hover:text-white transition-colors py-1"
-                            onClick={() => setIsMobileMenuOpen(false)}
-                          >
-                            {item}
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
+        <div className="lg:hidden bg-white border-t border-gray-200 shadow-xl">
+          <div className="container mx-auto px-4 py-6 max-h-[80vh] overflow-y-auto">
+            {/* Header do Menu - Igual ao Desktop */}
+            <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
+              <h2 className="text-lg font-bold mb-1 text-gray-900">Nossos Exames</h2>
+              <p className="text-gray-600 text-sm">Escolha entre mais de 200 tipos de exames disponíveis</p>
+            </div>
 
-              {/* Other Navigation Items */}
-              <div className="space-y-3 pt-4 border-t border-white/20">
+            {/* Conteúdo do Menu - Layout similar ao Desktop */}
+            <div className="bg-white">
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                {examCategories.map((category, index) => (
+                  <div key={category.name} className="group">
+                    <div className={`flex items-center gap-2 mb-3 p-3 rounded-xl ${category.bgColor} group-hover:shadow-md transition-all duration-200`}>
+                      <div className="p-1.5 rounded-lg bg-white shadow-sm">
+                        <category.icon className={`h-4 w-4 ${category.color}`} />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-xs">{category.name}</h3>
+                    </div>
+                    <ul className="space-y-1 pl-1">
+                      {category.items.map((item) => (
+                        <li key={item.name}>
+                          <a 
+                            href="#" 
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="text-xs text-gray-600 hover:text-primary transition-colors block py-1.5 px-2 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                          >
+                            <item.icon className="h-3 w-3 text-gray-400" />
+                            {item.name}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+              
+              {/* Footer do Menu - Igual ao Desktop */}
+              <div className="pt-4 border-t border-gray-100 flex flex-col gap-3">
+                <div className="flex items-center gap-2 text-sm text-gray-600 justify-center">
+                  <Microscope className="h-4 w-4" />
+                  <span>Mais de 200 exames disponíveis</span>
+                </div>
                 <a 
                   href="#" 
-                  className="block text-white hover:text-white/80 transition-colors font-medium py-2"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="inline-flex items-center justify-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-3 rounded-lg hover:bg-primary/10"
+                >
+                  Ver todos os exames
+                  <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
+                </a>
+              </div>
+            </div>
+
+            {/* Navegação Adicional */}
+            <div className="mt-6 pt-4 border-t border-gray-100 space-y-4">
+              <div className="flex gap-4">
+                <a 
+                  href="#" 
+                  className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Pacotes
                 </a>
                 <a 
                   href="#" 
-                  className="block text-white hover:text-white/80 transition-colors font-medium py-2"
+                  className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Como Funciona
                 </a>
-                <a 
-                  href="#" 
-                  className="block text-white hover:text-white/80 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Ver todos os exames →
-                </a>
               </div>
 
-              {/* Site Navigation */}
-              <div className="space-y-3 pt-4 border-t border-white/20">
-                <h4 className="font-semibold text-white">Navegação do Site</h4>
-                <div className="space-y-2 pl-4">
+              {/* Links do Site */}
+              <div className="pt-3 border-t border-gray-100">
+                <h4 className="font-semibold text-gray-900 mb-3 text-sm">Site Anacli</h4>
+                <div className="grid grid-cols-2 gap-2">
                   <a 
                     href="/" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Página Inicial
                   </a>
                   <a 
                     href="/sobre" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Sobre Nós
                   </a>
                   <a 
                     href="/servicos" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Serviços
                   </a>
                   <a 
                     href="/convenios" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Convênios
                   </a>
                   <a 
                     href="/certificacoes" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Certificações
                   </a>
                   <a 
                     href="/contato" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
+                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Contato
                   </a>
-                  <a 
-                    href="/faq" 
-                    className="block text-white/80 hover:text-white transition-colors py-1"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    FAQ
-                  </a>
                 </div>
               </div>
-            </nav>
+            </div>
           </div>
         </div>
       )}

@@ -1,0 +1,214 @@
+/* Estilos específicos para a página de exames */
+
+/* Animações para entrada dos elementos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+/* Animação para os cards de categoria */
+.category-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.category-card:nth-child(1) { animation-delay: 0.1s; }
+.category-card:nth-child(2) { animation-delay: 0.2s; }
+.category-card:nth-child(3) { animation-delay: 0.3s; }
+.category-card:nth-child(4) { animation-delay: 0.4s; }
+.category-card:nth-child(5) { animation-delay: 0.5s; }
+.category-card:nth-child(6) { animation-delay: 0.6s; }
+.category-card:nth-child(7) { animation-delay: 0.7s; }
+.category-card:nth-child(8) { animation-delay: 0.8s; }
+
+/* Animação para os cards de exames */
+.exam-card {
+  animation: fadeInUp 0.6s ease-out;
+  transition: all 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-8px);
+}
+
+/* Efeito de shimmer para loading */
+.shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Estilos para badges */
+.badge-popular {
+  background: linear-gradient(135deg, #ff006a, #ff4081);
+  box-shadow: 0 2px 8px rgba(255, 0, 106, 0.3);
+}
+
+.badge-fast {
+  background: linear-gradient(135deg, #00b894, #00cec9);
+  box-shadow: 0 2px 8px rgba(0, 184, 148, 0.3);
+}
+
+/* Efeitos hover para botões */
+.btn-primary-hover {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary-hover::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary-hover:hover::before {
+  left: 100%;
+}
+
+/* Estilos para o filtro sticky */
+.filters-sticky {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Animação para FAQ */
+.faq-item {
+  transition: all 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateX(4px);
+}
+
+/* Gradiente para o hero */
+.hero-gradient {
+  background: linear-gradient(135deg, #00b894 0%, #00a085 50%, #008f75 100%);
+}
+
+/* Efeito parallax sutil */
+.parallax-bg {
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+/* Estilos para mobile */
+@media (max-width: 768px) {
+  .category-card {
+    animation-delay: 0s !important;
+  }
+  
+  .exam-card:hover {
+    transform: none;
+  }
+  
+  .parallax-bg {
+    background-attachment: scroll;
+  }
+}
+
+/* Estilos para scrollbar customizada */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #00b894;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #00a085;
+}
+
+/* Efeito de loading para imagens */
+.image-loading {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Transições suaves para todos os elementos interativos */
+* {
+  transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Estilos para focus accessibility */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible {
+  outline: 2px solid #00b894;
+  outline-offset: 2px;
+}
+
+/* Animação para contadores */
+.counter-animation {
+  animation: pulse 2s infinite;
+}
+
+/* Efeito de hover para cards de categoria */
+.category-hover-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.category-hover-effect::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.category-hover-effect:hover::before {
+  transform: translateX(100%);
+}
