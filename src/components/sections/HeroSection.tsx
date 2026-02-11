@@ -204,7 +204,7 @@ const HeroSection = () => {
                       icon={<ArrowRight className="w-4 h-4" />}
                       iconPosition="right"
                       className="bg-white text-accent hover:bg-primary hover:text-white focus:ring-accent"
-                      onClick={() => window.open("http://anacli.ddns.com.br:8090/web_laudos/m/login.asp")}
+                      onClick={() => window.open("http://anacli.ddns.com.br:8090/web_laudos/login.asp")}
                     >
                       Acessar
                     </HierarchicalButton>

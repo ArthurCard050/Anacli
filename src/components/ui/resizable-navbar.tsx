@@ -161,7 +161,7 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
               <HierarchicalButton
                 hierarchy="secondary"
                 size="sm"
-                onClick={() => window.open("http://anacli.ddns.com.br:8090/web_laudos/m/login.asp")}
+                onClick={() => window.open("http://anacli.ddns.com.br:8090/web_laudos/login.asp")}
               >
                 Resultados de Exames
               </HierarchicalButton>
@@ -230,7 +230,7 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
                     className="bg-accent hover:bg-accent/90 text-white focus:ring-accent"
                     onClick={() => {
                       setIsMobileMenuOpen(false);
-                      window.open("http://anacli.ddns.com.br:8090/web_laudos/m/login.asp");
+                      window.open("http://anacli.ddns.com.br:8090/web_laudos/login.asp");
                     }}
                   >
                     Resultados de Exames
