@@ -5,35 +5,24 @@ import { Card, CardContent } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
 import OptimizedImage from "@/components/ui/OptimizedImage";
+import Link from "next/link";
 
-const news = [
-  {
-    title: "Anacli amplia portfólio de exames genéticos",
-    date: "15 de Janeiro, 2025",
-    summary: "Novos testes moleculares disponíveis para diagnóstico de doenças hereditárias com tecnologia de ponta.",
-    image: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=600&h=400&fit=crop&crop=center",
-    category: "Inovação",
-    readTime: "3 min"
-  },
-  {
-    title: "Novo horário de atendimento aos sábados",
-    date: "10 de Janeiro, 2025",
-    summary: "Estendemos nosso horário para oferecer mais conveniência aos pacientes que precisam de flexibilidade.",
-    image: "https://images.unsplash.com/photo-1600373240065-4572ee4a9a8e?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=687",
-    category: "Atendimento",
-    readTime: "2 min"
-  },
-  {
-    title: "Certificação PALC renovada",
-    date: "05 de Janeiro, 2025",
-    summary: "Anacli renova certificação de excelência em análises clínicas, reafirmando nosso compromisso com a qualidade.",
-    image: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&h=400&fit=crop&crop=center",
-    category: "Qualidade",
-    readTime: "4 min"
-  },
-];
+interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+  readTime: string;
+  image: string;
+}
 
-const NewsSection = () => {
+interface NewsSectionProps {
+  posts: BlogPost[];
+}
+
+const NewsSection = ({ posts }: NewsSectionProps) => {
   return (
     <section className="relative py-16 md:py-20 bg-gray-50 overflow-hidden">
       {/* Background Pattern */}
@@ -88,9 +77,9 @@ const NewsSection = () => {
 
         {/* News Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-          {news.map((item, index) => (
+          {posts.map((item, index) => (
             <motion.div
-              key={index}
+              key={item.id}
               className="group h-full"
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -98,69 +87,73 @@ const NewsSection = () => {
               viewport={{ once: true }}
               whileHover={{ y: -8 }}
             >
-              <Card className="h-full flex flex-col overflow-hidden border border-gray-200 hover:border-accent transition-all duration-300 bg-white">
-                <CardContent className="p-0 flex flex-col h-full">
-                  {/* Image */}
-                  <div className="relative aspect-[16/10] overflow-hidden">
-                    <OptimizedImage
-                      src={item.image}
-                      alt={item.title}
-                      width={640}
-                      height={400}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
+              <Link href={`/blog/${item.slug}`}>
+                <Card className="h-full flex flex-col overflow-hidden border border-gray-200 hover:border-accent transition-all duration-300 bg-white cursor-pointer">
+                  <CardContent className="p-0 flex flex-col h-full">
+                    {/* Image */}
+                    <div className="relative aspect-[16/10] overflow-hidden">
+                      <OptimizedImage
+                        src={item.image}
+                        alt={item.title}
+                        width={640}
+                        height={400}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
 
-                    {/* Overlay Gradient */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      {/* Overlay Gradient */}
+                      <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
-                    {/* Category Badge */}
-                    <div className="absolute top-4 left-4">
-                      <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20">
-                        {item.category}
-                      </span>
+                      {/* Category Badge */}
+                      <div className="absolute top-4 left-4">
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/90 backdrop-blur-sm text-gray-800 border border-white/20">
+                          {item.category}
+                        </span>
+                      </div>
+
+                      {/* Read Time */}
+                      <div className="absolute top-4 right-4">
+                        <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-black/20 backdrop-blur-sm text-white">
+                          <Clock className="h-3 w-3" />
+                          {item.readTime}
+                        </span>
+                      </div>
                     </div>
 
-                    {/* Read Time */}
-                    <div className="absolute top-4 right-4">
-                      <span className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium bg-black/20 backdrop-blur-sm text-white">
-                        <Clock className="h-3 w-3" />
-                        {item.readTime}
-                      </span>
+                    {/* Content */}
+                    <div className="p-6 flex flex-col flex-grow">
+                      {/* Date */}
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
+                        <Calendar className="h-4 w-4 text-primary" />
+                        {item.date}
+                      </div>
+
+                      {/* Title */}
+                      <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
+                        {item.title}
+                      </h3>
+
+                      {/* Summary */}
+                      <p className="text-gray-600 leading-relaxed flex-grow mb-6 line-clamp-3">
+                        {item.excerpt.length > 150 
+                          ? `${item.excerpt.substring(0, 150)}...` 
+                          : item.excerpt}
+                      </p>
+
+                      {/* Read More Button */}
+                      <div className="mt-auto">
+                        <HierarchicalButton
+                          hierarchy="ghost"
+                          size="sm"
+                          icon={<ArrowRight className="h-4 w-4" />}
+                          iconPosition="right"
+                        >
+                          Ler mais
+                        </HierarchicalButton>
+                      </div>
                     </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-6 flex flex-col flex-grow">
-                    {/* Date */}
-                    <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-                      <Calendar className="h-4 w-4 text-primary" />
-                      {item.date}
-                    </div>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary transition-colors duration-300 leading-tight mb-4">
-                      {item.title}
-                    </h3>
-
-                    {/* Summary */}
-                    <p className="text-gray-600 leading-relaxed flex-grow mb-6">
-                      {item.summary}
-                    </p>
-
-                    {/* Read More Button */}
-                    <div className="mt-auto">
-                      <HierarchicalButton
-                        hierarchy="ghost"
-                        size="sm"
-                        icon={<ArrowRight className="h-4 w-4" />}
-                        iconPosition="right"
-                      >
-                        Ler mais
-                      </HierarchicalButton>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                  </CardContent>
+                </Card>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -173,14 +166,16 @@ const NewsSection = () => {
           transition={{ duration: 0.8, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <HierarchicalButton
-            hierarchy="tertiary"
-            size="lg"
-            icon={<ArrowRight className="h-5 w-5" />}
-            iconPosition="right"
-          >
-            Ver todas as notícias
-          </HierarchicalButton>
+          <Link href="/blog">
+            <HierarchicalButton
+              hierarchy="tertiary"
+              size="lg"
+              icon={<ArrowRight className="h-5 w-5" />}
+              iconPosition="right"
+            >
+              Ver todas as notícias
+            </HierarchicalButton>
+          </Link>
         </motion.div>
       </div>
     </section>
