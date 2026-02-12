@@ -1,11 +1,13 @@
 'use client';
 
-import { Tag, User, MessageCircle, ThumbsUp } from 'lucide-react';
+import { Tag, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import Image from 'next/image';
 import BlogPostHeader from './BlogPostHeader';
+import BlogLikes from './BlogLikes';
+import FacebookComments from './FacebookComments';
 import '../styles/blog.css';
 
 interface BlogPost {
@@ -29,6 +31,8 @@ interface BlogPostContentProps {
 }
 
 export default function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
+  const postUrl = typeof window !== 'undefined' ? window.location.href : `https://anacli.com.br/blog/${post.slug}`;
+
   return (
     <article className="min-h-screen bg-gray-50">
       <BlogPostHeader
@@ -80,17 +84,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
 
             {/* Engagement Actions */}
             <div className="mt-8 pt-8 border-t border-gray-200 flex items-center justify-between no-print">
-              <div className="flex items-center gap-4">
-                <Button variant="outline" size="sm" className="gap-2">
-                  <ThumbsUp className="h-4 w-4" />
-                  Gostei
-                </Button>
-                <Button variant="outline" size="sm" className="gap-2">
-                  <MessageCircle className="h-4 w-4" />
-                  Comentar
-                </Button>
-              </div>
-              <span className="text-sm text-gray-500">125 visualizações</span>
+              <BlogLikes postId={post.id} />
             </div>
           </div>
 
@@ -148,6 +142,9 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               </div>
             </div>
           )}
+
+          {/* Comments Section */}
+          <FacebookComments postUrl={postUrl} />
 
           {/* CTA */}
           <div className="bg-primary rounded-2xl p-8 md:p-10 text-center text-white shadow-xl">

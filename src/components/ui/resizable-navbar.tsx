@@ -102,13 +102,11 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
       {/* Main Navbar */}
       <motion.nav
         className={cn(
-          "fixed left-0 right-0 z-[100] w-full",
+          "fixed left-0 right-0 z-[100] w-full bg-white",
           className
         )}
         animate={{
           top: isScrolled ? "0px" : isMobile ? "0px" : "40px",
-          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.85)" : "rgba(255, 255, 255, 0.1)",
-          backdropFilter: isScrolled ? "blur(20px)" : "blur(4px)",
           borderBottomLeftRadius: "20px",
           borderBottomRightRadius: "20px",
         }}

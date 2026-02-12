@@ -71,45 +71,8 @@ export default function BlogPostHeader({
         style={{ width: `${scrollProgress}%` }}
       />
 
-      {/* Back Navigation */}
-      <div className="sticky top-0 z-[60] bg-white/95 backdrop-blur-sm border-b border-gray-200 no-print">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between py-3">
-            <Link href="/blog">
-              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-primary">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Voltar
-              </Button>
-            </Link>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setIsSaved(!isSaved)}
-                className="text-gray-600 hover:text-primary"
-              >
-                {isSaved ? (
-                  <BookmarkCheck className="h-4 w-4" />
-                ) : (
-                  <Bookmark className="h-4 w-4" />
-                )}
-              </Button>
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => handleShare('copy')}
-                className="text-gray-600 hover:text-primary"
-              >
-                <Share2 className="h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Hero Image */}
-      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
+      <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px] pt-20 md:pt-24">
         <Image
           src={image}
           alt={title}
@@ -125,6 +88,14 @@ export default function BlogPostHeader({
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 -mt-32 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-2xl p-6 md:p-10 lg:p-12">
+            {/* Back Button */}
+            <Link href="/blog" className="inline-block mb-6">
+              <Button variant="ghost" size="sm" className="text-gray-600 hover:text-primary -ml-2">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Voltar para o Blog
+              </Button>
+            </Link>
+
             <Badge className="mb-4 bg-primary text-white text-sm px-4 py-1.5">
               {category}
             </Badge>
@@ -159,7 +130,7 @@ export default function BlogPostHeader({
             </div>
 
             {/* Share Buttons */}
-            <div className="flex items-center gap-3 pt-6 no-print">
+            <div className="flex flex-wrap items-center gap-3 pt-6 no-print">
               <span className="text-sm font-medium text-gray-600 flex items-center gap-2">
                 <Share2 className="h-4 w-4" />
                 Compartilhar:
@@ -198,6 +169,24 @@ export default function BlogPostHeader({
                 className="hover:bg-gray-100"
               >
                 <LinkIcon className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsSaved(!isSaved)}
+                className="hover:bg-gray-100 ml-auto"
+              >
+                {isSaved ? (
+                  <>
+                    <BookmarkCheck className="h-4 w-4 mr-2" />
+                    Salvo
+                  </>
+                ) : (
+                  <>
+                    <Bookmark className="h-4 w-4 mr-2" />
+                    Salvar
+                  </>
+                )}
               </Button>
             </div>
           </div>

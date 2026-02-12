@@ -181,10 +181,14 @@ export async function getPosts(params?: {
   search?: string;
 }): Promise<BlogPost[]> {
   try {
+    // Se não especificar per_page, buscar TODOS os posts
+    const perPage = params?.per_page || 100;
+    const currentPage = params?.page || 1;
+    
     const queryParams = new URLSearchParams({
       _embed: 'true',
-      per_page: (params?.per_page || 100).toString(),
-      page: (params?.page || 1).toString(),
+      per_page: perPage.toString(),
+      page: currentPage.toString(),
       ...(params?.categories && { categories: params.categories }),
       ...(params?.search && { search: params.search }),
     });
@@ -201,7 +205,21 @@ export async function getPosts(params?: {
     }
 
     const posts: WordPressPost[] = await response.json();
-    return posts.map(transformWordPressPost);
+    const transformedPosts = posts.map(transformWordPressPost);
+    
+    // Se retornou 100 posts (limite máximo), pode haver mais páginas
+    // Buscar recursivamente todas as páginas
+    if (posts.length === 100 && !params?.per_page) {
+      const nextPagePosts = await getPosts({
+        ...params,
+        per_page: 100,
+        page: currentPage + 1,
+      });
+      
+      return [...transformedPosts, ...nextPagePosts];
+    }
+    
+    return transformedPosts;
   } catch (error) {
     console.error('Error fetching WordPress posts:', error);
     return [];
