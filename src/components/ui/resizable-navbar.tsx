@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Phone, Mail } from "lucide-react";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
 import OptimizedImage from "@/components/ui/OptimizedImage";
@@ -78,7 +79,7 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
   return (
     <div className="relative">
       {/* Top Bar - Magenta Background */}
-      <div className="hidden md:block bg-accent relative z-50">
+      <div className="hidden md:block bg-accent relative z-[100]">
         <div className="container mx-auto px-6 py-2">
           <div className="flex items-center justify-between text-sm text-white">
             <div className="flex items-center gap-6">
@@ -101,7 +102,7 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
       {/* Main Navbar */}
       <motion.nav
         className={cn(
-          "fixed left-0 right-0 z-40 w-full",
+          "fixed left-0 right-0 z-[100] w-full",
           className
         )}
         animate={{
@@ -129,13 +130,12 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
             >
-              <OptimizedImage
+              <img
                 src="/assets/logo.svg"
                 alt="Anacli Laboratorial"
                 width={120}
                 height={40}
                 className="h-8 md:h-10 w-auto"
-                priority={true}
               />
               <div className="flex flex-col">
                 <span className="text-xs tracking-wide text-black/60 hidden sm:block select-none">

@@ -3,16 +3,20 @@ import { notFound } from 'next/navigation';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import BlogPostContent from '@/app/blog/components/BlogPostContent';
-import { mockPosts } from '@/app/blog/data/mock-posts';
+import { getPosts, getPostBySlug } from '@/lib/wordpress';
+
+export const revalidate = 60;
 
 export async function generateStaticParams() {
-  return mockPosts.map((post) => ({
+  const posts = await getPosts({ per_page: 100 });
+  
+  return posts.map((post) => ({
     slug: post.slug,
   }));
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const post = mockPosts.find(p => p.slug === params.slug);
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     return {
@@ -26,14 +30,18 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const post = mockPosts.find(p => p.slug === params.slug);
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = await getPostBySlug(params.slug);
 
   if (!post) {
     notFound();
   }
 
-  const relatedPosts = mockPosts
+  // Get all posts for related posts
+  const allPosts = await getPosts();
+  
+  // Find related posts (same category, excluding current post)
+  const relatedPosts = allPosts
     .filter(p => p.category === post.category && p.id !== post.id)
     .slice(0, 3);
 

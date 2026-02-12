@@ -26,8 +26,8 @@ const OptimizedImage = ({
   fetchPriority = 'auto',
   ...props 
 }: OptimizedImageProps) => {
-  // Para imagens locais, remove a extensão e deixa o Next.js otimizar
-  const optimizedSrc = src.startsWith('/assets/') 
+  // Para imagens locais, otimiza apenas formatos raster (não SVG)
+  const optimizedSrc = src.startsWith('/assets/') && !src.endsWith('.svg')
     ? src.replace(/\.(png|jpg|jpeg)$/i, '.avif')
     : src;
 

@@ -72,7 +72,7 @@ export default function BlogPostHeader({
       />
 
       {/* Back Navigation */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm border-b border-gray-200 no-print">
+      <div className="sticky top-0 z-[60] bg-white/95 backdrop-blur-sm border-b border-gray-200 no-print">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between py-3">
             <Link href="/blog">

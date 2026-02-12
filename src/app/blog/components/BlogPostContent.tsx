@@ -5,9 +5,23 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BlogPost } from '../data/mock-posts';
 import BlogPostHeader from './BlogPostHeader';
 import '../styles/blog.css';
+
+interface BlogPost {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  category: string;
+  author: string;
+  authorBio: string;
+  date: string;
+  readTime: string;
+  image: string;
+  tags: string[];
+}
 
 interface BlogPostContentProps {
   post: BlogPost;

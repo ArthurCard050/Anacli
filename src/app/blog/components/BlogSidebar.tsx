@@ -22,11 +22,13 @@ interface Post {
 
 interface BlogSidebarProps {
   posts: Post[];
+  searchQuery: string;
+  onSearchChange: (query: string) => void;
 }
 
-export default function BlogSidebar({ posts }: BlogSidebarProps) {
+export default function BlogSidebar({ posts, searchQuery, onSearchChange }: BlogSidebarProps) {
   const [email, setEmail] = useState('');
-  const [searchQuery, setSearchQuery] = useState('');
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
 
   const trendingPosts = posts.slice(0, 5);
   const popularTags = [
@@ -43,12 +45,18 @@ export default function BlogSidebar({ posts }: BlogSidebarProps) {
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Newsletter signup:', email);
+    alert('Obrigado por se inscrever! Em breve você receberá nossos conteúdos.');
     setEmail('');
   };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Search:', searchQuery);
+    onSearchChange(localSearchQuery);
+  };
+
+  const handleClearSearch = () => {
+    setLocalSearchQuery('');
+    onSearchChange('');
   };
 
   return (
@@ -60,17 +68,30 @@ export default function BlogSidebar({ posts }: BlogSidebarProps) {
             <Search className="h-5 w-5 text-primary" />
             Buscar Artigos
           </h3>
-          <form onSubmit={handleSearch} className="flex gap-2">
-            <Input
-              type="text"
-              placeholder="Digite sua busca..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="flex-1"
-            />
-            <Button type="submit" size="icon" className="bg-primary hover:bg-primary/90">
-              <Search className="h-4 w-4" />
-            </Button>
+          <form onSubmit={handleSearch} className="space-y-2">
+            <div className="flex gap-2">
+              <Input
+                type="text"
+                placeholder="Digite sua busca..."
+                value={localSearchQuery}
+                onChange={(e) => setLocalSearchQuery(e.target.value)}
+                className="flex-1"
+              />
+              <Button type="submit" size="icon" className="bg-primary hover:bg-primary/90">
+                <Search className="h-4 w-4" />
+              </Button>
+            </div>
+            {searchQuery && (
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleClearSearch}
+                className="w-full text-xs"
+              >
+                Limpar busca
+              </Button>
+            )}
           </form>
         </div>
 
@@ -145,6 +166,10 @@ export default function BlogSidebar({ posts }: BlogSidebarProps) {
                 key={tag}
                 variant="outline"
                 className="cursor-pointer hover:bg-primary hover:text-white hover:border-primary transition-colors"
+                onClick={() => {
+                  setLocalSearchQuery(tag);
+                  onSearchChange(tag);
+                }}
               >
                 {tag}
               </Badge>

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Filter } from 'lucide-react';
 
@@ -12,11 +11,11 @@ interface Category {
 
 interface BlogCategoriesBarProps {
   categories: Category[];
+  selectedCategory: string | null;
+  onSelectCategory: (slug: string | null) => void;
 }
 
-export default function BlogCategoriesBar({ categories }: BlogCategoriesBarProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-
+export default function BlogCategoriesBar({ categories, selectedCategory, onSelectCategory }: BlogCategoriesBarProps) {
   const categoryColors = [
     'bg-blue-100 text-blue-700 hover:bg-blue-200',
     'bg-green-100 text-green-700 hover:bg-green-200',
@@ -26,8 +25,13 @@ export default function BlogCategoriesBar({ categories }: BlogCategoriesBarProps
     'bg-indigo-100 text-indigo-700 hover:bg-indigo-200',
   ];
 
+  // Map category name to slug for comparison
+  const getCategorySlug = (categoryName: string) => {
+    return categories.find(cat => cat.name === categoryName)?.slug || null;
+  };
+
   return (
-    <section className="sticky top-0 z-40 bg-white border-b border-gray-200 shadow-sm">
+    <section className="sticky top-0 z-[60] bg-white border-b border-gray-200 shadow-sm">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center gap-4 py-4 overflow-x-auto scrollbar-hide">
           <div className="flex items-center gap-2 text-gray-600 font-medium whitespace-nowrap">
@@ -42,26 +46,29 @@ export default function BlogCategoriesBar({ categories }: BlogCategoriesBarProps
                 ? 'bg-primary text-white hover:bg-primary/90'
                 : 'hover:bg-gray-100'
             }`}
-            onClick={() => setSelectedCategory(null)}
+            onClick={() => onSelectCategory(null)}
           >
             Todos os artigos
           </Badge>
 
-          {categories.map((category, index) => (
-            <Badge
-              key={category.slug}
-              variant={selectedCategory === category.slug ? 'default' : 'outline'}
-              className={`cursor-pointer transition-all whitespace-nowrap px-4 py-2 ${
-                selectedCategory === category.slug
-                  ? categoryColors[index % categoryColors.length]
-                  : 'hover:bg-gray-100'
-              }`}
-              onClick={() => setSelectedCategory(category.slug)}
-            >
-              {category.name}
-              <span className="ml-2 text-xs opacity-70">({category.count})</span>
-            </Badge>
-          ))}
+          {categories.map((category, index) => {
+            const isSelected = selectedCategory === category.name;
+            return (
+              <Badge
+                key={category.slug}
+                variant={isSelected ? 'default' : 'outline'}
+                className={`cursor-pointer transition-all whitespace-nowrap px-4 py-2 ${
+                  isSelected
+                    ? categoryColors[index % categoryColors.length]
+                    : 'hover:bg-gray-100'
+                }`}
+                onClick={() => onSelectCategory(category.name)}
+              >
+                {category.name}
+                <span className="ml-2 text-xs opacity-70">({category.count})</span>
+              </Badge>
+            );
+          })}
         </div>
       </div>
     </section>
