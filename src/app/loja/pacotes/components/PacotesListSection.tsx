@@ -122,13 +122,7 @@ export default function PacotesListSection() {
   ];
 
   const handleAddToCart = (pkg: typeof packages[0]) => {
-    addItem({
-      id: pkg.id,
-      name: pkg.name,
-      price: pkg.price,
-      quantity: 1,
-      image: '/placeholder.svg'
-    });
+    addItem(pkg.id, 'package');
   };
 
   const calculateDiscount = (original: number, current: number) => {
