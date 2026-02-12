@@ -1,0 +1,51 @@
+import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import BlogPostContent from '@/app/blog/components/BlogPostContent';
+import { mockPosts } from '@/app/blog/data/mock-posts';
+
+export async function generateStaticParams() {
+  return mockPosts.map((post) => ({
+    slug: post.slug,
+  }));
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const post = mockPosts.find(p => p.slug === params.slug);
+
+  if (!post) {
+    return {
+      title: 'Post não encontrado | Blog Anacli',
+    };
+  }
+
+  return {
+    title: `${post.title} | Blog Anacli`,
+    description: post.excerpt,
+  };
+}
+
+export default function BlogPostPage({ params }: { params: { slug: string } }) {
+  const post = mockPosts.find(p => p.slug === params.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  const relatedPosts = mockPosts
+    .filter(p => p.category === post.category && p.id !== post.id)
+    .slice(0, 3);
+
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Header />
+      
+      <main>
+        <BlogPostContent post={post} relatedPosts={relatedPosts} />
+      </main>
+
+      <Footer />
+    </div>
+  );
+}
