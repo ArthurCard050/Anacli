@@ -145,10 +145,11 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   // 1. Featured media from WordPress
   // 2. First image in content
   // 3. Fallback image
-  let postImage = featuredMedia?.source_url;
+  let postImage: string | undefined = featuredMedia?.source_url;
   
   if (!postImage) {
-    postImage = extractFirstImage(wpPost.content.rendered);
+    const extractedImage = extractFirstImage(wpPost.content.rendered);
+    postImage = extractedImage || undefined;
   }
   
   if (!postImage) {
