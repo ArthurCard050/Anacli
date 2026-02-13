@@ -1,33 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  
+  <!-- Página Principal -->
   <url>
     <loc>https://anacli.com.br/</loc>
-    <lastmod>2026-01-05</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
+  
+  <!-- Resultados de Exames (Sitelink Priority) -->
   <url>
-    <loc>https://anacli.com.br/sobre/</loc>
-    <lastmod>2026-01-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://anacli.com.br/#resultados</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
   </url>
+  
+  <!-- Contato (Sitelink Priority) -->
   <url>
-    <loc>https://anacli.com.br/convenios/</loc>
-    <lastmod>2026-01-05</lastmod>
+    <loc>https://anacli.com.br/contato</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  
+  <!-- Exames (Sitelink Priority) -->
+  <url>
+    <loc>https://anacli.com.br/loja/exames</loc>
+    <lastmod>2025-02-12</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
+  
+  <!-- Sobre -->
   <url>
-    <loc>https://anacli.com.br/certificacoes/</loc>
-    <lastmod>2026-01-05</lastmod>
+    <loc>https://anacli.com.br/sobre</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Blog -->
+  <url>
+    <loc>https://anacli.com.br/blog</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  
+  <!-- Serviços -->
+  <url>
+    <loc>https://anacli.com.br/servicos</loc>
+    <lastmod>2025-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
+  
+  <!-- Convênios -->
   <url>
-    <loc>https://anacli.com.br/faq/</loc>
-    <lastmod>2026-01-05</lastmod>
+    <loc>https://anacli.com.br/convenios</loc>
+    <lastmod>2025-02-12</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
   </url>
+  
+  <!-- Certificações -->
+  <url>
+    <loc>https://anacli.com.br/certificacoes</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Estrutura -->
+  <url>
+    <loc>https://anacli.com.br/estrutura</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Loja -->
+  <url>
+    <loc>https://anacli.com.br/loja</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+  <!-- Política de Privacidade -->
+  <url>
+    <loc>https://anacli.com.br/privacidade</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
+  <!-- Exclusão de Dados -->
+  <url>
+    <loc>https://anacli.com.br/exclusao-dados</loc>
+    <lastmod>2025-02-12</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  
 </urlset>

@@ -130,13 +130,72 @@ export default function RootLayout({
     ]
   }
 
+  // Schema para navegação do site (ajuda nos Sitelinks do Google)
+  const siteNavigationSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Anacli Laboratorial',
+    url: 'https://anacli.com.br',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://anacli.com.br/blog?search={search_term_string}'
+      },
+      'query-input': 'required name=search_term_string'
+    },
+    hasPart: [
+      {
+        '@type': 'WebPage',
+        '@id': 'https://anacli.com.br/#resultados',
+        name: 'Resultados de Exames',
+        description: 'Acesse seus resultados de exames online',
+        url: 'https://anacli.com.br/#resultados'
+      },
+      {
+        '@type': 'WebPage',
+        '@id': 'https://anacli.com.br/contato',
+        name: 'Contato',
+        description: 'Entre em contato com a Anacli',
+        url: 'https://anacli.com.br/contato'
+      },
+      {
+        '@type': 'WebPage',
+        '@id': 'https://anacli.com.br/loja/exames',
+        name: 'Exames',
+        description: 'Conheça nossos exames disponíveis',
+        url: 'https://anacli.com.br/loja/exames'
+      },
+      {
+        '@type': 'WebPage',
+        '@id': 'https://anacli.com.br/sobre',
+        name: 'Sobre',
+        description: 'Conheça a história da Anacli',
+        url: 'https://anacli.com.br/sobre'
+      },
+      {
+        '@type': 'WebPage',
+        '@id': 'https://anacli.com.br/blog',
+        name: 'Blog',
+        description: 'Artigos sobre saúde e bem-estar',
+        url: 'https://anacli.com.br/blog'
+      }
+    ]
+  }
+
   return (
     <html lang="pt-BR" className={plusJakartaSans.className}>
       <head>
-        {/* JSON-LD Structured Data */}
+        {/* JSON-LD Structured Data - Medical Business */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        
+        {/* JSON-LD Structured Data - Site Navigation */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationSchema) }}
         />
         
         {/* Critical CSS inline para evitar render blocking */}
