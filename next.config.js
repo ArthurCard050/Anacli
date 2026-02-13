@@ -36,7 +36,8 @@ const nextConfig = {
   { source: '/resultados-de-laboratorios-mais-precisos-em-feira-de-santana', destination: '/blog/resultados-de-laboratorios-mais-precisos-em-feira-de-santana', permanent: true },
   { source: '/exames-laboratoriais-em-feira-de-santana', destination: '/blog/exames-laboratoriais-em-feira-de-santana', permanent: true },
   { source: '/qual-a-diferenca-entre-hdl-vs-ldl', destination: '/blog/qual-a-diferenca-entre-hdl-vs-ldl', permanent: true },
-  { source: '/?p=3786', destination: '/blog/?p=3786', permanent: true },
+  // NOTA: URLs com ?p= não podem ser redirecionadas dessa forma no Next.js
+  // { source: '/?p=3786', destination: '/blog/?p=3786', permanent: true },
   { source: '/dia-do-abraco', destination: '/blog/dia-do-abraco', permanent: true },
   { source: '/se-hidrate-consumindo-frutas', destination: '/blog/se-hidrate-consumindo-frutas', permanent: true },
   { source: '/quando-devo-fazer-um-check-up', destination: '/blog/quando-devo-fazer-um-check-up', permanent: true },
