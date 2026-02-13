@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import BlogPostHeader from './BlogPostHeader';
 import BlogLikes from './BlogLikes';
-import CusdisComments from './CusdisComments';
+import GraphCommentWidget from './GraphCommentWidget';
 import '../styles/blog.css';
 
 interface BlogPost {
@@ -144,7 +144,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           )}
 
           {/* Comments Section */}
-          <CusdisComments 
+          <GraphCommentWidget 
             postId={post.id}
             postTitle={post.title}
           />

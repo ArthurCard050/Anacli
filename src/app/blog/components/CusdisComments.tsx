@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import '../styles/cusdis-custom.css';
 
 interface CusdisCommentsProps {
   postId: string;
@@ -12,6 +11,19 @@ export default function CusdisComments({ postId, postTitle }: CusdisCommentsProp
   const cusdisRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Configuração de tradução do Cusdis
+    (window as any).CUSDIS_LOCALE = {
+      powered_by: '',
+      post_comment: 'Enviar',
+      loading: 'Carregando comentários...',
+      email: 'Email (opcional)',
+      nickname: 'Nome',
+      reply_placeholder: 'Escreva seu comentário...',
+      reply_btn: 'Responder',
+      sending: 'Enviando...',
+      be_the_first: 'Seja o primeiro a comentar!',
+    };
+
     // Carregar script do Cusdis
     const script = document.createElement('script');
     script.src = 'https://cusdis.com/js/cusdis.es.js';
@@ -19,99 +31,37 @@ export default function CusdisComments({ postId, postTitle }: CusdisCommentsProp
     script.defer = true;
     
     script.onload = () => {
-      // Inicializar Cusdis após carregar
       if (window.CUSDIS) {
         window.CUSDIS.renderTo(cusdisRef.current);
       }
-
-      // Traduzir textos para português após carregar
-      setTimeout(() => {
-        translateCusdis();
-        // Remover "Comments powered by Cusdis"
-        removePoweredBy();
-      }, 500);
-
-      // Observer para traduzir dinamicamente quando novos elementos aparecerem
-      const observer = new MutationObserver(() => {
-        translateCusdis();
-        removePoweredBy();
-      });
-
-      if (cusdisRef.current) {
-        observer.observe(cusdisRef.current, {
-          childList: true,
-          subtree: true,
-        });
-      }
-
-      return () => observer.disconnect();
     };
 
     document.body.appendChild(script);
+
+    // Adicionar estilos customizados
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Ocultar branding */
+      iframe[src*="cusdis"] {
+        border: none !important;
+      }
+      
+      /* Customização via CSS global */
+      .cusdis-root {
+        font-family: inherit !important;
+      }
+    `;
+    document.head.appendChild(style);
 
     return () => {
       if (script.parentNode) {
         script.parentNode.removeChild(script);
       }
+      if (style.parentNode) {
+        style.parentNode.removeChild(style);
+      }
     };
   }, []);
-
-  const translateCusdis = () => {
-    // Traduzir placeholders
-    const nicknameInput = document.querySelector('#cusdis_thread input[placeholder*="Nickname"]') as HTMLInputElement;
-    if (nicknameInput) nicknameInput.placeholder = 'Nome';
-
-    const emailInput = document.querySelector('#cusdis_thread input[placeholder*="Email"]') as HTMLInputElement;
-    if (emailInput) emailInput.placeholder = 'Email (opcional)';
-
-    const replyTextarea = document.querySelector('#cusdis_thread textarea[placeholder*="Reply"]') as HTMLTextAreaElement;
-    if (replyTextarea) replyTextarea.placeholder = 'Escreva seu comentário...';
-
-    // Traduzir botão de enviar
-    const submitButton = document.querySelector('#cusdis_thread button[type="submit"]') as HTMLButtonElement;
-    if (submitButton && submitButton.textContent?.includes('Send')) {
-      submitButton.textContent = 'Enviar';
-    }
-
-    // Traduzir botão de responder
-    const replyButtons = document.querySelectorAll('#cusdis_thread .cusdis-reply-button');
-    replyButtons.forEach((button) => {
-      if (button.textContent?.includes('Reply')) {
-        button.textContent = 'Responder';
-      }
-    });
-
-    // Traduzir mensagem de carregamento
-    const loading = document.querySelector('#cusdis_thread .cusdis-loading');
-    if (loading && loading.textContent?.includes('Loading')) {
-      loading.textContent = 'Carregando comentários...';
-    }
-
-    // Traduzir mensagem vazia
-    const empty = document.querySelector('#cusdis_thread .cusdis-empty');
-    if (empty && empty.textContent?.includes('No comment')) {
-      empty.textContent = 'Seja o primeiro a comentar!';
-    }
-  };
-
-  const removePoweredBy = () => {
-    // Remover todos os links para cusdis.com
-    const poweredByLinks = document.querySelectorAll('#cusdis_thread a[href*="cusdis.com"]');
-    poweredByLinks.forEach((link) => {
-      if (link.parentElement) {
-        link.parentElement.style.display = 'none';
-      }
-    });
-
-    // Remover footer
-    const cusdisThread = document.querySelector('#cusdis_thread');
-    if (cusdisThread && cusdisThread.lastElementChild) {
-      const lastChild = cusdisThread.lastElementChild as HTMLElement;
-      if (lastChild.querySelector('a[href*="cusdis.com"]')) {
-        lastChild.style.display = 'none';
-      }
-    }
-  };
 
   return (
     <div className="bg-white rounded-2xl p-8 shadow-sm">
@@ -127,6 +77,28 @@ export default function CusdisComments({ postId, postTitle }: CusdisCommentsProp
         data-page-title={postTitle}
         data-theme="light"
       ></div>
+
+      <style jsx global>{`
+        /* Customização do Cusdis */
+        #cusdis_thread {
+          min-height: 200px;
+        }
+
+        #cusdis_thread iframe {
+          width: 100% !important;
+          border: none !important;
+          min-height: 400px !important;
+        }
+
+        /* Tentar ocultar o powered by via CSS */
+        #cusdis_thread [class*="powered"] {
+          display: none !important;
+        }
+
+        #cusdis_thread a[href*="cusdis.com"] {
+          display: none !important;
+        }
+      `}</style>
     </div>
   );
 }
@@ -137,6 +109,17 @@ declare global {
     CUSDIS: {
       renderTo: (element: HTMLElement | null) => void;
       setTheme: (theme: string) => void;
+    };
+    CUSDIS_LOCALE: {
+      powered_by: string;
+      post_comment: string;
+      loading: string;
+      email: string;
+      nickname: string;
+      reply_placeholder: string;
+      reply_btn: string;
+      sending: string;
+      be_the_first: string;
     };
   }
 }
