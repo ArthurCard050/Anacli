@@ -10,6 +10,19 @@ export default function FacebookComments({ postUrl }: FacebookCommentsProps) {
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
   const [showDebug, setShowDebug] = useState(false);
 
+  const forceReload = () => {
+    if (typeof window !== 'undefined' && (window as any).FB) {
+      try {
+        (window as any).FB.XFBML.parse();
+        setDebugInfo([...debugInfo, `[${new Date().toLocaleTimeString()}] Parse forçado manualmente`]);
+      } catch (error) {
+        setDebugInfo([...debugInfo, `Erro ao forçar parse: ${error}`]);
+      }
+    } else {
+      setDebugInfo([...debugInfo, 'FB não está disponível ainda']);
+    }
+  };
+
   useEffect(() => {
     const debug: string[] = [];
     debug.push(`[${new Date().toLocaleTimeString()}] Iniciando carregamento do Facebook SDK`);
@@ -41,11 +54,17 @@ export default function FacebookComments({ postUrl }: FacebookCommentsProps) {
           });
           debug.push('FB.init executado com sucesso');
           
-          // Parse após inicializar
-          (window as any).FB.XFBML.parse();
-          debug.push('FB.XFBML.parse executado');
-          
-          setDebugInfo([...debug, 'SDK carregado com sucesso!']);
+          // Parse após inicializar com delay
+          setTimeout(() => {
+            try {
+              (window as any).FB.XFBML.parse();
+              debug.push('FB.XFBML.parse executado');
+              setDebugInfo([...debug, 'SDK carregado com sucesso!']);
+            } catch (parseError) {
+              debug.push(`Erro no parse: ${parseError}`);
+              setDebugInfo(debug);
+            }
+          }, 500);
         } catch (error) {
           debug.push(`Erro ao inicializar FB: ${error}`);
           setDebugInfo(debug);
@@ -91,12 +110,20 @@ export default function FacebookComments({ postUrl }: FacebookCommentsProps) {
     <div className="bg-white rounded-2xl p-8 shadow-sm">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Comentários</h2>
-        <button
-          onClick={() => setShowDebug(!showDebug)}
-          className="text-xs text-gray-500 hover:text-gray-700 underline"
-        >
-          {showDebug ? 'Ocultar' : 'Mostrar'} diagnóstico
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={forceReload}
+            className="text-xs px-3 py-1 bg-primary text-white rounded hover:bg-primary/90"
+          >
+            Recarregar
+          </button>
+          <button
+            onClick={() => setShowDebug(!showDebug)}
+            className="text-xs text-gray-500 hover:text-gray-700 underline"
+          >
+            {showDebug ? 'Ocultar' : 'Mostrar'} diagnóstico
+          </button>
+        </div>
       </div>
 
       {/* Debug Info */}
@@ -109,6 +136,8 @@ export default function FacebookComments({ postUrl }: FacebookCommentsProps) {
           <div className="mt-2 pt-2 border-t border-gray-300">
             <div>Domínio atual: {typeof window !== 'undefined' ? window.location.hostname : 'N/A'}</div>
             <div>URL completa: {typeof window !== 'undefined' ? window.location.href : 'N/A'}</div>
+            <div>FB disponível: {typeof window !== 'undefined' && (window as any).FB ? 'Sim' : 'Não'}</div>
+            <div>Elemento .fb-comments encontrado: {typeof document !== 'undefined' && document.querySelector('.fb-comments') ? 'Sim' : 'Não'}</div>
           </div>
         </div>
       )}
