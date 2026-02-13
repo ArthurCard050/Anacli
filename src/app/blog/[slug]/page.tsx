@@ -34,12 +34,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       description: post.excerpt,
       url: postUrl,
       siteName: 'Anacli Laboratorial',
-      images: [
+      images: post.image ? [
         {
           url: post.image,
           width: 1200,
           height: 630,
           alt: post.title,
+        },
+      ] : [
+        {
+          url: 'https://www.anacli.com.br/assets/logo.svg',
+          width: 1200,
+          height: 630,
+          alt: 'Anacli Laboratorial',
         },
       ],
       locale: 'pt_BR',
@@ -51,7 +58,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       card: 'summary_large_image',
       title: post.title,
       description: post.excerpt,
-      images: [post.image],
+      images: post.image ? [post.image] : ['https://www.anacli.com.br/assets/logo.svg'],
     },
     other: {
       'fb:app_id': '4155112851395262',

@@ -5,11 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
 import BlogPostHeader from './BlogPostHeader';
 import BlogLikes from './BlogLikes';
-import FacebookComments from './FacebookComments';
-import FacebookCommentsIframe from './FacebookCommentsIframe';
+import DisqusComments from './DisqusComments';
 import '../styles/blog.css';
 
 interface BlogPost {
@@ -34,7 +32,6 @@ interface BlogPostContentProps {
 
 export default function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
   const postUrl = typeof window !== 'undefined' ? window.location.href : `https://anacli.com.br/blog/${post.slug}`;
-  const [useIframe, setUseIframe] = useState(false);
 
   return (
     <article className="min-h-screen bg-gray-50">
@@ -147,21 +144,11 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           )}
 
           {/* Comments Section */}
-          <div className="mb-8">
-            <div className="flex justify-end mb-2">
-              <button
-                onClick={() => setUseIframe(!useIframe)}
-                className="text-xs text-gray-500 hover:text-gray-700 underline"
-              >
-                Alternar para versão {useIframe ? 'SDK' : 'iframe'}
-              </button>
-            </div>
-            {useIframe ? (
-              <FacebookCommentsIframe postUrl={postUrl} />
-            ) : (
-              <FacebookComments postUrl={postUrl} />
-            )}
-          </div>
+          <DisqusComments 
+            postUrl={postUrl}
+            postId={post.id}
+            postTitle={post.title}
+          />
 
           {/* CTA */}
           <div className="bg-primary rounded-2xl p-8 md:p-10 text-center text-white shadow-xl">
