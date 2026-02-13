@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import BlogPostHeader from './BlogPostHeader';
 import BlogLikes from './BlogLikes';
-import DisqusComments from './DisqusComments';
+import CusdisComments from './CusdisComments';
 import '../styles/blog.css';
 
 interface BlogPost {
@@ -144,8 +144,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           )}
 
           {/* Comments Section */}
-          <DisqusComments 
-            postUrl={postUrl}
+          <CusdisComments 
             postId={post.id}
             postTitle={post.title}
           />
