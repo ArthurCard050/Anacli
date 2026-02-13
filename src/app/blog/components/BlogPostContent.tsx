@@ -51,21 +51,26 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           {/* Article Content */}
           <div className="bg-white rounded-2xl shadow-sm p-8 md:p-12 mb-8">
             <div 
-              className="prose prose-lg max-w-none custom-scrollbar
+              className="prose prose-lg max-w-none
                 prose-headings:font-bold prose-headings:text-gray-900
-                prose-h2:text-3xl prose-h2:mt-10 prose-h2:mb-6 prose-h2:pb-3 prose-h2:border-b prose-h2:border-gray-200
-                prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
-                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-lg
-                prose-ul:my-6 prose-ul:space-y-2
-                prose-li:text-gray-700 prose-li:leading-relaxed
+                prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6 prose-h2:pb-4 prose-h2:border-b-2 prose-h2:border-primary/20
+                prose-h3:text-2xl prose-h3:mt-10 prose-h3:mb-5
+                prose-h4:text-xl prose-h4:mt-8 prose-h4:mb-4
+                prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-p:text-[17px]
+                prose-ul:my-8 prose-ul:space-y-3
+                prose-ol:my-8 prose-ol:space-y-3
+                prose-li:text-gray-700 prose-li:leading-relaxed prose-li:text-[17px]
                 prose-strong:text-gray-900 prose-strong:font-semibold
-                prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
+                prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-a:font-medium
+                prose-blockquote:border-l-4 prose-blockquote:border-primary prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-gray-600
+                prose-img:rounded-xl prose-img:shadow-md prose-img:my-8
+                prose-hr:my-10 prose-hr:border-gray-200"
               dangerouslySetInnerHTML={{ __html: post.content }}
             />
 
             {/* Tags */}
             {post.tags.length > 0 && (
-              <div className="mt-12 pt-8 border-t border-gray-200">
+              <div className="mt-16 pt-8 border-t border-gray-200">
                 <div className="flex items-center gap-3 flex-wrap">
                   <Tag className="h-5 w-5 text-gray-400" />
                   <span className="text-sm font-medium text-gray-600">Tags:</span>
@@ -83,13 +88,13 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
             )}
 
             {/* Engagement Actions */}
-            <div className="mt-8 pt-8 border-t border-gray-200 flex items-center justify-between no-print">
+            <div className="mt-10 pt-8 border-t border-gray-200 flex items-center justify-between no-print">
               <BlogLikes postId={post.id} />
             </div>
           </div>
 
           {/* Author Bio */}
-          <div className="bg-white rounded-2xl p-8 mb-8 border border-gray-200 shadow-sm">
+          <div className="bg-white rounded-2xl p-8 mb-10 border border-gray-200 shadow-sm">
             <div className="flex items-start gap-6">
               <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
                 <User className="h-10 w-10 text-white" />
@@ -113,7 +118,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
 
           {/* Related Posts */}
           {relatedPosts.length > 0 && (
-            <div className="mb-8">
+            <div className="mb-10">
               <h2 className="text-2xl font-bold text-gray-900 mb-6">Leia Também</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {relatedPosts.map((relatedPost) => (
@@ -144,10 +149,12 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           )}
 
           {/* Comments Section */}
-          <GraphCommentWidget 
-            postId={post.id}
-            postTitle={post.title}
-          />
+          <div className="mb-12">
+            <GraphCommentWidget 
+              postId={post.id}
+              postTitle={post.title}
+            />
+          </div>
 
           {/* CTA */}
           <div className="bg-primary rounded-2xl p-8 md:p-10 text-center text-white shadow-xl">

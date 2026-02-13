@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon, Bookmark, BookmarkCheck } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Linkedin, Copy, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -27,7 +27,7 @@ export default function BlogPostHeader({
   image,
 }: BlogPostHeaderProps) {
   const [scrollProgress, setScrollProgress] = useState(0);
-  const [isSaved, setIsSaved] = useState(false);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,9 +56,13 @@ export default function BlogPostHeader({
       case 'linkedin':
         window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
         break;
+      case 'whatsapp':
+        window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
+        break;
       case 'copy':
         navigator.clipboard.writeText(url);
-        alert('Link copiado!');
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
         break;
     }
   };
@@ -140,53 +144,46 @@ export default function BlogPostHeader({
                 size="sm"
                 onClick={() => handleShare('facebook')}
                 className="hover:bg-blue-50 hover:text-blue-600 hover:border-blue-600"
+                title="Compartilhar no Facebook"
               >
-                <Facebook className="h-4 w-4 mr-2" />
-                Facebook
+                <Facebook className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleShare('twitter')}
                 className="hover:bg-sky-50 hover:text-sky-600 hover:border-sky-600"
+                title="Compartilhar no Twitter"
               >
-                <Twitter className="h-4 w-4 mr-2" />
-                Twitter
+                <Twitter className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleShare('linkedin')}
                 className="hover:bg-blue-50 hover:text-blue-700 hover:border-blue-700"
+                title="Compartilhar no LinkedIn"
               >
-                <Linkedin className="h-4 w-4 mr-2" />
-                LinkedIn
+                <Linkedin className="h-4 w-4" />
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => handleShare('whatsapp')}
+                className="hover:bg-green-50 hover:text-green-600 hover:border-green-600"
+                title="Compartilhar no WhatsApp"
+              >
+                <MessageCircle className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleShare('copy')}
-                className="hover:bg-gray-100"
+                className={`hover:bg-gray-100 ml-auto ${copied ? 'bg-green-50 text-green-600 border-green-600' : ''}`}
+                title={copied ? 'Link copiado!' : 'Copiar link'}
               >
-                <LinkIcon className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setIsSaved(!isSaved)}
-                className="hover:bg-gray-100 ml-auto"
-              >
-                {isSaved ? (
-                  <>
-                    <BookmarkCheck className="h-4 w-4 mr-2" />
-                    Salvo
-                  </>
-                ) : (
-                  <>
-                    <Bookmark className="h-4 w-4 mr-2" />
-                    Salvar
-                  </>
-                )}
+                <Copy className="h-4 w-4 mr-2" />
+                {copied ? 'Copiado!' : 'Copiar link'}
               </Button>
             </div>
           </div>
