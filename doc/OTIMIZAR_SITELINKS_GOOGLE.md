@@ -204,8 +204,10 @@ Faça links internos entre páginas relacionadas. Isso ajuda o Google a entender
 
 - [x] Schema Markup adicionado (MedicalBusiness)
 - [x] Schema de navegação adicionado (WebSite hasPart)
-- [x] Sitemap.xml criado com prioridades
+- [x] Sitemap.xml dinâmico criado com prioridades
+- [x] Sitemap estático removido (substituído pelo dinâmico)
 - [x] Redirects 301 configurados
+- [x] Deploy realizado (sitemap disponível em /sitemap.xml)
 - [ ] Sitemap enviado no Search Console
 - [ ] URLs principais solicitadas para indexação
 - [ ] Schema validado (Rich Results Test)
