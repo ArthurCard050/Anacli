@@ -3,6 +3,15 @@ const nextConfig = {
   trailingSlash: true,
   skipTrailingSlashRedirect: true,
   reactStrictMode: true,
+  async redirects() {
+    return [
+      {
+        source: '/:slug((?!blog|loja|sobre|contato|servicos|convenios|certificacoes|estrutura|privacidade|exclusao-dados|_next|api|assets).*)',
+        destination: '/blog/:slug',
+        permanent: true, // 301 redirect
+      },
+    ];
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
