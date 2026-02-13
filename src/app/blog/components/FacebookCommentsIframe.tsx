@@ -28,7 +28,7 @@ export default function FacebookCommentsIframe({ postUrl }: FacebookCommentsIfra
       <div className="mt-4 p-3 bg-gray-50 rounded text-xs text-gray-600">
         <p>💡 Se os comentários não aparecerem, verifique se:</p>
         <ul className="list-disc pl-5 mt-2 space-y-1">
-          <li>O app do Facebook está em modo "Ativo" (não "Desenvolvimento")</li>
+          <li>O app do Facebook está em modo &quot;Ativo&quot; (não &quot;Desenvolvimento&quot;)</li>
           <li>Os domínios anacli.com.br e www.anacli.com.br estão configurados</li>
           <li>As URLs de privacidade estão acessíveis</li>
           <li>Você está logado no Facebook</li>

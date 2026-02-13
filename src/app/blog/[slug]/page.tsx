@@ -24,9 +24,38 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
+  const postUrl = `https://anacli.com.br/blog/${post.slug}`;
+
   return {
     title: `${post.title} | Blog Anacli`,
     description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      url: postUrl,
+      siteName: 'Anacli Laboratorial',
+      images: [
+        {
+          url: post.image,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+      locale: 'pt_BR',
+      type: 'article',
+      publishedTime: post.date,
+      authors: [post.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description: post.excerpt,
+      images: [post.image],
+    },
+    other: {
+      'fb:app_id': '4155112851395262',
+    },
   };
 }
 
