@@ -58,7 +58,7 @@ export default function ExclusaoDadosPage() {
                         contato@anacli.com.br
                       </a>
                       <p className="text-sm text-gray-600 mt-1">
-                        Assunto: "Solicitação de Exclusão de Dados - LGPD"
+                        Assunto: &quot;Solicitação de Exclusão de Dados - LGPD&quot;
                       </p>
                     </div>
                   </div>
