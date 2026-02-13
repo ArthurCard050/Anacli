@@ -1,0 +1,170 @@
+/* Customização do Cusdis - Português BR */
+
+/* Ocultar "Comments powered by Cusdis" */
+#cusdis_thread a[href*="cusdis.com"],
+#cusdis_thread > div:last-child a[href*="cusdis.com"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+}
+
+/* Ocultar footer do Cusdis */
+#cusdis_thread > div:last-child {
+  display: none !important;
+}
+
+/* Melhorar design dos inputs */
+#cusdis_thread input,
+#cusdis_thread textarea {
+  border: 1px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  padding: 12px 16px !important;
+  font-size: 14px !important;
+  font-family: inherit !important;
+  transition: all 0.2s ease !important;
+  background: white !important;
+}
+
+#cusdis_thread input:focus,
+#cusdis_thread textarea:focus {
+  border-color: #A6C022 !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(166, 192, 34, 0.1) !important;
+}
+
+#cusdis_thread textarea {
+  min-height: 100px !important;
+  resize: vertical !important;
+}
+
+/* Melhorar botão de enviar */
+#cusdis_thread button[type="submit"] {
+  background-color: #A6C022 !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 8px !important;
+  padding: 12px 32px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  margin-top: 12px !important;
+}
+
+#cusdis_thread button[type="submit"]:hover {
+  background-color: #8fa01c !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(166, 192, 34, 0.3) !important;
+}
+
+#cusdis_thread button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Estilo dos comentários */
+#cusdis_thread .cusdis-comment {
+  border: 1px solid #f3f4f6 !important;
+  border-radius: 12px !important;
+  padding: 20px !important;
+  margin-bottom: 16px !important;
+  background: #fafafa !important;
+  transition: all 0.2s ease !important;
+}
+
+#cusdis_thread .cusdis-comment:hover {
+  border-color: #e5e7eb !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+}
+
+#cusdis_thread .cusdis-comment-nickname {
+  font-weight: 600 !important;
+  color: #111827 !important;
+  font-size: 15px !important;
+}
+
+#cusdis_thread .cusdis-comment-content {
+  color: #4b5563 !important;
+  line-height: 1.7 !important;
+  margin-top: 8px !important;
+  font-size: 14px !important;
+}
+
+#cusdis_thread .cusdis-comment-date {
+  color: #9ca3af !important;
+  font-size: 12px !important;
+  margin-top: 8px !important;
+}
+
+/* Botão de responder */
+#cusdis_thread .cusdis-reply-button {
+  color: #A6C022 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: color 0.2s ease !important;
+}
+
+#cusdis_thread .cusdis-reply-button:hover {
+  color: #8fa01c !important;
+  text-decoration: underline !important;
+}
+
+/* Respostas aninhadas */
+#cusdis_thread .cusdis-comment-reply {
+  margin-left: 32px !important;
+  margin-top: 12px !important;
+  padding-left: 16px !important;
+  border-left: 3px solid #A6C022 !important;
+}
+
+/* Loading state */
+#cusdis_thread .cusdis-loading {
+  text-align: center !important;
+  padding: 40px !important;
+  color: #9ca3af !important;
+}
+
+/* Empty state */
+#cusdis_thread .cusdis-empty {
+  text-align: center !important;
+  padding: 40px !important;
+  color: #9ca3af !important;
+  font-size: 14px !important;
+}
+
+/* Form container */
+#cusdis_thread form {
+  margin-bottom: 32px !important;
+}
+
+#cusdis_thread form > div {
+  margin-bottom: 12px !important;
+}
+
+/* Labels */
+#cusdis_thread label {
+  display: block !important;
+  margin-bottom: 6px !important;
+  font-weight: 500 !important;
+  color: #374151 !important;
+  font-size: 14px !important;
+}
+
+/* Grid layout para nome e email */
+#cusdis_thread .cusdis-form-row {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 12px !important;
+}
+
+@media (max-width: 640px) {
+  #cusdis_thread .cusdis-form-row {
+    grid-template-columns: 1fr !important;
+  }
+
+  #cusdis_thread .cusdis-comment-reply {
+    margin-left: 16px !important;
+  }
+}
