@@ -8,8 +8,13 @@ export function middleware(request: NextRequest) {
   // Formato antigo: /slug-do-post/
   // Formato novo: /blog/slug-do-post/
   
-  // Lista de caminhos que NÃO devem ser redirecionados
-  const excludedPaths = [
+  // IMPORTANTE: Este middleware está DESABILITADO por enquanto
+  // Motivo: Estava redirecionando TODAS as URLs 404 para /blog/
+  // Solução: Use redirects no next.config.js para URLs específicas conhecidas
+  
+  // Lista de caminhos conhecidos do site (rotas válidas)
+  const knownPaths = [
+    '/',
     '/blog',
     '/loja',
     '/sobre',
@@ -20,27 +25,28 @@ export function middleware(request: NextRequest) {
     '/estrutura',
     '/privacidade',
     '/exclusao-dados',
-    '/_next',
-    '/api',
-    '/assets',
-    '/favicon',
   ];
 
-  // Verifica se o caminho começa com algum dos caminhos excluídos
-  const isExcluded = excludedPaths.some(path => pathname.startsWith(path));
+  // Prefixos de rotas dinâmicas válidas
+  const validPrefixes = [
+    '/blog/',
+    '/loja/',
+    '/_next/',
+    '/api/',
+    '/assets/',
+  ];
 
-  // Se não for excluído e não começar com /blog/, redireciona
-  if (!isExcluded && pathname !== '/' && !pathname.startsWith('/blog/')) {
-    // Remove a barra inicial e final se existir
-    const slug = pathname.replace(/^\//, '').replace(/\/$/, '');
-    
-    // Se o slug não estiver vazio e não for um arquivo estático
-    if (slug && !slug.includes('.')) {
-      // Redireciona para /blog/slug
-      const url = request.nextUrl.clone();
-      url.pathname = `/blog/${slug}`;
-      return NextResponse.redirect(url, 301); // 301 = Permanent redirect (bom para SEO)
-    }
+  // Verifica se é uma rota conhecida ou começa com um prefixo válido
+  const isValidRoute = 
+    knownPaths.includes(pathname) || 
+    validPrefixes.some(prefix => pathname.startsWith(prefix)) ||
+    pathname.includes('.'); // Arquivos estáticos
+
+  // Se não for uma rota válida, deixa o Next.js mostrar a página 404
+  // NÃO redireciona automaticamente para /blog/
+  if (!isValidRoute) {
+    // Apenas deixa passar - Next.js vai mostrar a página 404
+    return NextResponse.next();
   }
 
   return NextResponse.next();

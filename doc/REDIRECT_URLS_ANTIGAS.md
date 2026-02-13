@@ -1,217 +1,242 @@
-# Redirecionamento de URLs Antigas do Blog
+# Redirect de URLs Antigas do Blog
 
 ## Problema
 
-Após a migração do blog, as URLs antigas indexadas no Google não funcionam mais:
+URLs antigas do blog indexadas no Google não funcionavam após migração:
+- **Formato antigo**: `https://anacli.com.br/slug-do-post/`
+- **Formato novo**: `https://anacli.com.br/blog/slug-do-post/`
 
-- **URL antiga**: `https://www.anacli.com.br/anacli-tem-certificado-de-qualidade-internacional-prevecal/`
-- **URL nova**: `https://www.anacli.com.br/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal/`
+## ❌ Solução Inicial (INCORRETA)
 
-Quando alguém clica no link antigo do Google, recebe erro 404.
+Tentamos usar um redirect genérico que redirecionava TODAS as URLs não encontradas para `/blog/`:
 
-## Solução Implementada
-
-Criamos um **middleware do Next.js** que automaticamente redireciona todas as URLs antigas para o novo formato.
-
-### Como Funciona
-
-1. O middleware intercepta todas as requisições
-2. Verifica se a URL não começa com `/blog/`
-3. Verifica se não é uma rota conhecida (home, loja, sobre, etc.)
-4. Se for um slug de post antigo, redireciona para `/blog/[slug]`
-5. Usa redirect 301 (permanente) que é bom para SEO
-
-### Exemplo de Redirecionamentos
-
-| URL Antiga | URL Nova | Status |
-|------------|----------|--------|
-| `/anacli-tem-certificado/` | `/blog/anacli-tem-certificado/` | 301 |
-| `/saude-sexual-prevencao/` | `/blog/saude-sexual-prevencao/` | 301 |
-| `/dia-mundial-cancer/` | `/blog/dia-mundial-cancer/` | 301 |
-
-### Rotas Excluídas (Não Redirecionadas)
-
-O middleware NÃO redireciona estas rotas:
-- `/` (home)
-- `/blog/*` (já está correto)
-- `/loja/*`
-- `/sobre`
-- `/contato`
-- `/servicos`
-- `/convenios`
-- `/certificacoes`
-- `/estrutura`
-- `/privacidade`
-- `/exclusao-dados`
-- `/_next/*` (arquivos do Next.js)
-- `/api/*` (APIs)
-- `/assets/*` (imagens, etc)
-- Arquivos estáticos (`.svg`, `.png`, `.jpg`, etc.)
-
-## Benefícios para SEO
-
-### 1. Redirect 301 (Permanente)
-
-O redirect 301 informa ao Google que:
-- A página mudou permanentemente de lugar
-- O Google deve atualizar o índice
-- O "link juice" (autoridade) é transferido para a nova URL
-
-### 2. Preserva Rankings
-
-- Os links antigos continuam funcionando
-- Usuários não encontram erro 404
-- O Google transfere a autoridade da página antiga para a nova
-
-### 3. Atualização Automática no Google
-
-Com o tempo, o Google vai:
-1. Detectar o redirect 301
-2. Atualizar o índice com as novas URLs
-3. Mostrar as novas URLs nos resultados de busca
-
-## Como Testar
-
-### Teste Local
-
-1. Inicie o servidor de desenvolvimento:
-```bash
-npm run dev
+```javascript
+// PROBLEMA: Isso redireciona TUDO para /blog/, até URLs que não existem!
+{
+  source: '/:slug((?!blog|loja|sobre|...).*)',
+  destination: '/blog/:slug',
+  permanent: true,
+}
 ```
 
-2. Acesse uma URL antiga no navegador:
+**Resultado**: Qualquer URL digitada (ex: `/teste123`) era redirecionada para `/blog/teste123`, mesmo que não existisse.
+
+## ✅ Solução Correta
+
+### Opção 1: Redirects Específicos (Recomendado)
+
+Adicionar redirects apenas para posts que realmente existem no `next.config.js`:
+
+```javascript
+async redirects() {
+  return [
+    {
+      source: '/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      destination: '/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      permanent: true, // 301 redirect
+    },
+    {
+      source: '/outro-post-antigo',
+      destination: '/blog/outro-post-antigo',
+      permanent: true,
+    },
+    // Adicione mais conforme necessário
+  ];
+}
 ```
-http://localhost:3000/anacli-tem-certificado-de-qualidade-internacional-prevecal/
+
+**Vantagens**:
+- ✅ Não redireciona URLs aleatórias
+- ✅ Preserva SEO dos posts específicos
+- ✅ Mostra 404 para URLs que realmente não existem
+
+### Opção 2: Verificação Dinâmica (Avançado)
+
+Se você tem muitos posts, pode verificar se o post existe antes de redirecionar:
+
+```javascript
+// middleware.ts
+export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // Lista de rotas conhecidas
+  const knownRoutes = ['/', '/blog', '/loja', '/sobre', ...];
+  
+  // Se não for uma rota conhecida
+  if (!knownRoutes.some(route => pathname.startsWith(route))) {
+    // Verifica se existe como post no blog
+    const slug = pathname.replace(/^\//, '').replace(/\/$/, '');
+    const postExists = await checkIfPostExists(slug); // Função que verifica no WordPress
+    
+    if (postExists) {
+      return NextResponse.redirect(new URL(`/blog/${slug}`, request.url), 301);
+    }
+  }
+  
+  return NextResponse.next();
+}
 ```
 
-3. Você deve ser redirecionado automaticamente para:
+**Desvantagens**:
+- ❌ Mais complexo
+- ❌ Requer chamada à API do WordPress
+- ❌ Pode ser mais lento
+
+## Implementação Atual
+
+### 1. Middleware Desabilitado
+
+O `middleware.ts` agora apenas deixa passar as requisições sem fazer redirects automáticos:
+
+```typescript
+// middleware.ts
+export function middleware(request: NextRequest) {
+  // Não faz redirects automáticos
+  // Deixa o Next.js mostrar 404 para URLs não encontradas
+  return NextResponse.next();
+}
 ```
-http://localhost:3000/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal/
+
+### 2. Redirects Vazios
+
+O `next.config.js` tem um array vazio de redirects:
+
+```javascript
+async redirects() {
+  return [
+    // Adicione redirects específicos aqui conforme necessário
+  ];
+}
 ```
 
-### Teste em Produção
+## Como Adicionar Redirects para Posts Específicos
 
-1. Após o deploy, acesse:
-```
-https://www.anacli.com.br/anacli-tem-certificado-de-qualidade-internacional-prevecal/
-```
+### Passo 1: Identificar Posts Antigos
 
-2. Você deve ser redirecionado para:
-```
-https://www.anacli.com.br/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal/
-```
-
-### Verificar Redirect 301
-
-Use ferramentas online para verificar o status do redirect:
-
-1. **Redirect Checker**: https://httpstatus.io/
-2. **SEO Site Checkup**: https://seositecheckup.com/tools/redirect-checker
-3. **Chrome DevTools**:
-   - Abra DevTools (F12)
-   - Vá na aba "Network"
-   - Acesse a URL antiga
-   - Veja o status code: deve ser **301**
-
-## Atualizar Google Search Console
-
-Para acelerar a atualização no Google:
-
-### 1. Solicitar Reindexação
+Use o Google Search Console para ver quais URLs antigas estão gerando 404:
 
 1. Acesse: https://search.google.com/search-console
-2. Vá em **Inspeção de URL**
-3. Cole a URL nova: `https://www.anacli.com.br/blog/[slug]`
-4. Clique em **Solicitar indexação**
+2. Vá em **Cobertura** ou **Páginas**
+3. Veja erros 404
+4. Identifique quais são posts do blog
 
-### 2. Enviar Sitemap Atualizado
+### Passo 2: Adicionar Redirects
 
-1. Certifique-se de que o sitemap inclui as novas URLs
-2. No Search Console, vá em **Sitemaps**
-3. Envie o sitemap: `https://www.anacli.com.br/sitemap.xml`
+No `next.config.js`, adicione cada post:
 
-### 3. Monitorar Cobertura
+```javascript
+async redirects() {
+  return [
+    {
+      source: '/post-antigo-1',
+      destination: '/blog/post-antigo-1',
+      permanent: true,
+    },
+    {
+      source: '/post-antigo-2',
+      destination: '/blog/post-antigo-2',
+      permanent: true,
+    },
+  ];
+}
+```
 
-1. No Search Console, vá em **Cobertura**
-2. Monitore:
-   - URLs com erro 404 (devem diminuir)
-   - URLs redirecionadas (devem aumentar)
-   - URLs indexadas com novo formato
+### Passo 3: Deploy e Teste
 
-## Tempo de Atualização
+1. Faça commit e push
+2. Aguarde deploy
+3. Teste as URLs antigas
+4. Verifique no Search Console após alguns dias
 
-- **Redirect funciona**: Imediatamente após deploy
-- **Google detecta**: 1-7 dias
-- **Índice atualizado**: 2-4 semanas
-- **Rankings preservados**: 1-2 meses
+## Exemplo Completo
+
+```javascript
+// next.config.js
+async redirects() {
+  return [
+    // Posts do blog que existiam no formato antigo
+    {
+      source: '/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      destination: '/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      permanent: true,
+    },
+    {
+      source: '/importancia-exames-preventivos',
+      destination: '/blog/importancia-exames-preventivos',
+      permanent: true,
+    },
+    {
+      source: '/check-up-anual-saude',
+      destination: '/blog/check-up-anual-saude',
+      permanent: true,
+    },
+    // Adicione mais conforme identificar no Search Console
+  ];
+}
+```
+
+## Benefícios do Redirect 301
+
+- **Preserva SEO**: Transfere autoridade da URL antiga para a nova
+- **Mantém tráfego**: Usuários que clicam em links antigos chegam ao conteúdo
+- **Atualiza índice**: Google entende que a URL mudou permanentemente
+- **Melhora UX**: Evita páginas 404 para conteúdo que existe
+
+## Monitoramento
+
+### Google Search Console
+
+1. **Cobertura**: Monitore redução de erros 404
+2. **Desempenho**: Veja se tráfego dos posts antigos está sendo mantido
+3. **Sitemaps**: Certifique-se de que apenas URLs novas estão no sitemap
+
+### Logs do Servidor
+
+Se usar Vercel/Netlify, monitore:
+- Quantidade de redirects 301
+- URLs que ainda geram 404
+- Tempo de resposta dos redirects
 
 ## Troubleshooting
 
 ### Redirect não funciona?
 
-1. Verifique se o arquivo `middleware.ts` está na raiz do projeto
-2. Confirme que o deploy foi feito com sucesso
-3. Limpe o cache do navegador
-4. Teste em modo anônimo
+**Possíveis causas**:
+1. Cache do navegador (Ctrl+Shift+R para limpar)
+2. Cache do CDN (limpe no painel Vercel/Netlify)
+3. Sintaxe incorreta no next.config.js
+
+**Solução**:
+1. Teste em aba anônima
+2. Limpe cache do CDN
+3. Verifique logs de build
 
 ### Ainda aparece 404?
 
-1. Verifique se o slug está correto
-2. Confirme que o post existe no WordPress
-3. Verifique os logs do servidor
+**Possíveis causas**:
+1. URL não está na lista de redirects
+2. Slug está diferente (com/sem barra final)
+3. Deploy não propagou
 
-### Google ainda mostra URL antiga?
-
-1. Isso é normal, leva tempo
-2. Solicite reindexação no Search Console
-3. Aguarde algumas semanas
-4. O redirect 301 garante que funciona mesmo com URL antiga
-
-## Código do Middleware
-
-O arquivo `middleware.ts` está na raiz do projeto e contém:
-
-```typescript
-// Intercepta requisições
-// Verifica se é URL antiga
-// Redireciona para /blog/[slug]
-// Usa status 301 (permanente)
-```
-
-## Manutenção
-
-### Adicionar Nova Rota Excluída
-
-Se você criar uma nova seção do site (ex: `/equipe`), adicione ao array `excludedPaths`:
-
-```typescript
-const excludedPaths = [
-  '/blog',
-  '/loja',
-  '/equipe', // Nova rota
-  // ...
-];
-```
-
-### Remover Redirect no Futuro
-
-Quando o Google atualizar completamente o índice (6-12 meses), você pode:
-1. Manter o redirect (recomendado)
-2. Ou remover o arquivo `middleware.ts`
-
-**Recomendação**: Mantenha o redirect permanentemente para garantir que links antigos sempre funcionem.
-
-## Impacto no Desempenho
-
-- **Overhead**: Mínimo (~1-2ms por requisição)
-- **Cache**: O redirect é cacheado pelo navegador
-- **SEO**: Positivo (preserva rankings)
+**Solução**:
+1. Adicione o redirect específico
+2. Teste ambas as variações (com e sem `/`)
+3. Aguarde 5-10 minutos após deploy
 
 ## Conclusão
 
-O middleware resolve completamente o problema de URLs antigas:
-- ✅ Links do Google funcionam
-- ✅ Usuários não veem erro 404
-- ✅ SEO preservado
-- ✅ Rankings mantidos
-- ✅ Atualização automática no Google
+A solução correta é usar redirects específicos para posts conhecidos, não um redirect genérico que captura tudo. Isso:
+
+- ✅ Preserva SEO dos posts antigos
+- ✅ Mostra 404 apropriado para URLs inválidas
+- ✅ Mantém controle sobre o que é redirecionado
+- ✅ Evita comportamentos inesperados
+
+**Próximos passos**:
+1. Identifique posts antigos no Search Console
+2. Adicione redirects específicos no `next.config.js`
+3. Faça deploy e monitore
+
+---
+
+**Última atualização**: 12/02/2026

@@ -4,12 +4,19 @@ const nextConfig = {
   skipTrailingSlashRedirect: true,
   reactStrictMode: true,
   async redirects() {
+    // Redirects específicos para posts antigos do blog
+    // Adicione aqui apenas os slugs de posts que realmente existem
     return [
-      {
-        source: '/:slug((?!blog|loja|sobre|contato|servicos|convenios|certificacoes|estrutura|privacidade|exclusao-dados|_next|api|assets).*)',
-        destination: '/blog/:slug',
-        permanent: true, // 301 redirect
-      },
+      // Exemplo de redirect específico:
+      // {
+      //   source: '/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      //   destination: '/blog/anacli-tem-certificado-de-qualidade-internacional-prevecal',
+      //   permanent: true,
+      // },
+      
+      // IMPORTANTE: NÃO use redirects genéricos como o que estava aqui antes
+      // Isso causava redirecionamento de TODAS as URLs 404 para /blog/
+      // Adicione apenas redirects específicos conforme necessário
     ];
   },
   images: {
