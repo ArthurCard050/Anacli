@@ -4,6 +4,14 @@ import type { NextRequest } from 'next/server';
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // BLOQUEAR ACESSO À LOJA EM PRODUÇÃO
+  // A loja só deve estar acessível em desenvolvimento
+  if (process.env.NODE_ENV === 'production' && 
+      (pathname.startsWith('/loja') || pathname.startsWith('/loja-anacli'))) {
+    // Redireciona para a home
+    return NextResponse.redirect(new URL('/', request.url));
+  }
+
   // Redirect de URLs antigas do blog para o novo formato
   // Formato antigo: /slug-do-post/
   // Formato novo: /blog/slug-do-post/
@@ -16,7 +24,6 @@ export function middleware(request: NextRequest) {
   const knownPaths = [
     '/',
     '/blog',
-    '/loja',
     '/sobre',
     '/contato',
     '/servicos',
@@ -30,7 +37,6 @@ export function middleware(request: NextRequest) {
   // Prefixos de rotas dinâmicas válidas
   const validPrefixes = [
     '/blog/',
-    '/loja/',
     '/_next/',
     '/api/',
     '/assets/',

@@ -100,3 +100,7 @@ ehthumbs.db
 
 # Turbo
 .turbo
+
+# Loja (não deve ir para produção ainda)
+src/app/loja/
+src/app/loja-anacli/
