@@ -1,15 +1,28 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+const LOJA_PASSWORD = '123AnacliBR';
+
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // BLOQUEAR ACESSO À LOJA EM PRODUÇÃO
-  // A loja só deve estar acessível em desenvolvimento
-  if (process.env.NODE_ENV === 'production' && 
-      (pathname.startsWith('/loja') || pathname.startsWith('/loja-anacli'))) {
-    // Redireciona para a home
-    return NextResponse.redirect(new URL('/', request.url));
+  // PROTEÇÃO DA LOJA COM SENHA
+  if (pathname.startsWith('/loja') || pathname.startsWith('/loja-anacli')) {
+    // Verifica se tem o cookie de autenticação
+    const authCookie = request.cookies.get('loja-auth');
+    
+    // Se não tem cookie ou cookie inválido, redireciona para login
+    if (!authCookie || authCookie.value !== LOJA_PASSWORD) {
+      // Se está tentando acessar a API de login, deixa passar
+      if (pathname === '/api/loja-auth') {
+        return NextResponse.next();
+      }
+      
+      // Redireciona para página de login
+      const loginUrl = new URL('/loja-login', request.url);
+      loginUrl.searchParams.set('redirect', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
   }
 
   // Redirect de URLs antigas do blog para o novo formato
@@ -32,11 +45,14 @@ export function middleware(request: NextRequest) {
     '/estrutura',
     '/privacidade',
     '/exclusao-dados',
+    '/loja-login',
   ];
 
   // Prefixos de rotas dinâmicas válidas
   const validPrefixes = [
     '/blog/',
+    '/loja/',
+    '/loja-anacli/',
     '/_next/',
     '/api/',
     '/assets/',

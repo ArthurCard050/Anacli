@@ -5,7 +5,6 @@ import ShopFooter from '../components/ShopFooter';
 import WhatsAppFAB from '../components/WhatsAppFAB';
 import AIBanner from '../components/AIBanner';
 import ExamesListSection from './components/ExamesListSection';
-import ExamesFAQSection from './components/ExamesFAQSection';
 import './styles/exames.css';
 
 export const metadata: Metadata = {
@@ -23,7 +22,6 @@ export default function ExamesPage() {
         <main className="pt-20">
           <ExamesListSection />
           <AIBanner />
-          <ExamesFAQSection />
         </main>
 
         <ShopFooter />

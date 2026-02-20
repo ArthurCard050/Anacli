@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
 import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
+import '../styles/mega-menu.css';
 
 export default function ShopHeader() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -139,8 +139,9 @@ export default function ShopHeader() {
       className={`fixed top-0 left-0 right-0 z-[100] bg-accent backdrop-blur-md border-b border-accent/20 transition-all duration-300 ${
         scrollY > 50 ? 'rounded-b-2xl shadow-lg' : ''
       }`}
+      style={{ overflow: 'visible' }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8" style={{ overflow: 'visible' }}>
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Menu Hamburger + Logo */}
           <div className="flex items-center gap-4">
@@ -152,19 +153,22 @@ export default function ShopHeader() {
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Menu"
             >
-              {isMobileMenuOpen ? <X className="h-5 w-5 text-white" /> : <Menu className="h-5 w-5 text-white" />}
+              <div className={`hamburger-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+                <span className="hamburger-line"></span>
+              </div>
             </Button>
 
             {/* Logo */}
             <div className="flex-shrink-0">
               <a href="/loja" className="flex items-center transition-transform hover:scale-105">
-                <Image
+                <img
                   src="/assets/Logo-Hor-branca.svg"
                   alt="Anacli"
                   width={120}
                   height={40}
                   className="h-8 md:h-10 w-auto"
-                  priority
                 />
               </a>
             </div>
@@ -180,7 +184,7 @@ export default function ShopHeader() {
                 className="flex items-center gap-1 text-white hover:text-white/80 transition-colors font-medium py-4"
               >
                 Exames
-                <ChevronDown className={`h-4 w-4 transition-transform duration-200 ${showMegaMenu ? 'rotate-180' : ''}`} />
+                <ChevronDown className={`h-4 w-4 chevron-rotate ${showMegaMenu ? 'open' : ''}`} />
               </button>
 
               {/* Mega Menu */}
@@ -230,7 +234,7 @@ export default function ShopHeader() {
                         <span>Mais de 200 exames disponíveis</span>
                       </div>
                       <a 
-                        href="#" 
+                        href="/loja/exames" 
                         onClick={closeMenu}
                         className="menu-clickable-area inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10"
                       >
@@ -242,8 +246,9 @@ export default function ShopHeader() {
                 </div>
               )}
             </div>
-            <a href="#" className="text-white hover:text-white/80 transition-colors font-medium">Pacotes</a>
-            <a href="#" className="text-white hover:text-white/80 transition-colors font-medium">Como Funciona</a>
+            <a href="/loja/exames" className="text-white hover:text-white/80 transition-colors font-medium">Exames</a>
+            <a href="/loja/pacotes" className="text-white hover:text-white/80 transition-colors font-medium">Pacotes</a>
+            <a href="/loja/como-funciona" className="text-white hover:text-white/80 transition-colors font-medium">Como Funciona</a>
           </nav>
 
           {/* Search Bar - Desktop (sempre visível) */}
@@ -317,7 +322,7 @@ export default function ShopHeader() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-200 shadow-xl">
+        <div className="lg:hidden bg-white border-t border-gray-200 shadow-xl animate-in slide-in-from-top duration-300">
           <div className="container mx-auto px-4 py-6 max-h-[80vh] overflow-y-auto">
             {/* Header do Menu - Igual ao Desktop */}
             <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
@@ -361,7 +366,7 @@ export default function ShopHeader() {
                   <span>Mais de 200 exames disponíveis</span>
                 </div>
                 <a 
-                  href="#" 
+                  href="/loja/exames" 
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="inline-flex items-center justify-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-3 rounded-lg hover:bg-primary/10"
                 >
@@ -375,14 +380,14 @@ export default function ShopHeader() {
             <div className="mt-6 pt-4 border-t border-gray-100 space-y-4">
               <div className="flex gap-4">
                 <a 
-                  href="#" 
+                  href="/loja/pacotes" 
                   className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Pacotes
                 </a>
                 <a 
-                  href="#" 
+                  href="/loja/como-funciona" 
                   className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >

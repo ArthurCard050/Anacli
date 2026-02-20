@@ -101,71 +101,66 @@ export const mockExams: Exam[] = [
 // Pacotes de exames (mock data)
 export const mockPackages: ExamPackage[] = [
   {
-    id: 'checkup-completo',
-    title: 'Check-up Completo',
-    slug: 'checkup-completo',
-    description: 'Avaliação geral de saúde com os principais exames',
-    exams: ['hemograma-completo', 'glicemia-jejum', 'colesterol-total'],
-    price: 189.90,
-    originalPrice: 249.90,
-    discount: '20% OFF',
+    id: 'checkup-fitness-performance',
+    title: 'Check-up Fitness PERFORMANCE',
+    slug: 'checkup-fitness-performance',
+    description: 'Pacote de exames laboratoriais preventivos',
+    exams: ['hemograma-completo', 'glicemia-jejum', 'colesterol-total', 'tsh'],
+    price: 117.00,
+    originalPrice: 150.00,
+    discount: '22% OFF',
     featured: true,
     benefits: [
-      'Hemograma Completo',
-      'Glicemia de Jejum',
-      'Colesterol Total e Frações',
-      'Economia de R$ 60,00'
-    ]
-  },
-  {
-    id: 'perfil-hormonal',
-    title: 'Perfil Hormonal Feminino',
-    slug: 'perfil-hormonal',
-    description: 'Avaliação completa dos hormônios femininos',
-    exams: ['tsh'],
-    price: 249.90,
-    originalPrice: 299.90,
-    discount: '15% OFF',
-    featured: true,
-    benefits: [
-      'TSH',
-      'T4 Livre',
-      'Prolactina',
-      'Estradiol',
-      'Economia de R$ 50,00'
-    ]
-  },
-  {
-    id: 'vitaminas-essenciais',
-    title: 'Vitaminas Essenciais',
-    slug: 'vitaminas-essenciais',
-    description: 'Dosagem das principais vitaminas para sua saúde',
-    exams: ['vitamina-d', 'vitamina-b12'],
-    price: 159.90,
-    originalPrice: 189.90,
-    discount: 'PROMO',
-    featured: true,
-    benefits: [
-      'Vitamina D',
-      'Vitamina B12',
-      'Ferro Sérico',
-      'Economia de R$ 30,00'
-    ]
-  },
-  {
-    id: 'perfil-cardiaco',
-    title: 'Perfil Cardíaco',
-    slug: 'perfil-cardiaco',
-    description: 'Avaliação completa da saúde cardiovascular',
-    exams: ['colesterol-total'],
-    price: 199.90,
-    originalPrice: 259.90,
-    discount: '23% OFF',
-    benefits: [
-      'Colesterol Total e Frações',
+      'Hemograma completo',
+      'Ferritina',
+      'Glicose',
+      'Hemoglobina glicada (HbA1c)',
+      'Colesterol total',
+      'HDL colesterol',
+      'LDL colesterol',
       'Triglicerídeos',
-      'PCR (Proteína C Reativa)',
-      'Homocisteína'
+      'Ureia',
+      'Creatinina',
+      'TGO (AST) • TGP (ALT)',
+      'Bilirrubinas',
+      'Sódio',
+      'Potássio • Cálcio',
+      'Creatina fosfoquinase (CPK)',
+      'Ácido lático',
+      'Proteínas totais e frações',
+      'Ácido úrico',
+      'TSH • Urina I / Sumário de urina',
+      'Sem pedido médico'
+    ]
+  },
+  {
+    id: 'checkup-fitness-essencial',
+    title: 'Check-up Fitness ESSENCIAL',
+    slug: 'checkup-fitness-essencial',
+    description: 'Pacote de exames laboratoriais preventivos',
+    exams: ['hemograma-completo', 'glicemia-jejum', 'colesterol-total', 'tsh'],
+    price: 97.00,
+    originalPrice: 130.00,
+    discount: '25% OFF',
+    featured: true,
+    benefits: [
+      'Hemograma completo',
+      'Ferritina',
+      'Glicose',
+      'Hemoglobina glicada (HbA1c)',
+      'Colesterol total',
+      'HDL colesterol',
+      'LDL colesterol',
+      'Triglicerídeos',
+      'Ureia',
+      'Creatinina',
+      'TGO (AST) • TGP (ALT)',
+      'Sódio',
+      'Potássio',
+      'Ácido úrico',
+      'TSH •',
+      'Urina tipo I / Sumário de urina',
+      'Sem pedido médico'
     ]
   }
 ];

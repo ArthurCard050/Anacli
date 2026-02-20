@@ -2,11 +2,11 @@
 
 /* Garantir fundo branco para o menu */
 .mega-menu-dropdown {
-  position: absolute;
-  top: calc(100% + 10px);
+  position: fixed;
+  top: 80px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 50;
+  z-index: 9999;
   background-color: white !important;
 }
 
@@ -16,56 +16,56 @@
   color: #374151 !important; /* text-gray-700 */
 }
 
-/* Animações suaves para o menu */
+/* Animações suaves para o menu - Melhoradas */
 @keyframes slideInDown {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%) translateY(-20px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
 }
 
 @keyframes slideOutUp {
   from {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(-50%) translateY(0) scale(1);
   }
   to {
     opacity: 0;
-    transform: translateX(-50%) translateY(-10px);
+    transform: translateX(-50%) translateY(-20px) scale(0.95);
   }
 }
 
 .mega-menu-enter {
-  animation: slideInDown 0.2s ease-out forwards;
+  animation: slideInDown 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .mega-menu-exit {
-  animation: slideOutUp 0.15s ease-in forwards;
+  animation: slideOutUp 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
 /* Hover effects para os itens do menu */
 .menu-category-item {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   background-color: transparent !important;
 }
 
 .menu-category-item:hover {
-  transform: translateX(4px);
-  background-color: rgba(166, 192, 34, 0.05) !important;
+  transform: translateX(6px);
+  background-color: rgba(166, 192, 34, 0.08) !important;
 }
 
 /* Efeito de hover para as categorias */
 .menu-category-header {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .menu-category-header:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 /* Indicador visual para itens ativos */
@@ -82,6 +82,29 @@
   }
 }
 
+/* Animação do menu mobile */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideOutToTop {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
 @media (max-width: 768px) {
   .mega-menu-dropdown {
     position: fixed;
@@ -95,6 +118,7 @@
     border-radius: 0;
     overflow-y: auto;
     background-color: white !important;
+    animation: slideInFromTop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 }
 
@@ -134,10 +158,10 @@
   color: #111827 !important;
 }
 
-/* Animação de entrada escalonada para os itens */
+/* Animação de entrada escalonada para os itens - Melhorada */
 .stagger-animation {
   opacity: 0;
-  animation: fadeInStagger 0.4s ease-out forwards;
+  animation: fadeInStagger 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
 .stagger-animation:nth-child(1) { animation-delay: 0.05s; }
@@ -150,11 +174,11 @@
 @keyframes fadeInStagger {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px) scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
 }
 
@@ -167,4 +191,65 @@
   bottom: 0;
   background: transparent;
   z-index: 49;
+}
+
+/* Animação do ícone hamburger */
+.hamburger-icon {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hamburger-icon.open {
+  transform: rotate(90deg);
+}
+
+/* Hamburger Menu Animation - Traços para X */
+.hamburger-menu {
+  width: 20px;
+  height: 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.hamburger-line {
+  width: 100%;
+  height: 2px;
+  background-color: white;
+  border-radius: 3px;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: center;
+}
+
+/* Estado aberto - X */
+.hamburger-menu.open .hamburger-line:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger-menu.open .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-menu.open .hamburger-line:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+/* Hover effect */
+.hamburger-menu:hover .hamburger-line {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.hamburger-menu.open:hover .hamburger-line {
+  background-color: white;
+}
+
+/* Animação do ChevronDown */
+.chevron-rotate {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.chevron-rotate.open {
+  transform: rotate(180deg);
 }

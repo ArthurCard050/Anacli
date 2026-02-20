@@ -299,26 +299,18 @@ export default function ExamesListSection() {
   };
 
   const ExamCard = ({ exam }: { exam: Exam }) => (
-    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow">
-      <div className="flex items-start gap-2 mb-3">
-        <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-          <Clock className="h-4 w-4 text-primary" />
-        </div>
-        <div className="flex-1 min-w-0">
-          <Badge variant="secondary" className="text-xs mb-1">
-            EXAMES
-          </Badge>
-          <h3 className="font-semibold text-gray-900 text-sm leading-tight mb-1">
-            {exam.name}
-          </h3>
-          <p className="text-xs text-gray-600 line-clamp-2">
-            {exam.description}
-          </p>
-        </div>
+    <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col h-[200px]">
+      <div className="mb-3 flex-1">
+        <h3 className="font-semibold text-gray-900 text-sm leading-tight mb-2">
+          {exam.name}
+        </h3>
+        <p className="text-xs text-gray-600 line-clamp-2">
+          {exam.description}
+        </p>
       </div>
 
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
+      <div className="space-y-3 mt-auto">
+        <div className="flex items-baseline justify-between">
           <div>
             <div className="text-lg font-bold text-gray-900">
               R$ {exam.price.toFixed(2).replace('.', ',')}
@@ -328,15 +320,20 @@ export default function ExamesListSection() {
                 R$ {exam.originalPrice.toFixed(2).replace('.', ',')}
               </div>
             )}
-            <div className="text-xs text-gray-500">
-              em até 12x
-            </div>
           </div>
+          <a 
+            href={`/loja/produto/exam-${exam.id}`}
+            className="flex items-center justify-center w-7 h-7 rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 active:bg-gray-100 transition-colors"
+            title="Ver informações do exame"
+          >
+            <span className="text-gray-600 text-sm font-bold">!</span>
+          </a>
         </div>
 
         <Button
           onClick={() => handleAddToCart(exam)}
-          className="w-full bg-primary hover:bg-primary/90 text-white text-sm h-9"
+          variant="outline"
+          className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white active:bg-accent/90 text-sm h-9 font-medium transition-colors"
         >
           <ShoppingCart className="h-4 w-4 mr-1" />
           ADICIONAR

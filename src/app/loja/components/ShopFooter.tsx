@@ -1,7 +1,6 @@
 'use client';
 
 import { Facebook, Instagram, Linkedin } from "lucide-react";
-import Image from 'next/image';
 import { mockExams } from '../data/mock-products';
 
 export default function ShopFooter() {
@@ -14,10 +13,10 @@ export default function ShopFooter() {
     {
       title: "E-commerce",
       links: [
-        { label: "Exames", href: "#vitrine" },
-        { label: "Pacotes", href: "#pacotes" },
-        { label: "Como Funciona", href: "#como-funciona" },
-        { label: "Preparo para Exames", href: "#preparo" },
+        { label: "Exames", href: "/loja/exames" },
+        { label: "Pacotes", href: "/loja/pacotes" },
+        { label: "Como Funciona", href: "/loja/como-funciona" },
+        { label: "Preparo para Exames", href: "/loja/exames#preparo" },
       ],
     },
     {
@@ -88,7 +87,7 @@ export default function ShopFooter() {
               href="/loja"
               className="inline-block mb-4 cursor-pointer"
             >
-              <Image
+              <img
                 src="/assets/Logo-Hor-branca.svg"
                 alt="Anacli - Laboratório de Análises Clínicas"
                 width={120}

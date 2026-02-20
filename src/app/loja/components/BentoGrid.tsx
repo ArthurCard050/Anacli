@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import Link from 'next/link';
-import { Clock, Calendar, Plus, Check, Info, Sparkles, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Clock, Calendar, Plus, Check, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { mockExams, mockPackages } from '../data/mock-products';
 import { useCart } from '../context/CartContext';
@@ -32,77 +32,76 @@ export default function BentoGrid() {
     }
   };
 
-
-  // Card Grande Destaque
-  const FeaturedPackageCard = ({ pkg }: { pkg: ExamPackage }) => {
+  // Card de Pacote Fitness
+  const FitnessPackageCard = ({ pkg }: { pkg: ExamPackage }) => {
     const isAdded = addedItems.has(pkg.id);
     return (
-      <div className="bg-primary/5 rounded-3xl border border-gray-200 hover:border-primary transition-all duration-300 p-5 md:p-6 flex flex-col h-full">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-accent" />
-            <span className="text-xs font-semibold text-accent">Mais Vendido</span>
+      <div className="bg-white rounded-2xl border border-gray-200 hover:border-primary hover:shadow-lg transition-all duration-300 p-6 md:p-8 flex flex-col h-full">
+        <div className="flex items-start justify-between mb-4 md:mb-6">
+          <div className="flex-1">
+            {pkg.discount && (
+              <span className="inline-block bg-accent/10 text-accent text-xs md:text-sm font-semibold px-3 md:px-4 py-1 md:py-1.5 rounded-full mb-3 md:mb-4">
+                {pkg.discount}
+              </span>
+            )}
+            <h3 className="text-xl md:text-3xl font-bold text-gray-900 mb-2 md:mb-3">{pkg.title}</h3>
+            <p className="text-gray-600 text-sm md:text-base leading-relaxed">{pkg.description}</p>
           </div>
-          {pkg.discount && <span className="bg-accent text-white text-[10px] font-bold px-2 py-0.5 rounded-full">{pkg.discount}</span>}
         </div>
-        <h3 className="text-xl md:text-2xl font-bold text-gray-900 mb-2">{pkg.title}</h3>
-        <p className="text-gray-600 text-sm mb-3">{pkg.description}</p>
         {pkg.benefits && (
-          <ul className="space-y-1 mb-4 flex-grow">
+          <ul className="space-y-2 md:space-y-3 mb-5 md:mb-6 flex-grow">
             {pkg.benefits.slice(0, 4).map((b, i) => (
-              <li key={i} className="flex items-center gap-2 text-xs text-gray-700">
-                <Check className="h-3.5 w-3.5 text-primary flex-shrink-0" />{b}
+              <li key={i} className="flex items-start gap-2 md:gap-3 text-sm md:text-base text-gray-700">
+                <Check className="h-4 w-4 md:h-5 md:w-5 text-primary mt-0.5 flex-shrink-0" />
+                <span>{b}</span>
               </li>
             ))}
           </ul>
         )}
-        <div className="flex items-end justify-between mt-auto pt-3 border-t border-gray-200">
-          <div>
-            {pkg.originalPrice && <span className="text-xs text-gray-400 line-through block">R$ {pkg.originalPrice.toFixed(2)}</span>}
-            <span className="text-2xl font-bold text-primary">R$ {pkg.price.toFixed(2)}</span>
+        <div className="flex flex-col md:flex-row items-center md:items-end justify-between gap-4 md:gap-0 mt-auto pt-4 md:pt-6 border-t border-gray-100">
+          <div className="text-center md:text-left">
+            {pkg.originalPrice && (
+              <span className="text-sm md:text-base text-gray-400 line-through block mb-1 md:mb-2">
+                R$ {pkg.originalPrice.toFixed(2)}
+              </span>
+            )}
+            <span className="text-3xl md:text-4xl font-bold text-primary">
+              R$ {pkg.price.toFixed(2)}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <Link href={`/loja/produto/${pkg.slug}`}>
-              <Button size="sm" variant="outline" className="rounded-full w-9 h-9 p-0 border-gray-300"><Info className="h-4 w-4 text-gray-600" /></Button>
+          <div className="flex items-center gap-2 w-full md:w-auto">
+            <Link href={`/loja/produto/${pkg.slug}`} className="flex-1 md:flex-none">
+              <Button size="sm" variant="ghost" className="text-gray-600 hover:text-gray-900 hover:bg-gray-100 active:bg-gray-200 w-full md:w-auto text-sm md:text-base h-10 md:h-11">
+                <Info className="h-4 w-4 md:h-5 md:w-5 mr-1.5" />
+                Detalhes
+              </Button>
             </Link>
-            <Button size="sm" onClick={() => handleAddItem(pkg.id, 'package')} className={`rounded-xl h-9 px-3 text-xs ${isAdded ? 'bg-green-500' : 'bg-accent hover:bg-accent/90'}`}>
-              {isAdded ? <><Check className="h-3.5 w-3.5 mr-1" />OK</> : <><Plus className="h-3.5 w-3.5 mr-1" />Adicionar</>}
+            <Button 
+              size="sm"
+              onClick={() => handleAddItem(pkg.id, 'package')} 
+              className={`rounded-xl px-4 md:px-5 h-9 md:h-10 font-semibold flex-1 md:flex-none text-xs md:text-sm ${
+                isAdded 
+                  ? 'bg-green-500 hover:bg-green-600 text-white' 
+                  : 'bg-primary hover:bg-primary/90 text-white'
+              }`}
+            >
+              {isAdded ? (
+                <>
+                  <Check className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                  Adicionado
+                </>
+              ) : (
+                <>
+                  <Plus className="h-3 w-3 md:h-4 md:w-4 mr-1" />
+                  Adicionar
+                </>
+              )}
             </Button>
           </div>
         </div>
       </div>
     );
   };
-
-
-  // Card Médio para Pacotes
-  const MediumPackageCard = ({ pkg }: { pkg: ExamPackage }) => {
-    const isAdded = addedItems.has(pkg.id);
-    return (
-      <div className="bg-white rounded-2xl border border-gray-200 hover:border-primary transition-all duration-300 p-4 flex flex-col h-full min-h-[160px]">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="font-bold text-gray-900 text-sm md:text-base line-clamp-2 flex-1 pr-2">{pkg.title}</h3>
-          {pkg.discount && <span className="text-[10px] bg-accent text-white px-2 py-0.5 rounded-full font-bold flex-shrink-0">{pkg.discount}</span>}
-        </div>
-        <p className="text-xs text-gray-600 mb-3 line-clamp-2 flex-grow">{pkg.description}</p>
-        <div className="flex items-end justify-between mt-auto">
-          <div>
-            {pkg.originalPrice && <span className="text-[10px] text-gray-400 line-through block">R$ {pkg.originalPrice.toFixed(2)}</span>}
-            <span className="font-bold text-primary text-lg">R$ {pkg.price.toFixed(2)}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Link href={`/loja/produto/${pkg.slug}`}>
-              <Button size="sm" variant="outline" className="rounded-full w-8 h-8 p-0 border-gray-300"><Info className="h-3.5 w-3.5 text-gray-600" /></Button>
-            </Link>
-            <Button size="sm" onClick={() => handleAddItem(pkg.id, 'package')} className={`rounded-xl text-[10px] h-8 px-2.5 ${isAdded ? 'bg-green-500' : 'bg-accent hover:bg-accent/90'}`}>
-              {isAdded ? <><Check className="h-3 w-3 mr-0.5" />OK</> : <><Plus className="h-3 w-3 mr-0.5" />Adicionar</>}
-            </Button>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
 
   // Card Compacto para Carrossel
   const CarouselExamCard = ({ exam }: { exam: Exam }) => {
@@ -147,40 +146,32 @@ export default function BentoGrid() {
     );
   };
 
-
   return (
     <section id="vitrine" className="py-12 md:py-20 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Nossos Exames e Pacotes</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">Escolha entre exames individuais ou pacotes completos com desconto</p>
+        <div className="text-center mb-12 md:mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-5">Nossos Exames e Pacotes</h2>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">Escolha entre exames individuais ou pacotes completos com desconto</p>
         </div>
 
-        {/* 3 Pacotes Fixos */}
-        {packages.length >= 3 && (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-8">
-            {/* Card Grande */}
-            <div className="lg:row-span-2">
-              <FeaturedPackageCard pkg={packages[0]} />
-            </div>
-            {/* 2 Cards Médios empilhados */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-4">
-              <MediumPackageCard pkg={packages[1]} />
-              <MediumPackageCard pkg={packages[2]} />
-            </div>
+        {/* 2 Pacotes Fitness em Destaque */}
+        {packages.length >= 2 && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12 md:mb-16">
+            <FitnessPackageCard pkg={packages[0]} />
+            <FitnessPackageCard pkg={packages[1]} />
           </div>
         )}
 
         {/* Carrossel de Exames */}
         <div className="relative">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-xl font-bold text-gray-900">Exames Individuais</h3>
+          <div className="flex items-center justify-between mb-6">
+            <h3 className="text-2xl font-bold text-gray-900">Exames Individuais</h3>
             <div className="flex gap-2">
-              <Button size="sm" variant="outline" onClick={() => scrollCarousel('left')} className="rounded-full w-9 h-9 p-0 border-gray-300">
+              <Button size="sm" variant="outline" onClick={() => scrollCarousel('left')} className="rounded-full w-9 h-9 p-0 border-gray-300 hover:border-primary hover:text-primary">
                 <ChevronLeft className="h-4 w-4" />
               </Button>
-              <Button size="sm" variant="outline" onClick={() => scrollCarousel('right')} className="rounded-full w-9 h-9 p-0 border-gray-300">
+              <Button size="sm" variant="outline" onClick={() => scrollCarousel('right')} className="rounded-full w-9 h-9 p-0 border-gray-300 hover:border-primary hover:text-primary">
                 <ChevronRight className="h-4 w-4" />
               </Button>
             </div>
@@ -195,9 +186,11 @@ export default function BentoGrid() {
 
         {/* Ver mais */}
         <div className="text-center mt-8 md:mt-12">
-          <Button variant="outline" size="lg" className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white">
-            Ver todos os exames
-          </Button>
+          <Link href="/loja/exames">
+            <Button variant="outline" size="lg" className="rounded-full border-2 border-primary text-primary hover:bg-primary hover:text-white">
+              Ver todos os exames
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

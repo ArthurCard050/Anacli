@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Stethoscope, Activity, Zap, Brain, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ShopHeader from './ShopHeader';
 
@@ -245,49 +245,35 @@ export default function HeroCarousel() {
           </div>
         </div>
 
-        {/* Cards Desktop - Posicionados SOBRE o Hero (como estava antes) */}
+        {/* Cards Desktop - Posicionados SOBRE o Hero - Visual Limpo */}
         <div className="hidden lg:block absolute bottom-0 left-0 right-0 z-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8">
             <div className="grid grid-cols-5 gap-4 max-w-7xl mx-auto">
               
               {/* Card 1 - Pacote Check-up Básico */}
-              <div className="bg-white rounded-xl border-2 border-accent p-5 hover:border-accent/80 transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-[280px]">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-accent text-white text-xs font-bold px-3 py-1 rounded-full">OFERTA</span>
-                </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/checkup-basico.webp" 
-                      alt="Check-up Básico"
-                      className="w-full h-full object-cover"
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-[280px]">
+                <div className="text-center space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900">CHECK-UP BÁSICO</h3>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Stethoscope className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-base font-bold text-accent">CHECK-UP BÁSICO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 280,00</p>
-                    <p className="text-accent font-bold text-lg">R$ 199,00</p>
+                    <p className="text-primary font-bold text-lg">R$ 199,00</p>
                   </div>
-                  <Button className="w-full bg-accent hover:bg-accent/90 text-white rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-9 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 2 - Pacote Check-up Completo */}
-              <div className="bg-white rounded-xl border-2 border-primary p-5 hover:border-primary/80 transition-all duration-300 hover:-translate-y-1 relative flex flex-col h-[280px]">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">COMPLETO</span>
-                </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/checkup-completo.webp" 
-                      alt="Check-up Completo"
-                      className="w-full h-full object-cover"
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-[280px]">
+                <div className="text-center space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900">CHECK-UP COMPLETO</h3>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Activity className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-base font-bold text-primary">CHECK-UP COMPLETO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 450,00</p>
                     <p className="text-primary font-bold text-lg">R$ 329,00</p>
@@ -299,18 +285,14 @@ export default function HeroCarousel() {
               </div>
 
               {/* Card 3 - Exames Rápidos */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px]">
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/exames-rapidos.webp" 
-                      alt="Exames Rápidos"
-                      className="w-full h-full object-cover"
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-[280px]">
+                <div className="text-center space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900">EXAMES RÁPIDOS</h3>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Zap className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-base font-bold text-primary">EXAMES RÁPIDOS</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">
+                    <p className="text-gray-600 text-sm">
                       Resultados em até 24 horas
                     </p>
                   </div>
@@ -321,43 +303,32 @@ export default function HeroCarousel() {
               </div>
 
               {/* Card 4 - IA Leitura de Exames */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-[#FF006A]/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px] relative">
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
-                  <span className="bg-[#FF006A] text-white text-xs font-bold px-3 py-1 rounded-full">IA</span>
-                </div>
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/ia.webp" 
-                      alt="IA Leitura de Exames"
-                      className="w-full h-full object-cover"
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-[280px]">
+                <div className="text-center space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900">LEITURA DE EXAMES</h3>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Brain className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-base font-bold text-[#FF006A]">LEITURA DE EXAMES</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">
+                    <p className="text-gray-600 text-sm">
                       Tecnologia avançada para análise precisa
                     </p>
                   </div>
-                  <Button className="w-full bg-[#FF006A]/20 hover:bg-[#FF006A]/30 text-[#FF006A] border border-[#FF006A]/30 rounded-lg text-xs font-semibold h-9 mt-auto">
+                  <Button className="w-full bg-primary/20 hover:bg-primary/30 text-primary border border-primary/30 rounded-lg text-xs font-semibold h-9 mt-auto">
                     Saiba mais
                   </Button>
                 </div>
               </div>
 
               {/* Card 5 - Coleta Domiciliar */}
-              <div className="bg-white rounded-xl border border-gray-200 p-5 hover:border-primary/50 transition-all duration-300 hover:-translate-y-1 flex flex-col h-[280px]">
-                <div className="text-center space-y-3 flex-1 flex flex-col">
-                  <div className="w-20 h-20 mx-auto rounded-xl overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/coleta-domiciliar.webp" 
-                      alt="Coleta Domiciliar"
-                      className="w-full h-full object-cover"
-                    />
+              <div className="bg-white/95 backdrop-blur-sm rounded-xl p-5 hover:bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg flex flex-col h-[280px]">
+                <div className="text-center space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-base font-bold text-gray-900">COLETA DOMICILIAR</h3>
+                  <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Home className="w-10 h-10 text-primary" />
                   </div>
-                  <h3 className="text-base font-bold text-primary">COLETA DOMICILIAR</h3>
                   <div className="flex-1">
-                    <p className="text-gray-600 text-xs">
+                    <p className="text-gray-600 text-sm">
                       Na sua casa ou empresa
                     </p>
                   </div>
@@ -371,7 +342,7 @@ export default function HeroCarousel() {
         </div>
       </section>
 
-      {/* Cards Section Mobile - Carrossel Horizontal (Estilo Mercado Livre) */}
+      {/* Cards Section Mobile - Carrossel Horizontal */}
       <section className="bg-white py-4 lg:hidden">
         <div className="w-full pl-4">
           
@@ -384,131 +355,98 @@ export default function HeroCarousel() {
             >
               
               {/* Card 1 - Pacote Check-up Básico */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start relative flex flex-col h-[200px] shadow-sm">
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
-                  <span className="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">OFERTA</span>
-                </div>
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/checkup-basico.webp" 
-                      alt="Check-up Básico"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">CHECK-UP BÁSICO</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Stethoscope className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-accent text-xs">CHECK-UP BÁSICO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 280,00</p>
-                    <p className="text-accent font-bold text-sm">R$ 199,00</p>
+                    <p className="text-primary font-bold text-sm">R$ 199,00</p>
                   </div>
-                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 2 - Pacote Check-up Completo */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start relative flex flex-col h-[200px] shadow-sm">
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
-                  <span className="bg-primary text-white text-xs font-bold px-2 py-0.5 rounded-full">COMPLETO</span>
-                </div>
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/checkup-completo.webp" 
-                      alt="Check-up Completo"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">CHECK-UP COMPLETO</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Activity className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-primary text-xs">CHECK-UP COMPLETO</h3>
                   <div className="space-y-1 flex-1">
                     <p className="text-gray-400 text-xs line-through">R$ 450,00</p>
                     <p className="text-primary font-bold text-sm">R$ 329,00</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Comprar agora
                   </Button>
                 </div>
               </div>
 
               {/* Card 3 - Exames Rápidos */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm">
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/exames-rapidos.webp" 
-                      alt="Exames Rápidos"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">EXAMES RÁPIDOS</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Zap className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-primary text-xs">EXAMES RÁPIDOS</h3>
                   <div className="flex-1">
                     <p className="text-gray-600 text-xs">Resultados em 24h</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Ver exames
                   </Button>
                 </div>
               </div>
 
               {/* Card 4 - IA Leitura de Exames */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm relative">
-                <div className="absolute -top-1 left-1/2 -translate-x-1/2">
-                  <span className="bg-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">IA</span>
-                </div>
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/ia.webp" 
-                      alt="IA Leitura de Exames"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">LEITURA DE EXAMES</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Brain className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-accent text-xs">IA LEITURA</h3>
                   <div className="flex-1">
                     <p className="text-gray-600 text-xs">Análise precisa</p>
                   </div>
-                  <Button className="w-full bg-accent text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Saiba mais
                   </Button>
                 </div>
               </div>
 
               {/* Card 5 - Coleta Domiciliar */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm">
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/coleta-domiciliar.webp" 
-                      alt="Coleta Domiciliar"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">COLETA DOMICILIAR</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Home className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-primary text-xs">COLETA DOMICILIAR</h3>
                   <div className="flex-1">
                     <p className="text-gray-600 text-xs">Em casa ou empresa</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Agendar coleta
                   </Button>
                 </div>
               </div>
 
               {/* Card 6 - Pacotes Promocionais */}
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] shadow-sm mr-4">
+              <div className="flex-shrink-0 w-40 bg-white/95 backdrop-blur-sm rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] mr-4 hover:shadow-md transition-all hover:-translate-y-0.5">
                 <div className="text-center space-y-2 flex-1 flex flex-col">
-                  <div className="w-12 h-12 mx-auto rounded-lg overflow-hidden">
-                    <img 
-                      src="/assets/loja/hero/checkup-basico.webp" 
-                      alt="Pacotes Promocionais"
-                      className="w-full h-full object-cover"
-                    />
+                  <h3 className="font-bold text-gray-900 text-xs">PACOTES</h3>
+                  <div className="w-12 h-12 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
+                    <Stethoscope className="w-6 h-6 text-primary" />
                   </div>
-                  <h3 className="font-bold text-primary text-xs">PACOTES</h3>
                   <div className="flex-1">
                     <p className="text-gray-600 text-xs">Economia até 40%</p>
                   </div>
-                  <Button className="w-full bg-primary text-white rounded-lg text-xs font-semibold h-8 mt-auto">
+                  <Button className="w-full bg-primary hover:bg-primary/90 text-white rounded-lg text-xs font-semibold h-8 mt-auto">
                     Ver pacotes
                   </Button>
                 </div>
