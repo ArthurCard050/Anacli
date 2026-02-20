@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-export default function LojaLoginPage() {
+function LoginForm() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
@@ -43,6 +43,59 @@ export default function LojaLoginPage() {
   };
 
   return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      {/* Campo de Senha */}
+      <div>
+        <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          Senha de Acesso
+        </label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+          <Input
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Digite a senha"
+            className="pl-10 pr-12 h-12 text-base"
+            required
+            autoFocus
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+          >
+            {showPassword ? (
+              <EyeOff className="h-5 w-5" />
+            ) : (
+              <Eye className="h-5 w-5" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mensagem de Erro */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
+
+      {/* Botão de Submit */}
+      <Button
+        type="submit"
+        disabled={isLoading}
+        className="w-full h-12 text-base font-semibold bg-accent hover:bg-accent/90"
+      >
+        {isLoading ? 'Verificando...' : 'Acessar Loja'}
+      </Button>
+    </form>
+  );
+}
+
+export default function LojaLoginPage() {
+  return (
     <div className="min-h-screen bg-gradient-to-br from-accent/10 via-white to-primary/10 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo */}
@@ -62,54 +115,13 @@ export default function LojaLoginPage() {
 
         {/* Card de Login */}
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Campo de Senha */}
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
-                Senha de Acesso
-              </label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <Input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Digite a senha"
-                  className="pl-10 pr-12 h-12 text-base"
-                  required
-                  autoFocus
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                >
-                  {showPassword ? (
-                    <EyeOff className="h-5 w-5" />
-                  ) : (
-                    <Eye className="h-5 w-5" />
-                  )}
-                </button>
-              </div>
+          <Suspense fallback={
+            <div className="text-center py-8">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-accent mx-auto"></div>
             </div>
-
-            {/* Mensagem de Erro */}
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error}
-              </div>
-            )}
-
-            {/* Botão de Submit */}
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="w-full h-12 text-base font-semibold bg-accent hover:bg-accent/90"
-            >
-              {isLoading ? 'Verificando...' : 'Acessar Loja'}
-            </Button>
-          </form>
+          }>
+            <LoginForm />
+          </Suspense>
 
           {/* Info */}
           <div className="mt-6 pt-6 border-t border-gray-100">
