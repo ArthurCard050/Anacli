@@ -14,20 +14,10 @@ export const metadata: Metadata = {
   },
 };
 
-export default function LojaLayout({
+export default function LojaAnacliLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <>
-      <link
-        href="https://fonts.googleapis.com/css2?family=Mozilla+Text:wght@200..700&display=swap"
-        rel="stylesheet"
-      />
-      <div style={{ fontFamily: "'Mozilla Text', sans-serif" }}>
-        {children}
-      </div>
-    </>
-  );
+  return <>{children}</>;
 }
