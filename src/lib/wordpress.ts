@@ -25,6 +25,20 @@ export interface WordPressPost {
   featured_media: number;
   categories: number[];
   tags: number[];
+  // Campos customizados adicionados pelo plugin
+  featured_image_url?: string;
+  featured_image_data?: {
+    id: number;
+    url: string;
+    width: number;
+    height: number;
+    alt: string;
+    sizes: {
+      full: string;
+      medium: string;
+      thumbnail: string;
+    };
+  };
   _embedded?: {
     author?: Array<{
       id: number;
@@ -141,14 +155,24 @@ export async function transformWordPressPost(wpPost: WordPressPost): Promise<Blo
   // Get primary category (first one)
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
-  // Get image: priority order
-  // 1. Featured media from WordPress (imagem de capa)
-  // 2. First image in content (fallback para posts antigos)
-  // 3. Fallback image (último recurso)
+  // Get image: priority order (100% GARANTIDO)
+  // 1. Campo customizado featured_image_url (SEMPRE FUNCIONA - não depende de permissões)
+  // 2. Featured media do _embedded (se disponível)
+  // 3. Busca direta da featured media (fallback)
+  // 4. Primeira imagem do conteúdo (fallback)
+  // 5. Imagem padrão (último recurso)
   let postImage: string;
   
-  // Se tem featured_media ID mas não conseguiu no _embedded (erro de permissão), buscar diretamente
-  if (!featuredMedia?.source_url && wpPost.featured_media && wpPost.featured_media > 0) {
+  // PRIORIDADE 1: Usar campo customizado (100% garantido)
+  if (wpPost.featured_image_url) {
+    postImage = wpPost.featured_image_url;
+  }
+  // PRIORIDADE 2: Usar _embedded se disponível
+  else if (featuredMedia?.source_url) {
+    postImage = featuredMedia.source_url;
+  }
+  // PRIORIDADE 3: Buscar diretamente se tiver ID mas falhou no _embedded
+  else if (!featuredMedia?.source_url && wpPost.featured_media && wpPost.featured_media > 0) {
     try {
       const mediaResponse = await fetch(
         `${WORDPRESS_API_URL}/media/${wpPost.featured_media}`,
@@ -159,18 +183,21 @@ export async function transformWordPressPost(wpPost: WordPressPost): Promise<Blo
       if (mediaResponse.ok) {
         const mediaData = await mediaResponse.json();
         featuredMedia = mediaData;
+        postImage = mediaData.source_url;
+      } else {
+        // Se falhar, usar fallback
+        const extractedImage = extractFirstImage(wpPost.content.rendered);
+        postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
       }
     } catch (error) {
       // Silenciosamente falha e usa fallback
       console.error(`Error fetching media ${wpPost.featured_media}:`, error);
+      const extractedImage = extractFirstImage(wpPost.content.rendered);
+      postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
     }
   }
-  
-  if (featuredMedia?.source_url) {
-    // Usa a imagem de capa do WordPress
-    postImage = featuredMedia.source_url;
-  } else {
-    // Fallback: tenta extrair primeira imagem do conteúdo
+  // PRIORIDADE 4: Extrair primeira imagem do conteúdo
+  else {
     const extractedImage = extractFirstImage(wpPost.content.rendered);
     postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
   }
