@@ -141,6 +141,13 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   // Get primary category (first one)
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
+  // Debug: log featured media info
+  console.log(`\n=== POST: ${wpPost.slug} ===`);
+  console.log('Featured Media ID:', wpPost.featured_media);
+  console.log('Has _embedded:', !!wpPost._embedded);
+  console.log('Has wp:featuredmedia:', !!wpPost._embedded?.['wp:featuredmedia']);
+  console.log('Featured Media URL:', featuredMedia?.source_url);
+
   // Get image: priority order
   // 1. Featured media from WordPress (imagem de capa)
   // 2. First image in content (fallback para posts antigos)
@@ -150,12 +157,15 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   if (featuredMedia?.source_url) {
     // Usa a imagem de capa do WordPress
     postImage = featuredMedia.source_url;
-    console.log(`[${wpPost.slug}] Using featured image:`, postImage);
+    console.log('✓ Using featured image:', postImage);
   } else {
     // Fallback: tenta extrair primeira imagem do conteúdo
     const extractedImage = extractFirstImage(wpPost.content.rendered);
     postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
-    console.log(`[${wpPost.slug}] No featured image, using:`, extractedImage ? 'content image' : 'fallback');
+    console.log('✗ No featured image, using:', extractedImage ? 'content image' : 'fallback');
+    if (extractedImage) {
+      console.log('  Content image URL:', extractedImage);
+    }
   }
 
   return {
