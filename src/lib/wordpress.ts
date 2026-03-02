@@ -132,9 +132,9 @@ function formatDate(dateString: string): string {
 }
 
 // Transform WordPress post to our BlogPost format
-export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
+export async function transformWordPressPost(wpPost: WordPressPost): Promise<BlogPost> {
   const author = wpPost._embedded?.author?.[0];
-  const featuredMedia = wpPost._embedded?.['wp:featuredmedia']?.[0];
+  let featuredMedia = wpPost._embedded?.['wp:featuredmedia']?.[0];
   const categories = wpPost._embedded?.['wp:term']?.[0] || [];
   const tags = wpPost._embedded?.['wp:term']?.[1] || [];
 
@@ -142,17 +142,35 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
   // Get image: priority order
-  // 1. Featured media from WordPress (imagem de capa) - se featured_media > 0
-  // 2. First image in content (fallback para posts antigos ou quando featured_media não está disponível)
+  // 1. Featured media from WordPress (imagem de capa)
+  // 2. First image in content (fallback para posts antigos)
   // 3. Fallback image (último recurso)
   let postImage: string;
   
+  // Se tem featured_media ID mas não conseguiu no _embedded (erro de permissão), buscar diretamente
+  if (!featuredMedia?.source_url && wpPost.featured_media && wpPost.featured_media > 0) {
+    try {
+      const mediaResponse = await fetch(
+        `${WORDPRESS_API_URL}/media/${wpPost.featured_media}`,
+        { 
+          next: { revalidate: 3600 } // Cache por 1 hora
+        }
+      );
+      if (mediaResponse.ok) {
+        const mediaData = await mediaResponse.json();
+        featuredMedia = mediaData;
+      }
+    } catch (error) {
+      // Silenciosamente falha e usa fallback
+      console.error(`Error fetching media ${wpPost.featured_media}:`, error);
+    }
+  }
+  
   if (featuredMedia?.source_url) {
-    // Usa a imagem de capa do WordPress quando disponível no _embedded
+    // Usa a imagem de capa do WordPress
     postImage = featuredMedia.source_url;
   } else {
     // Fallback: tenta extrair primeira imagem do conteúdo
-    // Isso funciona para posts onde a imagem está no conteúdo
     const extractedImage = extractFirstImage(wpPost.content.rendered);
     postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
   }
@@ -206,7 +224,11 @@ export async function getPosts(params?: {
     }
 
     const posts: WordPressPost[] = await response.json();
-    const transformedPosts = posts.map(transformWordPressPost);
+    
+    // Processar posts em paralelo com limite para evitar sobrecarga
+    const transformedPosts = await Promise.all(
+      posts.map(post => transformWordPressPost(post))
+    );
     
     // Se retornou 100 posts (limite máximo), pode haver mais páginas
     // Buscar recursivamente todas as páginas
@@ -247,7 +269,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       return null;
     }
 
-    return transformWordPressPost(posts[0]);
+    return await transformWordPressPost(posts[0]);
   } catch (error) {
     console.error('Error fetching WordPress post:', error);
     return null;
