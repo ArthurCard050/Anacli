@@ -142,16 +142,17 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
   // Get image: priority order
-  // 1. Featured media from WordPress (imagem de capa)
-  // 2. First image in content (fallback para posts antigos)
+  // 1. Featured media from WordPress (imagem de capa) - se featured_media > 0
+  // 2. First image in content (fallback para posts antigos ou quando featured_media não está disponível)
   // 3. Fallback image (último recurso)
   let postImage: string;
   
   if (featuredMedia?.source_url) {
-    // Usa a imagem de capa do WordPress
+    // Usa a imagem de capa do WordPress quando disponível no _embedded
     postImage = featuredMedia.source_url;
   } else {
     // Fallback: tenta extrair primeira imagem do conteúdo
+    // Isso funciona para posts onde a imagem está no conteúdo
     const extractedImage = extractFirstImage(wpPost.content.rendered);
     postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
   }
