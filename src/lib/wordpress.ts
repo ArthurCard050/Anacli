@@ -150,10 +150,12 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   if (featuredMedia?.source_url) {
     // Usa a imagem de capa do WordPress
     postImage = featuredMedia.source_url;
+    console.log(`[${wpPost.slug}] Using featured image:`, postImage);
   } else {
     // Fallback: tenta extrair primeira imagem do conteúdo
     const extractedImage = extractFirstImage(wpPost.content.rendered);
     postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
+    console.log(`[${wpPost.slug}] No featured image, using:`, extractedImage ? 'content image' : 'fallback');
   }
 
   return {
@@ -196,7 +198,7 @@ export async function getPosts(params?: {
     const response = await fetch(
       `${WORDPRESS_API_URL}/posts?${queryParams}`,
       {
-        next: { revalidate: 60 }, // Revalidate every 60 seconds
+        next: { revalidate: 10 }, // Revalidate every 10 seconds (para testes)
       }
     );
 
@@ -232,7 +234,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
     const response = await fetch(
       `${WORDPRESS_API_URL}/posts?slug=${slug}&_embed=true`,
       {
-        next: { revalidate: 60 },
+        next: { revalidate: 10 }, // Revalidate every 10 seconds (para testes)
       }
     );
 
