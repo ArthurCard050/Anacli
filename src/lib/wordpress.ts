@@ -142,18 +142,18 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
   // Get image: priority order
-  // 1. Featured media from WordPress
-  // 2. First image in content
-  // 3. Fallback image
-  let postImage: string | undefined = featuredMedia?.source_url;
+  // 1. Featured media from WordPress (imagem de capa)
+  // 2. First image in content (fallback para posts antigos)
+  // 3. Fallback image (último recurso)
+  let postImage: string;
   
-  if (!postImage) {
+  if (featuredMedia?.source_url) {
+    // Usa a imagem de capa do WordPress
+    postImage = featuredMedia.source_url;
+  } else {
+    // Fallback: tenta extrair primeira imagem do conteúdo
     const extractedImage = extractFirstImage(wpPost.content.rendered);
-    postImage = extractedImage || undefined;
-  }
-  
-  if (!postImage) {
-    postImage = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
+    postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
   }
 
   return {
