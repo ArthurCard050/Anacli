@@ -84,6 +84,7 @@ export interface BlogPost {
   categorySlug: string;
   author: string;
   authorBio: string;
+  authorAvatar: string;
   date: string;
   readTime: string;
   image: string;
@@ -212,6 +213,7 @@ export async function transformWordPressPost(wpPost: WordPressPost): Promise<Blo
     categorySlug: primaryCategory.slug,
     author: author?.name || 'Anacli',
     authorBio: author?.description || 'Equipe Anacli',
+    authorAvatar: author?.avatar_urls?.['96'] || author?.avatar_urls?.['48'] || '',
     date: formatDate(wpPost.date),
     readTime: calculateReadTime(wpPost.content.rendered),
     image: postImage,

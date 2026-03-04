@@ -19,6 +19,7 @@ interface BlogPost {
   category: string;
   author: string;
   authorBio: string;
+  authorAvatar: string;
   date: string;
   readTime: string;
   image: string;
@@ -96,9 +97,21 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
           {/* Author Bio */}
           <div className="bg-white rounded-2xl p-8 mb-10 border border-gray-200 shadow-sm">
             <div className="flex items-start gap-6">
-              <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
-                <User className="h-10 w-10 text-white" />
-              </div>
+              {post.authorAvatar ? (
+                <div className="relative w-20 h-20 rounded-full overflow-hidden flex-shrink-0">
+                  <Image
+                    src={post.authorAvatar}
+                    alt={post.author}
+                    fill
+                    className="object-cover"
+                    sizes="80px"
+                  />
+                </div>
+              ) : (
+                <div className="w-20 h-20 rounded-full bg-primary flex items-center justify-center flex-shrink-0">
+                  <User className="h-10 w-10 text-white" />
+                </div>
+              )}
 
               <div className="flex-1">
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
