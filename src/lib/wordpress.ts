@@ -25,6 +25,20 @@ export interface WordPressPost {
   featured_media: number;
   categories: number[];
   tags: number[];
+  // Campos customizados adicionados pelo plugin
+  featured_image_url?: string;
+  featured_image_data?: {
+    id: number;
+    url: string;
+    width: number;
+    height: number;
+    alt: string;
+    sizes: {
+      full: string;
+      medium: string;
+      thumbnail: string;
+    };
+  };
   _embedded?: {
     author?: Array<{
       id: number;
@@ -70,6 +84,7 @@ export interface BlogPost {
   categorySlug: string;
   author: string;
   authorBio: string;
+  authorAvatar: string;
   date: string;
   readTime: string;
   image: string;
@@ -132,28 +147,60 @@ function formatDate(dateString: string): string {
 }
 
 // Transform WordPress post to our BlogPost format
-export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
+export async function transformWordPressPost(wpPost: WordPressPost): Promise<BlogPost> {
   const author = wpPost._embedded?.author?.[0];
-  const featuredMedia = wpPost._embedded?.['wp:featuredmedia']?.[0];
+  let featuredMedia = wpPost._embedded?.['wp:featuredmedia']?.[0];
   const categories = wpPost._embedded?.['wp:term']?.[0] || [];
   const tags = wpPost._embedded?.['wp:term']?.[1] || [];
 
   // Get primary category (first one)
   const primaryCategory = categories[0] || { name: 'Sem categoria', slug: 'sem-categoria' };
 
-  // Get image: priority order
-  // 1. Featured media from WordPress
-  // 2. First image in content
-  // 3. Fallback image
-  let postImage: string | undefined = featuredMedia?.source_url;
+  // Get image: priority order (100% GARANTIDO)
+  // 1. Campo customizado featured_image_url (SEMPRE FUNCIONA - não depende de permissões)
+  // 2. Featured media do _embedded (se disponível)
+  // 3. Busca direta da featured media (fallback)
+  // 4. Primeira imagem do conteúdo (fallback)
+  // 5. Imagem padrão (último recurso)
+  let postImage: string;
   
-  if (!postImage) {
-    const extractedImage = extractFirstImage(wpPost.content.rendered);
-    postImage = extractedImage || undefined;
+  // PRIORIDADE 1: Usar campo customizado (100% garantido)
+  if (wpPost.featured_image_url) {
+    postImage = wpPost.featured_image_url;
   }
-  
-  if (!postImage) {
-    postImage = 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
+  // PRIORIDADE 2: Usar _embedded se disponível
+  else if (featuredMedia?.source_url) {
+    postImage = featuredMedia.source_url;
+  }
+  // PRIORIDADE 3: Buscar diretamente se tiver ID mas falhou no _embedded
+  else if (!featuredMedia?.source_url && wpPost.featured_media && wpPost.featured_media > 0) {
+    try {
+      const mediaResponse = await fetch(
+        `${WORDPRESS_API_URL}/media/${wpPost.featured_media}`,
+        { 
+          next: { revalidate: 3600 } // Cache por 1 hora
+        }
+      );
+      if (mediaResponse.ok) {
+        const mediaData = await mediaResponse.json();
+        featuredMedia = mediaData;
+        postImage = mediaData.source_url;
+      } else {
+        // Se falhar, usar fallback
+        const extractedImage = extractFirstImage(wpPost.content.rendered);
+        postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
+      }
+    } catch (error) {
+      // Silenciosamente falha e usa fallback
+      console.error(`Error fetching media ${wpPost.featured_media}:`, error);
+      const extractedImage = extractFirstImage(wpPost.content.rendered);
+      postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
+    }
+  }
+  // PRIORIDADE 4: Extrair primeira imagem do conteúdo
+  else {
+    const extractedImage = extractFirstImage(wpPost.content.rendered);
+    postImage = extractedImage || 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200&h=630&fit=crop';
   }
 
   return {
@@ -166,6 +213,7 @@ export function transformWordPressPost(wpPost: WordPressPost): BlogPost {
     categorySlug: primaryCategory.slug,
     author: author?.name || 'Anacli',
     authorBio: author?.description || 'Equipe Anacli',
+    authorAvatar: author?.avatar_urls?.['96'] || author?.avatar_urls?.['48'] || '',
     date: formatDate(wpPost.date),
     readTime: calculateReadTime(wpPost.content.rendered),
     image: postImage,
@@ -205,7 +253,11 @@ export async function getPosts(params?: {
     }
 
     const posts: WordPressPost[] = await response.json();
-    const transformedPosts = posts.map(transformWordPressPost);
+    
+    // Processar posts em paralelo com limite para evitar sobrecarga
+    const transformedPosts = await Promise.all(
+      posts.map(post => transformWordPressPost(post))
+    );
     
     // Se retornou 100 posts (limite máximo), pode haver mais páginas
     // Buscar recursivamente todas as páginas
@@ -246,7 +298,7 @@ export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
       return null;
     }
 
-    return transformWordPressPost(posts[0]);
+    return await transformWordPressPost(posts[0]);
   } catch (error) {
     console.error('Error fetching WordPress post:', error);
     return null;

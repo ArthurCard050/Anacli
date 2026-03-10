@@ -32,15 +32,15 @@ const locations = [
   },
   {
     name: "Anacli Toxicológico",
-    address: "Av. Getúlio Vargas, 1256 – Centro",
-    city: "Feira de Santana – BA",
-    phone: "(75) 3030-0031",
-    email: "toxico@anacli.com.br",
-    hours: "Seg - Sex: 7h às 17h | Sáb: 7h às 12h",
+    address: "Rua A, Complexo Policial, Conjunto Jomafa",
+    city: "Feira de Santana – BA, 44089-284",
+    phone: "(75) 99183-3822",
+    email: "contato@anacli.com.br",
+    hours: "Seg - Sex: 7h às 17h",
     image: "/assets/Anacli-tox.webp",
     imageMobile: "/assets/Anacli-tox.webp",
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.1234567890123!2d-38.9567890!3d-12.2647890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDE1JzUyLjciUyAzOMKwNTcnMjQuNCJX!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr",
-    whatsapp: "5575888888888"
+    whatsapp: "5575991833822"
   },
 ];
 

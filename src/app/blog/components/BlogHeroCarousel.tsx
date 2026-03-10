@@ -37,11 +37,15 @@ export default function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
     return () => clearInterval(timer);
   }, [posts.length]);
 
-  const nextSlide = () => {
+  const nextSlide = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     setCurrentSlide((prev) => (prev + 1) % posts.length);
   };
 
-  const prevSlide = () => {
+  const prevSlide = (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    e?.preventDefault();
     setCurrentSlide((prev) => (prev - 1 + posts.length) % posts.length);
   };
 
@@ -139,21 +143,21 @@ export default function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
             ))}
 
             {/* Navigation Buttons - Hidden on Mobile */}
-            <div className="hidden md:flex absolute inset-y-0 left-4 items-center no-print">
+            <div className="hidden md:flex absolute inset-y-0 left-4 items-center no-print z-10">
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={prevSlide}
+                onClick={(e) => prevSlide(e)}
                 className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white border border-white/20"
               >
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </div>
-            <div className="hidden md:flex absolute inset-y-0 right-4 items-center no-print">
+            <div className="hidden md:flex absolute inset-y-0 right-4 items-center no-print z-10">
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={nextSlide}
+                onClick={(e) => nextSlide(e)}
                 className="h-12 w-12 rounded-full bg-black/30 backdrop-blur-sm hover:bg-black/50 text-white border border-white/20"
               >
                 <ChevronRight className="h-6 w-6" />
@@ -166,7 +170,11 @@ export default function BlogHeroCarousel({ posts }: BlogHeroCarouselProps) {
             {posts.map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentSlide(index)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  e.preventDefault();
+                  setCurrentSlide(index);
+                }}
                 className={`h-2 rounded-full transition-all ${
                   index === currentSlide
                     ? 'w-8 bg-primary'

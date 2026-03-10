@@ -6,14 +6,6 @@ import { Lock, Eye, EyeOff } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-// Metadata para noindex (será aplicada via Head no componente)
-export const metadata = {
-  robots: {
-    index: false,
-    follow: false,
-  },
-};
-
 function LoginForm() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -104,11 +96,7 @@ function LoginForm() {
 
 export default function LojaLoginPage() {
   return (
-    <>
-      <head>
-        <meta name="robots" content="noindex, nofollow" />
-      </head>
-      <div className="min-h-screen bg-gradient-to-br from-accent/10 via-white to-primary/10 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-accent/10 via-white to-primary/10 flex items-center justify-center p-4">
       <div className="max-w-md w-full">
         {/* Logo */}
         <div className="text-center mb-8">
@@ -155,6 +143,6 @@ export default function LojaLoginPage() {
           </a>
         </div>
       </div>
-    </>
+    </div>
   );
 }
