@@ -1,11 +1,21 @@
-'use client';
+"use client";
 
-import { useState, useMemo } from 'react';
-import { Clock, Star, ShoppingCart, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { useCart } from '../../context/CartContext';
+import { useState, useMemo, useEffect } from "react";
+import {
+  Clock,
+  Star,
+  ShoppingCart,
+  Search,
+  Filter,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { useCart } from "../../context/CartContext";
+
+import axios from "axios";
 
 interface Exam {
   id: string;
@@ -24,225 +34,265 @@ interface Exam {
 }
 
 export default function ExamesListSection() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-  const [selectedPriceRange, setSelectedPriceRange] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [allExams, setAllExams] = useState<Exam[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const itemsPerPage = 12;
-  
+
   const { addItem } = useCart();
 
-  const allExams: Exam[] = [
-    {
-      id: '1',
-      name: 'Hemograma Completo',
-      category: 'sangue',
-      price: 35.90,
-      originalPrice: 45.90,
-      duration: '24h',
-      preparation: 'sem-jejum',
-      rating: 4.9,
-      reviewCount: 1247,
-      description: 'Avaliação completa das células sanguíneas, detecta anemias, infecções e outras alterações.',
-      features: ['Contagem de glóbulos vermelhos', 'Contagem de glóbulos brancos', 'Plaquetas'],
-      isPopular: true,
-      isFast: true
-    },
-    {
-      id: '2',
-      name: 'Glicemia de Jejum',
-      category: 'sangue',
-      price: 25.90,
-      duration: '24h',
-      preparation: 'jejum-8h',
-      rating: 4.8,
-      reviewCount: 892,
-      description: 'Dosagem da glicose no sangue para diagnóstico e controle do diabetes.',
-      features: ['Diagnóstico de diabetes', 'Controle glicêmico'],
-      isFast: true
-    },
-    {
-      id: '3',
-      name: 'Colesterol Total e Frações',
-      category: 'sangue',
-      price: 42.90,
-      originalPrice: 55.90,
-      duration: '24h',
-      preparation: 'jejum-12h',
-      rating: 4.7,
-      reviewCount: 654,
-      description: 'Avaliação completa do perfil lipídico para prevenção cardiovascular.',
-      features: ['Colesterol total', 'HDL', 'LDL', 'Triglicérides'],
-      isPopular: true
-    },
-    {
-      id: '4',
-      name: 'TSH - Hormônio da Tireoide',
-      category: 'hormonal',
-      price: 38.90,
-      duration: '48h',
-      preparation: 'sem-jejum',
-      rating: 4.9,
-      reviewCount: 423,
-      description: 'Avaliação da função da tireoide, essencial para o metabolismo.',
-      features: ['Função tireoidiana', 'Diagnóstico hormonal']
-    },
-    {
-      id: '5',
-      name: 'Urina Tipo I (EAS)',
-      category: 'urina',
-      price: 28.90,
-      duration: '24h',
-      preparation: 'sem-jejum',
-      rating: 4.6,
-      reviewCount: 789,
-      description: 'Análise completa da urina para detectar infecções e alterações renais.',
-      features: ['Detecção de infecções', 'Função renal'],
-      isFast: true
-    },
-    {
-      id: '6',
-      name: 'Eletrocardiograma (ECG)',
-      category: 'cardiologia',
-      price: 65.90,
-      duration: '24h',
-      preparation: 'sem-jejum',
-      rating: 4.8,
-      reviewCount: 334,
-      description: 'Avaliação da atividade elétrica do coração.',
-      features: ['Detecção de arritmias', 'Função cardíaca'],
-      isFast: true
-    },
-    {
-      id: '7',
-      name: 'Ultrassom Abdominal',
-      category: 'imagem',
-      price: 120.90,
-      duration: '24h',
-      preparation: 'jejum-8h',
-      rating: 4.7,
-      reviewCount: 567,
-      description: 'Exame de imagem para avaliação dos órgãos abdominais.',
-      features: ['Fígado', 'Vesícula', 'Rins']
-    },
-    {
-      id: '8',
-      name: 'Check-up Básico',
-      category: 'checkup',
-      price: 189.90,
-      originalPrice: 249.90,
-      duration: '48h',
-      preparation: 'jejum-12h',
-      rating: 4.9,
-      reviewCount: 1123,
-      description: 'Pacote completo com os principais exames preventivos.',
-      features: ['Hemograma', 'Glicemia', 'Colesterol'],
-      isPopular: true
-    },
-    // Adicionando mais exames para demonstrar paginação
-    {
-      id: '9',
-      name: 'Vitamina D',
-      category: 'vitaminas',
-      price: 89.90,
-      duration: '48h',
-      preparation: 'sem-jejum',
-      rating: 4.8,
-      reviewCount: 445,
-      description: 'Dosagem da vitamina D para saúde óssea.',
-      features: ['Saúde óssea', 'Imunidade']
-    },
-    {
-      id: '10',
-      name: 'Vitamina B12',
-      category: 'vitaminas',
-      price: 65.90,
-      duration: '48h',
-      preparation: 'sem-jejum',
-      rating: 4.7,
-      reviewCount: 332,
-      description: 'Avaliação dos níveis de vitamina B12.',
-      features: ['Sistema nervoso', 'Energia']
-    },
-    {
-      id: '11',
-      name: 'Ferritina',
-      category: 'sangue',
-      price: 52.90,
-      duration: '48h',
-      preparation: 'jejum-4h',
-      rating: 4.6,
-      reviewCount: 278,
-      description: 'Avaliação dos estoques de ferro no organismo.',
-      features: ['Reserva de ferro', 'Anemia']
-    },
-    {
-      id: '12',
-      name: 'PSA Total',
-      category: 'hormonal',
-      price: 58.90,
-      duration: '48h',
-      preparation: 'sem-jejum',
-      rating: 4.8,
-      reviewCount: 189,
-      description: 'Marcador para rastreamento de câncer de próstata.',
-      features: ['Saúde da próstata', 'Prevenção']
-    },
-    {
-      id: '13',
-      name: 'Beta HCG',
-      category: 'hormonal',
-      price: 48.90,
-      duration: '24h',
-      preparation: 'sem-jejum',
-      rating: 4.9,
-      reviewCount: 567,
-      description: 'Teste de gravidez quantitativo.',
-      features: ['Teste de gravidez', 'Hormonal']
-    },
-    {
-      id: '14',
-      name: 'Ácido Úrico',
-      category: 'sangue',
-      price: 28.90,
-      duration: '24h',
-      preparation: 'jejum-8h',
-      rating: 4.5,
-      reviewCount: 234,
-      description: 'Dosagem do ácido úrico para diagnóstico de gota.',
-      features: ['Diagnóstico de gota', 'Função renal']
-    },
-    {
-      id: '15',
-      name: 'Cultura de Urina',
-      category: 'urina',
-      price: 45.90,
-      duration: '72h',
-      preparation: 'sem-jejum',
-      rating: 4.7,
-      reviewCount: 156,
-      description: 'Identificação de bactérias na urina.',
-      features: ['Infecção urinária', 'Antibiograma']
+  useEffect(() => {
+    async function fetchExams() {
+      try {
+        setIsLoading(true);
+        const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
+        const response = await axios.get(`${apiUrl}`);
+        if (response.data && Array.isArray(response.data)) {
+          setAllExams(response.data);
+        }
+      } catch (err) {
+        console.error("Erro ao buscar exames:", err);
+        setAllExams([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
 
-  const categories = [
-    { value: '', label: 'Todas as categorias' },
-    { value: 'sangue', label: 'Exames de Sangue' },
-    { value: 'urina', label: 'Exames de Urina' },
-    { value: 'imagem', label: 'Exames de Imagem' },
-    { value: 'cardiologia', label: 'Cardiologia' },
-    { value: 'hormonal', label: 'Hormônios' },
-    { value: 'checkup', label: 'Check-ups' },
-    { value: 'vitaminas', label: 'Vitaminas' }
-  ];
+    fetchExams();
+  }, []);
+
+  // const allExams: Exam[] = [
+  //   {
+  //     id: '1',
+  //     name: 'Hemograma Completo',
+  //     category: 'sangue',
+  //     price: 35.90,
+  //     originalPrice: 45.90,
+  //     duration: '24h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.9,
+  //     reviewCount: 1247,
+  //     description: 'Avaliação completa das células sanguíneas, detecta anemias, infecções e outras alterações.',
+  //     features: ['Contagem de glóbulos vermelhos', 'Contagem de glóbulos brancos', 'Plaquetas'],
+  //     isPopular: true,
+  //     isFast: true
+  //   },
+  //   {
+  //     id: '2',
+  //     name: 'Glicemia de Jejum',
+  //     category: 'sangue',
+  //     price: 25.90,
+  //     duration: '24h',
+  //     preparation: 'jejum-8h',
+  //     rating: 4.8,
+  //     reviewCount: 892,
+  //     description: 'Dosagem da glicose no sangue para diagnóstico e controle do diabetes.',
+  //     features: ['Diagnóstico de diabetes', 'Controle glicêmico'],
+  //     isFast: true
+  //   },
+  //   {
+  //     id: '3',
+  //     name: 'Colesterol Total e Frações',
+  //     category: 'sangue',
+  //     price: 42.90,
+  //     originalPrice: 55.90,
+  //     duration: '24h',
+  //     preparation: 'jejum-12h',
+  //     rating: 4.7,
+  //     reviewCount: 654,
+  //     description: 'Avaliação completa do perfil lipídico para prevenção cardiovascular.',
+  //     features: ['Colesterol total', 'HDL', 'LDL', 'Triglicérides'],
+  //     isPopular: true
+  //   },
+  //   {
+  //     id: '4',
+  //     name: 'TSH - Hormônio da Tireoide',
+  //     category: 'hormonal',
+  //     price: 38.90,
+  //     duration: '48h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.9,
+  //     reviewCount: 423,
+  //     description: 'Avaliação da função da tireoide, essencial para o metabolismo.',
+  //     features: ['Função tireoidiana', 'Diagnóstico hormonal']
+  //   },
+  //   {
+  //     id: '5',
+  //     name: 'Urina Tipo I (EAS)',
+  //     category: 'urina',
+  //     price: 28.90,
+  //     duration: '24h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.6,
+  //     reviewCount: 789,
+  //     description: 'Análise completa da urina para detectar infecções e alterações renais.',
+  //     features: ['Detecção de infecções', 'Função renal'],
+  //     isFast: true
+  //   },
+  //   {
+  //     id: '6',
+  //     name: 'Eletrocardiograma (ECG)',
+  //     category: 'cardiologia',
+  //     price: 65.90,
+  //     duration: '24h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.8,
+  //     reviewCount: 334,
+  //     description: 'Avaliação da atividade elétrica do coração.',
+  //     features: ['Detecção de arritmias', 'Função cardíaca'],
+  //     isFast: true
+  //   },
+  //   {
+  //     id: '7',
+  //     name: 'Ultrassom Abdominal',
+  //     category: 'imagem',
+  //     price: 120.90,
+  //     duration: '24h',
+  //     preparation: 'jejum-8h',
+  //     rating: 4.7,
+  //     reviewCount: 567,
+  //     description: 'Exame de imagem para avaliação dos órgãos abdominais.',
+  //     features: ['Fígado', 'Vesícula', 'Rins']
+  //   },
+  //   {
+  //     id: '8',
+  //     name: 'Check-up Básico',
+  //     category: 'checkup',
+  //     price: 189.90,
+  //     originalPrice: 249.90,
+  //     duration: '48h',
+  //     preparation: 'jejum-12h',
+  //     rating: 4.9,
+  //     reviewCount: 1123,
+  //     description: 'Pacote completo com os principais exames preventivos.',
+  //     features: ['Hemograma', 'Glicemia', 'Colesterol'],
+  //     isPopular: true
+  //   },
+  //   // Adicionando mais exames para demonstrar paginação
+  //   {
+  //     id: '9',
+  //     name: 'Vitamina D',
+  //     category: 'vitaminas',
+  //     price: 89.90,
+  //     duration: '48h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.8,
+  //     reviewCount: 445,
+  //     description: 'Dosagem da vitamina D para saúde óssea.',
+  //     features: ['Saúde óssea', 'Imunidade']
+  //   },
+  //   {
+  //     id: '10',
+  //     name: 'Vitamina B12',
+  //     category: 'vitaminas',
+  //     price: 65.90,
+  //     duration: '48h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.7,
+  //     reviewCount: 332,
+  //     description: 'Avaliação dos níveis de vitamina B12.',
+  //     features: ['Sistema nervoso', 'Energia']
+  //   },
+  //   {
+  //     id: '11',
+  //     name: 'Ferritina',
+  //     category: 'sangue',
+  //     price: 52.90,
+  //     duration: '48h',
+  //     preparation: 'jejum-4h',
+  //     rating: 4.6,
+  //     reviewCount: 278,
+  //     description: 'Avaliação dos estoques de ferro no organismo.',
+  //     features: ['Reserva de ferro', 'Anemia']
+  //   },
+  //   {
+  //     id: '12',
+  //     name: 'PSA Total',
+  //     category: 'hormonal',
+  //     price: 58.90,
+  //     duration: '48h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.8,
+  //     reviewCount: 189,
+  //     description: 'Marcador para rastreamento de câncer de próstata.',
+  //     features: ['Saúde da próstata', 'Prevenção']
+  //   },
+  //   {
+  //     id: '13',
+  //     name: 'Beta HCG',
+  //     category: 'hormonal',
+  //     price: 48.90,
+  //     duration: '24h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.9,
+  //     reviewCount: 567,
+  //     description: 'Teste de gravidez quantitativo.',
+  //     features: ['Teste de gravidez', 'Hormonal']
+  //   },
+  //   {
+  //     id: '14',
+  //     name: 'Ácido Úrico',
+  //     category: 'sangue',
+  //     price: 28.90,
+  //     duration: '24h',
+  //     preparation: 'jejum-8h',
+  //     rating: 4.5,
+  //     reviewCount: 234,
+  //     description: 'Dosagem do ácido úrico para diagnóstico de gota.',
+  //     features: ['Diagnóstico de gota', 'Função renal']
+  //   },
+  //   {
+  //     id: '15',
+  //     name: 'Cultura de Urina',
+  //     category: 'urina',
+  //     price: 45.90,
+  //     duration: '72h',
+  //     preparation: 'sem-jejum',
+  //     rating: 4.7,
+  //     reviewCount: 156,
+  //     description: 'Identificação de bactérias na urina.',
+  //     features: ['Infecção urinária', 'Antibiograma']
+  //   }
+  // ];
+
+  
+  // const categories = [
+  //   { value: "", label: "Todas as categorias" },
+  //   { value: "sangue", label: "Exames de Sangue" },
+  //   { value: "urina", label: "Exames de Urina" },
+  //   { value: "imagem", label: "Exames de Imagem" },
+  //   { value: "cardiologia", label: "Cardiologia" },
+  //   { value: "hormonal", label: "Hormônios" },
+  //   { value: "checkup", label: "Check-ups" },
+  //   { value: "vitaminas", label: "Vitaminas" },
+  // ];
+
+  const categoriesAllFiltered = allExams.map((exam) => {
+    return {
+      value: exam.category,
+      label: exam.category
+    } 
+  })
+
+  const categoriesAll = categoriesAllFiltered.filter((obj, index, self) =>
+    index === self.findIndex(o =>
+      o.value === obj.value && o.label === obj.label
+    )
+  );
+  
+  categoriesAll.unshift({ value: "", label: "Todas as categorias" });
+
+  const categories = categoriesAll
 
   const priceRanges = [
-    { value: '', label: 'Todos os preços' },
-    { value: '0-50', label: 'Até R$ 50' },
-    { value: '50-100', label: 'R$ 50 - R$ 100' },
-    { value: '100-200', label: 'R$ 100 - R$ 200' },
-    { value: '200+', label: 'Acima de R$ 200' }
+    { value: "", label: "Todos os preços" },
+    { value: "0-50", label: "Até R$ 50" },
+    { value: "50-100", label: "R$ 50 - R$ 100" },
+    { value: "100-200", label: "R$ 100 - R$ 200" },
+    { value: "200+", label: "Acima de R$ 200" },
   ];
 
   // Filtrar exames
@@ -251,29 +301,30 @@ export default function ExamesListSection() {
 
     // Filtro por busca
     if (searchQuery.trim()) {
-      filtered = filtered.filter(exam =>
-        exam.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        exam.description.toLowerCase().includes(searchQuery.toLowerCase())
+      filtered = filtered.filter(
+        (exam) =>
+          exam.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          exam.description.toLowerCase().includes(searchQuery.toLowerCase()),
       );
     }
 
     // Filtro por categoria
     if (selectedCategory) {
-      filtered = filtered.filter(exam => exam.category === selectedCategory);
+      filtered = filtered.filter((exam) => exam.category === selectedCategory);
     }
 
     // Filtro por preço
     if (selectedPriceRange) {
-      filtered = filtered.filter(exam => {
+      filtered = filtered.filter((exam) => {
         const price = exam.price;
         switch (selectedPriceRange) {
-          case '0-50':
+          case "0-50":
             return price <= 50;
-          case '50-100':
+          case "50-100":
             return price > 50 && price <= 100;
-          case '100-200':
+          case "100-200":
             return price > 100 && price <= 200;
-          case '200+':
+          case "200+":
             return price > 200;
           default:
             return true;
@@ -282,20 +333,23 @@ export default function ExamesListSection() {
     }
 
     return filtered;
-  }, [searchQuery, selectedCategory, selectedPriceRange]);
+  }, [searchQuery, selectedCategory, selectedPriceRange, allExams]);
 
   // Paginação
   const totalPages = Math.ceil(filteredExams.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedExams = filteredExams.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedExams = filteredExams.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const handleAddToCart = (exam: Exam) => {
-    addItem(exam.id, 'exam');
+    addItem(exam.id, "exam");
   };
 
   const goToPage = (page: number) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const ExamCard = ({ exam }: { exam: Exam }) => (
@@ -304,24 +358,22 @@ export default function ExamesListSection() {
         <h3 className="font-semibold text-gray-900 text-sm leading-tight mb-2">
           {exam.name}
         </h3>
-        <p className="text-xs text-gray-600 line-clamp-2">
-          {exam.description}
-        </p>
+        <p className="text-xs text-gray-600 line-clamp-2">{exam.description}</p>
       </div>
 
       <div className="space-y-3 mt-auto">
         <div className="flex items-baseline justify-between">
           <div>
             <div className="text-lg font-bold text-gray-900">
-              R$ {exam.price.toFixed(2).replace('.', ',')}
+              R$ {exam.price.toFixed(2).replace(".", ",")}
             </div>
-            {exam.originalPrice && (
+            {/* {exam.originalPrice && (
               <div className="text-xs text-gray-500 line-through">
                 R$ {exam.originalPrice.toFixed(2).replace('.', ',')}
               </div>
-            )}
+            )} */}
           </div>
-          <a 
+          <a
             href={`/loja/produto/exam-${exam.id}`}
             className="flex items-center justify-center w-7 h-7 rounded-full border border-gray-300 hover:border-gray-400 hover:bg-gray-50 active:bg-gray-100 transition-colors"
             title="Ver informações do exame"
@@ -411,9 +463,9 @@ export default function ExamesListSection() {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSearchQuery('');
-                  setSelectedCategory('');
-                  setSelectedPriceRange('');
+                  setSearchQuery("");
+                  setSelectedCategory("");
+                  setSelectedPriceRange("");
                   setCurrentPage(1);
                 }}
                 className="w-full text-sm"
@@ -436,11 +488,20 @@ export default function ExamesListSection() {
             </div>
 
             {/* Exams Grid */}
-            {paginatedExams.length === 0 ? (
+            {isLoading ? (
+              <div className="text-center py-12">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+                <p className="text-lg text-gray-600">Carregando exames...</p>
+              </div>
+            ) : paginatedExams.length === 0 ? (
               <div className="text-center py-12">
                 <Search className="h-12 w-12 mx-auto mb-4 text-gray-400" />
-                <p className="text-lg text-gray-600 mb-2">Nenhum exame encontrado</p>
-                <p className="text-sm text-gray-500">Tente ajustar os filtros ou buscar por outros termos</p>
+                <p className="text-lg text-gray-600 mb-2">
+                  Nenhum exame encontrado
+                </p>
+                <p className="text-sm text-gray-500">
+                  Tente ajustar os filtros ou buscar por outros termos
+                </p>
               </div>
             ) : (
               <>
@@ -478,7 +539,9 @@ export default function ExamesListSection() {
                       return (
                         <Button
                           key={pageNum}
-                          variant={currentPage === pageNum ? "default" : "outline"}
+                          variant={
+                            currentPage === pageNum ? "default" : "outline"
+                          }
                           size="sm"
                           onClick={() => goToPage(pageNum)}
                           className="w-8 h-8 p-0"

@@ -3,6 +3,7 @@ import { CartProvider } from '../context/CartContext';
 import ShopHeader from '../components/ShopHeader';
 import ShopFooter from '../components/ShopFooter';
 import WhatsAppFAB from '../components/WhatsAppFAB';
+import CartDrawer from '../components/CartDrawer';
 import AIBanner from '../components/AIBanner';
 import ExamesListSection from './components/ExamesListSection';
 import './styles/exames.css';
@@ -25,6 +26,9 @@ export default function ExamesPage() {
         </main>
 
         <ShopFooter />
+        
+        {/* Componentes Flutuantes */}
+        <CartDrawer />
         <WhatsAppFAB />
       </div>
     </CartProvider>

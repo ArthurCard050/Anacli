@@ -162,7 +162,7 @@ function MobileStickyBar({ product, onAdd, isAdded }: {
 // Componente Principal da Página
 function ProductPageInner({ slug }: { slug: string }) {
   const { addItem } = useCart();
-  
+  console.log(slug)
   const [product, setProduct] = useState<Exam | ExamPackage | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAdded, setIsAdded] = useState(false);
