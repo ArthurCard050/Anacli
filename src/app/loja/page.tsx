@@ -1,19 +1,18 @@
 'use client';
 
 import HeroCarousel from './components/HeroCarousel';
+import ShopHeader from './components/ShopHeader';
 import AIBanner from './components/AIBanner';
 import BentoGrid from './components/BentoGrid';
-import CartDrawer from './components/CartDrawer';
-import WhatsAppFAB from './components/WhatsAppFAB';
 import ShopFooter from './components/ShopFooter';
+import CartDrawer from './components/CartDrawer';
 import { CartProvider } from './context/CartContext';
-import './styles/hero-carousel.css';
-import './styles/mega-menu.css';
 
-export default function LojaAnacli() {
+export default function LojaPage() {
   return (
     <CartProvider>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-page">
+        <ShopHeader />
         <HeroCarousel />
         <AIBanner />
         <BentoGrid />
@@ -21,7 +20,6 @@ export default function LojaAnacli() {
         
         {/* Componentes Flutuantes */}
         <CartDrawer />
-        <WhatsAppFAB />
       </div>
     </CartProvider>
   );
