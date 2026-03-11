@@ -122,31 +122,35 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-[9999] bg-black/90 flex items-center justify-center p-4">
-      <div className="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="camera-modal fixed inset-0 z-[9999] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4">
+      <div className="glass-effect bg-white/95 backdrop-blur-md rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-white/20">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-8 border-b border-slate-200/50">
+          <h2 className="text-2xl font-bold text-slate-900">
             {capturedImage ? 'Revisar Imagem' : 'Capturar Receituário'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-3 hover:bg-slate-100/50 rounded-2xl transition-colors"
           >
-            <X className="h-6 w-6 text-gray-600" />
+            <X className="h-6 w-6 text-slate-600" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-6">
+        <div className="p-8">
           {!capturedImage ? (
             <>
               {/* Camera/Upload Toggle */}
-              <div className="flex gap-4 mb-6">
+              <div className="flex gap-4 mb-8">
                 <Button
                   onClick={() => setUseCamera(true)}
                   variant={useCamera ? 'default' : 'outline'}
-                  className="flex-1"
+                  className={`flex-1 h-14 text-lg font-medium rounded-2xl transition-all duration-300 ${
+                    useCamera 
+                      ? 'bg-primary hover:bg-primary-dark text-white shadow-lg' 
+                      : 'border-2 border-primary hover:border-primary hover:bg-primary/10 text-primary'
+                  }`}
                 >
                   <Camera className="mr-2 h-5 w-5" />
                   Usar Câmera
@@ -157,16 +161,20 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                     fileInputRef.current?.click();
                   }}
                   variant={!useCamera ? 'default' : 'outline'}
-                  className="flex-1"
+                  className={`flex-1 h-14 text-lg font-medium rounded-2xl transition-all duration-300 ${
+                    !useCamera 
+                      ? 'bg-primary hover:bg-primary-dark text-white shadow-lg' 
+                      : 'border-2 border-primary hover:border-primary hover:bg-primary/10 text-primary'
+                  }`}
                 >
                   <Upload className="mr-2 h-5 w-5" />
-                  Enviar Arquivo
+                  Enviar Imagem
                 </Button>
               </div>
 
               {/* Camera Preview */}
               {useCamera && (
-                <div className="relative bg-black rounded-xl overflow-hidden aspect-[4/3]">
+                <div className="relative bg-slate-900 rounded-2xl overflow-hidden aspect-[4/3] shadow-2xl">
                   <video
                     ref={videoRef}
                     autoPlay
@@ -177,27 +185,27 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                   
                   {/* Overlay com guia de enquadramento */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                    <div className="border-4 border-white/50 rounded-2xl w-[80%] h-[70%] relative">
+                    <div className="border-4 border-white/60 rounded-3xl w-[80%] h-[70%] relative">
                       {/* Cantos decorativos */}
-                      <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4 border-accent rounded-tl-2xl"></div>
-                      <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4 border-accent rounded-tr-2xl"></div>
-                      <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4 border-accent rounded-bl-2xl"></div>
-                      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4 border-accent rounded-br-2xl"></div>
+                      <div className="absolute top-0 left-0 w-10 h-10 border-t-4 border-l-4 border-accent rounded-tl-3xl"></div>
+                      <div className="absolute top-0 right-0 w-10 h-10 border-t-4 border-r-4 border-accent rounded-tr-3xl"></div>
+                      <div className="absolute bottom-0 left-0 w-10 h-10 border-b-4 border-l-4 border-accent rounded-bl-3xl"></div>
+                      <div className="absolute bottom-0 right-0 w-10 h-10 border-b-4 border-r-4 border-accent rounded-br-3xl"></div>
                       
                       {/* Texto de instrução */}
-                      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm whitespace-nowrap">
+                      <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 bg-black/80 backdrop-blur-sm text-white px-6 py-3 rounded-2xl text-sm whitespace-nowrap border border-white/20">
                         Posicione o receituário dentro do quadro
                       </div>
                     </div>
                   </div>
 
                   {/* Botão de captura */}
-                  <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
+                  <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
                     <button
                       onClick={capturePhoto}
-                      className="h-16 w-16 rounded-full bg-white border-4 border-accent shadow-lg hover:scale-110 transition-transform"
+                      className="h-20 w-20 rounded-full bg-white/90 backdrop-blur-sm border-4 border-accent shadow-2xl hover:scale-110 transition-all duration-300 hover:border-primary"
                     >
-                      <div className="h-full w-full rounded-full bg-accent"></div>
+                      <div className="h-full w-full rounded-full bg-accent shadow-inner"></div>
                     </button>
                   </div>
                 </div>
@@ -215,33 +223,35 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
           ) : (
             <>
               {/* Captured Image Preview */}
-              <div className="mb-6">
+              <div className="mb-8">
                 <img
                   src={capturedImage}
                   alt="Receituário capturado"
-                  className="w-full rounded-xl border-2 border-gray-200"
+                  className="w-full rounded-2xl border-2 border-slate-200 shadow-lg"
                 />
               </div>
 
               {/* Processing or Results */}
               {isProcessing ? (
-                <div className="text-center py-12">
-                  <Loader2 className="h-12 w-12 text-accent animate-spin mx-auto mb-4" />
-                  <p className="text-lg font-semibold text-gray-900 mb-2">Processando imagem...</p>
-                  <p className="text-gray-600">Nossa IA está identificando os exames</p>
+                <div className="text-center py-16 bg-primary/5 rounded-2xl border border-primary/10">
+                  <Loader2 className="h-16 w-16 text-primary animate-spin mx-auto mb-6" />
+                  <p className="text-xl font-semibold text-slate-900 mb-3">Processando imagem...</p>
+                  <p className="text-slate-600 text-lg">Nossa IA está identificando os exames</p>
                 </div>
               ) : detectedExams.length > 0 ? (
-                <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Check className="h-6 w-6 text-green-600" />
-                    <h3 className="text-xl font-bold text-gray-900">
+                <div className="bg-primary/5 border-2 border-primary/20 rounded-2xl p-8 mb-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="h-12 w-12 rounded-2xl bg-primary flex items-center justify-center">
+                      <Check className="h-6 w-6 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-slate-900">
                       {detectedExams.length} exames identificados
                     </h3>
                   </div>
-                  <ul className="space-y-2">
+                  <ul className="space-y-3">
                     {detectedExams.map((exam, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700">
-                        <Check className="h-4 w-4 text-green-600" />
+                      <li key={index} className="flex items-center gap-3 text-slate-700 text-lg">
+                        <Check className="h-5 w-5 text-primary flex-shrink-0" />
                         {exam}
                       </li>
                     ))}
@@ -250,11 +260,11 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
               ) : null}
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
+              <div className="flex gap-6">
                 <Button
                   onClick={retakePhoto}
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 h-14 text-lg font-medium border-2 border-slate-300 hover:border-primary hover:bg-primary/10 text-slate-700 hover:text-primary rounded-2xl transition-all duration-300"
                 >
                   <RotateCcw className="mr-2 h-5 w-5" />
                   Tirar Outra Foto
@@ -263,7 +273,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                 {detectedExams.length > 0 ? (
                   <Button
                     onClick={addToCart}
-                    className="flex-1 bg-accent hover:bg-accent/90"
+                    className="flex-1 h-14 text-lg font-medium bg-accent hover:bg-accent/90 text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Check className="mr-2 h-5 w-5" />
                     Adicionar ao Carrinho
@@ -271,7 +281,7 @@ export default function CameraCapture({ onClose }: CameraCaptureProps) {
                 ) : (
                   <Button
                     onClick={processImage}
-                    className="flex-1 bg-accent hover:bg-accent/90"
+                    className="flex-1 h-14 text-lg font-medium bg-primary hover:bg-primary-dark text-white rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300"
                     disabled={isProcessing}
                   >
                     <Camera className="mr-2 h-5 w-5" />

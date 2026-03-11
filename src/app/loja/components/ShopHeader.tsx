@@ -136,8 +136,8 @@ export default function ShopHeader() {
 
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-[100] bg-accent backdrop-blur-md border-b border-accent/20 transition-all duration-300 ${
-        scrollY > 50 ? 'rounded-b-2xl shadow-lg' : ''
+      className={`fixed top-0 left-0 right-0 z-[100] bg-card-clean backdrop-blur-md border-b border-border-clean transition-all duration-300 ${
+        scrollY > 50 ? 'micro-shadow' : ''
       }`}
       style={{ overflow: 'visible' }}
     >
@@ -149,14 +149,14 @@ export default function ShopHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="lg:hidden hover:bg-white/10"
+              className="lg:hidden hover:bg-gray-100"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Menu"
             >
               <div className={`hamburger-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-                <span className="hamburger-line"></span>
-                <span className="hamburger-line"></span>
-                <span className="hamburger-line"></span>
+                <span className="hamburger-line bg-text-primary-clean"></span>
+                <span className="hamburger-line bg-text-primary-clean"></span>
+                <span className="hamburger-line bg-text-primary-clean"></span>
               </div>
             </Button>
 
@@ -164,7 +164,7 @@ export default function ShopHeader() {
             <div className="flex-shrink-0">
               <a href="/loja" className="flex items-center transition-transform hover:scale-105">
                 <img
-                  src="/assets/Logo-Hor-branca.svg"
+                  src="/assets/logo.svg"
                   alt="Anacli"
                   width={120}
                   height={40}
@@ -181,7 +181,7 @@ export default function ShopHeader() {
             >
               <button 
                 onClick={toggleMenu}
-                className="flex items-center gap-1 text-white hover:text-white/80 transition-colors font-medium py-4"
+                className="flex items-center gap-1 text-text-primary-clean hover:text-brand-accent transition-colors font-clean-medium py-4"
               >
                 Exames
                 <ChevronDown className={`h-4 w-4 chevron-rotate ${showMegaMenu ? 'open' : ''}`} />
@@ -190,24 +190,24 @@ export default function ShopHeader() {
               {/* Mega Menu */}
               {showMegaMenu && (
                 <div 
-                  className="mega-menu-dropdown w-[900px] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden mega-menu-enter"
+                  className="mega-menu-dropdown w-[900px] bg-card-clean rounded-small-clean no-shadow border border-border-clean overflow-hidden mega-menu-enter"
                 >
                   {/* Header do Menu */}
-                  <div className="bg-gray-50 p-6 border-b border-gray-200">
-                    <h2 className="text-xl font-bold mb-2 text-gray-900">Nossos Exames</h2>
-                    <p className="text-gray-600 text-sm">Escolha entre mais de 200 tipos de exames disponíveis</p>
+                  <div className="bg-gray-50 p-6 border-b border-border-clean">
+                    <h2 className="text-xl font-clean-bold mb-2 text-text-primary-clean">Nossos Exames</h2>
+                    <p className="text-text-secondary-clean text-sm">Escolha entre mais de 200 tipos de exames disponíveis</p>
                   </div>
 
                   {/* Conteúdo do Menu */}
-                  <div className="p-8 bg-white">
+                  <div className="p-8 bg-card-clean">
                     <div className="grid grid-cols-3 gap-8">
                       {examCategories.map((category, index) => (
                         <div key={category.name} className={`group stagger-animation`}>
-                          <div className={`menu-category-header flex items-center gap-3 mb-4 p-3 rounded-xl ${category.bgColor} group-hover:shadow-md transition-all duration-200`}>
-                            <div className={`p-2 rounded-lg bg-white shadow-sm`}>
+                          <div className={`menu-category-header flex items-center gap-3 mb-4 p-3 rounded-small-clean ${category.bgColor} group-hover:micro-shadow transition-all duration-200`}>
+                            <div className={`p-2 rounded-button-clean bg-card-clean no-shadow`}>
                               <category.icon className={`h-5 w-5 ${category.color}`} />
                             </div>
-                            <h3 className="font-semibold text-gray-900 text-sm">{category.name}</h3>
+                            <h3 className="font-clean-semibold text-text-primary-clean text-sm">{category.name}</h3>
                           </div>
                           <ul className="space-y-2 pl-2">
                             {category.items.map((item) => (
@@ -215,7 +215,7 @@ export default function ShopHeader() {
                                 <a 
                                   href="#" 
                                   onClick={closeMenu}
-                                  className="menu-category-item menu-clickable-area text-sm text-gray-600 hover:text-primary transition-colors block py-1.5 px-2 rounded-lg hover:bg-gray-50 flex items-center gap-2"
+                                  className="menu-category-item menu-clickable-area text-sm text-text-secondary-clean hover:text-brand-accent transition-colors block py-1.5 px-2 rounded-button-clean hover:bg-gray-50 flex items-center gap-2"
                                 >
                                   <item.icon className="h-3 w-3 text-gray-400" />
                                   {item.name}
@@ -228,15 +228,15 @@ export default function ShopHeader() {
                     </div>
                     
                     {/* Footer do Menu */}
-                    <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-sm text-gray-600">
+                    <div className="mt-8 pt-6 border-t border-border-clean flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-sm text-text-secondary-clean">
                         <Microscope className="h-4 w-4" />
                         <span>Mais de 200 exames disponíveis</span>
                       </div>
                       <a 
                         href="/loja/exames" 
                         onClick={closeMenu}
-                        className="menu-clickable-area inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/5 px-4 py-2 rounded-lg hover:bg-primary/10"
+                        className="menu-clickable-area inline-flex items-center gap-2 text-sm font-clean-medium text-brand-accent hover:text-brand-accent/80 transition-colors bg-brand-accent/5 px-4 py-2 rounded-button-clean hover:bg-brand-accent/10"
                       >
                         Ver todos os exames
                         <ChevronDown className="h-4 w-4 rotate-[-90deg]" />
@@ -246,21 +246,20 @@ export default function ShopHeader() {
                 </div>
               )}
             </div>
-            <a href="/loja/exames" className="text-white hover:text-white/80 transition-colors font-medium">Exames</a>
-            <a href="/loja/pacotes" className="text-white hover:text-white/80 transition-colors font-medium">Pacotes</a>
-            <a href="/loja/como-funciona" className="text-white hover:text-white/80 transition-colors font-medium">Como Funciona</a>
+            <a href="/loja/pacotes" className="text-text-primary-clean hover:text-brand-accent transition-colors font-clean-medium">Pacotes</a>
+            <a href="/loja/como-funciona" className="text-text-primary-clean hover:text-brand-accent transition-colors font-clean-medium">Como Funciona</a>
           </nav>
 
           {/* Search Bar - Desktop (sempre visível) */}
           <div className="hidden md:block flex-1 max-w-xl mx-8">
             <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-white/60" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-text-secondary-clean" />
               <Input
                 type="search"
                 placeholder="Buscar exames..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 pr-4 h-11 rounded-full bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 w-full"
+                className="pl-10 pr-4 h-11 rounded-full bg-gray-50 border-border-clean text-text-primary-clean placeholder:text-text-secondary-clean focus:border-brand-accent focus:ring-brand-accent/20 w-full"
               />
             </div>
           </div>
@@ -271,20 +270,20 @@ export default function ShopHeader() {
             <Button
               variant="ghost"
               size="icon"
-              className="md:hidden hover:bg-white/10"
+              className="md:hidden hover:bg-gray-100"
               aria-label="Buscar"
             >
-              <Search className="h-5 w-5 text-white" />
+              <Search className="h-5 w-5 text-text-primary-clean" />
             </Button>
 
             {/* Login */}
             <Button
               variant="ghost"
               size="icon"
-              className="relative hover:bg-white/10 transition-all hover:scale-110"
+              className="relative hover:bg-gray-100 transition-all hover:scale-110"
               aria-label="Login"
             >
-              <User className="h-5 w-5 text-white" />
+              <User className="h-5 w-5 text-text-primary-clean" />
             </Button>
 
             {/* Cart */}
@@ -292,12 +291,12 @@ export default function ShopHeader() {
               variant="ghost"
               size="icon"
               onClick={openCart}
-              className="relative hover:bg-white/10 transition-all hover:scale-110"
+              className="relative hover:bg-gray-100 transition-all hover:scale-110"
               aria-label="Carrinho"
             >
-              <ShoppingCart className="h-5 w-5 text-white" />
+              <ShoppingCart className="h-5 w-5 text-text-primary-clean" />
               {itemCount > 0 && (
-                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-white text-accent text-xs flex items-center justify-center font-medium shadow-lg animate-pulse">
+                <span className="absolute -top-1 -right-1 h-5 w-5 rounded-full bg-brand-accent text-white text-xs flex items-center justify-center font-clean-medium no-shadow animate-pulse">
                   {itemCount}
                 </span>
               )}
@@ -308,13 +307,13 @@ export default function ShopHeader() {
         {/* Search Bar - Mobile (sempre visível) */}
         <div className="md:hidden pb-3">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/60" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-500" />
             <Input
               type="search"
               placeholder="Buscar exames..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-4 h-10 rounded-full bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:border-white focus:ring-white/20 text-sm"
+              className="pl-9 pr-4 h-10 rounded-full bg-gray-100 border-gray-200 text-gray-900 placeholder:text-gray-500 focus:border-primary focus:ring-primary/20 text-sm"
             />
           </div>
         </div>

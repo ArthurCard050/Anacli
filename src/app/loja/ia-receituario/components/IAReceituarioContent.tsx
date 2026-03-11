@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Sparkles, Camera, Upload, CheckCircle, Zap, Shield, Clock } from 'lucide-react';
+import { Sparkles, Camera, Upload, CheckCircle, Zap, Shield, Clock, Brain, Scan } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import CameraCapture from './CameraCapture';
 
@@ -9,74 +9,76 @@ export default function IAReceituarioContent() {
   const [showCamera, setShowCamera] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-slate-50">
       {/* Hero Section */}
-      <section className="py-16 md:py-24">
+      <section className="py-20 md:py-32">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
+          <div className="max-w-5xl mx-auto text-center">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-accent/10 text-accent px-4 py-2 rounded-full mb-6">
-              <Sparkles className="h-5 w-5" />
-              <span className="font-semibold">Tecnologia de Inteligência Artificial</span>
+            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-6 py-3 rounded-full mb-8 border border-primary/20 backdrop-blur-sm">
+              <Brain className="h-5 w-5" />
+              <span className="font-medium">Inteligência Artificial Avançada</span>
             </div>
 
             {/* Título */}
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-              Leitura Automática de
-              <span className="block text-accent">Receituário Médico</span>
+            <h1 className="text-5xl md:text-7xl font-bold text-slate-900 mb-8 leading-tight">
+              Leitura Inteligente de
+              <span className="block text-accent">
+                Receituário Médico
+              </span>
             </h1>
 
             {/* Descrição */}
-            <p className="text-xl md:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-slate-600 mb-16 max-w-4xl mx-auto leading-relaxed">
               Nossa IA identifica automaticamente todos os exames do seu receituário em segundos. 
-              Rápido, preciso e sem erros de digitação.
+              Tecnologia de ponta para máxima precisão e agilidade.
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
+            <div className="flex flex-col sm:flex-row gap-6 justify-center mb-20">
               <Button
                 size="lg"
                 onClick={() => setShowCamera(true)}
-                className="h-16 px-8 text-lg font-semibold bg-accent hover:bg-accent/90 text-white shadow-lg hover:shadow-xl transition-all"
+                className="h-16 px-10 text-lg font-semibold bg-primary hover:bg-primary-dark text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
               >
-                <Camera className="mr-2 h-6 w-6" />
-                Tirar Foto do Receituário
+                <Camera className="mr-3 h-6 w-6" />
+                Fotografar Receituário
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 onClick={() => setShowCamera(true)}
-                className="h-16 px-8 text-lg font-semibold border-2 hover:bg-gray-50"
+                className="h-16 px-10 text-lg font-semibold border-2 border-accent hover:border-accent hover:bg-accent/10 text-accent hover:text-accent transition-all duration-300 rounded-2xl backdrop-blur-sm"
               >
-                <Upload className="mr-2 h-6 w-6" />
-                Enviar Arquivo
+                <Upload className="mr-3 h-6 w-6" />
+                Enviar Imagem
               </Button>
             </div>
 
             {/* Benefícios */}
-            <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-              <div className="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm">
-                <div className="h-16 w-16 rounded-full bg-accent/10 flex items-center justify-center mb-4">
-                  <Zap className="h-8 w-8 text-accent" />
+            <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              <div className="benefit-card group flex flex-col items-center text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/50">
+                <div className="icon-hover h-20 w-20 rounded-2xl bg-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Zap className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Resultado em Segundos</h3>
-                <p className="text-gray-600">Nossa IA processa seu receituário instantaneamente</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Resultado Instantâneo</h3>
+                <p className="text-slate-600 leading-relaxed">Processamento em tempo real com tecnologia de IA avançada</p>
               </div>
 
-              <div className="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm">
-                <div className="h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-                  <CheckCircle className="h-8 w-8 text-primary" />
+              <div className="benefit-card group flex flex-col items-center text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/50">
+                <div className="icon-hover h-20 w-20 rounded-2xl bg-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Scan className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">100% Preciso</h3>
-                <p className="text-gray-600">Tecnologia avançada de reconhecimento de texto</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Precisão Máxima</h3>
+                <p className="text-slate-600 leading-relaxed">Reconhecimento óptico de caracteres com 99.9% de acurácia</p>
               </div>
 
-              <div className="flex flex-col items-center text-center p-6 bg-white rounded-2xl shadow-sm">
-                <div className="h-16 w-16 rounded-full bg-blue-50 flex items-center justify-center mb-4">
-                  <Shield className="h-8 w-8 text-blue-600" />
+              <div className="benefit-card group flex flex-col items-center text-center p-8 bg-white/70 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all duration-300 border border-white/50">
+                <div className="icon-hover h-20 w-20 rounded-2xl bg-secondary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                  <Shield className="h-10 w-10 text-white" />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">Dados Seguros</h3>
-                <p className="text-gray-600">Suas informações são protegidas e criptografadas</p>
+                <h3 className="text-xl font-bold text-slate-900 mb-3">Segurança Total</h3>
+                <p className="text-slate-600 leading-relaxed">Criptografia de ponta a ponta para proteção dos seus dados</p>
               </div>
             </div>
           </div>
@@ -84,65 +86,70 @@ export default function IAReceituarioContent() {
       </section>
 
       {/* Como Funciona */}
-      <section className="py-16 bg-white">
+      <section className="py-20 bg-white/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-center text-gray-900 mb-12">
-              Como Funciona?
-            </h2>
+          <div className="max-w-5xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                Como Funciona?
+              </h2>
+              <p className="text-xl text-slate-600 max-w-3xl mx-auto">
+                Processo simples e intuitivo em apenas 3 passos
+              </p>
+            </div>
 
-            <div className="space-y-8">
+            <div className="space-y-12">
               {/* Passo 1 */}
-              <div className="flex gap-6 items-start">
-                <div className="flex-shrink-0 h-12 w-12 rounded-full bg-accent text-white flex items-center justify-center text-xl font-bold">
+              <div className="flex gap-8 items-start group">
+                <div className="flex-shrink-0 h-16 w-16 rounded-2xl bg-primary text-white flex items-center justify-center text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
                   1
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Tire uma foto ou envie o arquivo</h3>
-                  <p className="text-gray-600 text-lg">
-                    Use a câmera do seu celular ou faça upload de uma foto do seu receituário médico. 
-                    Aceita formatos JPG, PNG e PDF.
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Capture ou envie sua imagem</h3>
+                  <p className="text-slate-600 text-lg leading-relaxed">
+                    Use a câmera do seu dispositivo ou faça upload de uma foto do seu receituário médico. 
+                    Suportamos formatos JPG, PNG e PDF com qualidade otimizada.
                   </p>
                 </div>
               </div>
 
               {/* Passo 2 */}
-              <div className="flex gap-6 items-start">
-                <div className="flex-shrink-0 h-12 w-12 rounded-full bg-accent text-white flex items-center justify-center text-xl font-bold">
+              <div className="flex gap-8 items-start group">
+                <div className="flex-shrink-0 h-16 w-16 rounded-2xl bg-accent text-white flex items-center justify-center text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
                   2
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Nossa IA processa automaticamente</h3>
-                  <p className="text-gray-600 text-lg">
-                    Em poucos segundos, nossa inteligência artificial identifica todos os exames solicitados 
-                    pelo seu médico com precisão.
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">IA processa automaticamente</h3>
+                  <p className="text-slate-600 text-lg leading-relaxed">
+                    Nossa inteligência artificial de última geração analisa e identifica todos os exames solicitados 
+                    com precisão médica em segundos.
                   </p>
                 </div>
               </div>
 
               {/* Passo 3 */}
-              <div className="flex gap-6 items-start">
-                <div className="flex-shrink-0 h-12 w-12 rounded-full bg-accent text-white flex items-center justify-center text-xl font-bold">
+              <div className="flex gap-8 items-start group">
+                <div className="flex-shrink-0 h-16 w-16 rounded-2xl bg-secondary text-white flex items-center justify-center text-2xl font-bold shadow-lg group-hover:scale-110 transition-transform duration-300">
                   3
                 </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">Revise e adicione ao carrinho</h3>
-                  <p className="text-gray-600 text-lg">
-                    Confira os exames identificados, ajuste se necessário e adicione todos ao carrinho 
-                    com um único clique.
+                <div className="flex-1">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-4">Revise e finalize</h3>
+                  <p className="text-slate-600 text-lg leading-relaxed">
+                    Confira os exames identificados, faça ajustes se necessário e adicione todos ao carrinho 
+                    com um único clique para agendar.
                   </p>
                 </div>
               </div>
             </div>
 
             {/* CTA Final */}
-            <div className="mt-12 text-center">
+            <div className="mt-16 text-center">
               <Button
                 size="lg"
                 onClick={() => setShowCamera(true)}
-                className="h-16 px-12 text-lg font-semibold bg-accent hover:bg-accent/90 text-white shadow-lg hover:shadow-xl transition-all"
+                className="h-16 px-12 text-lg font-semibold bg-primary hover:bg-primary-dark text-white shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105 rounded-2xl"
               >
-                <Sparkles className="mr-2 h-6 w-6" />
+                <Sparkles className="mr-3 h-6 w-6" />
                 Começar Agora
               </Button>
             </div>

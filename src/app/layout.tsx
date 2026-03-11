@@ -230,7 +230,7 @@ export default function RootLayout({
         {/* Sitemap */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
       </head>
-      <body className="min-h-screen bg-background font-sans antialiased">
+      <body className="min-h-screen bg-page font-sans antialiased">
         {children}
       </body>
     </html>

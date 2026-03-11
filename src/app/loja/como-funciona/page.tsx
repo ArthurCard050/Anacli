@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import ShopHeader from '../components/ShopHeader';
 import ShopFooter from '../components/ShopFooter';
-import WhatsAppFAB from '../components/WhatsAppFAB';
 import { CartProvider } from '../context/CartContext';
 import ComoFuncionaHero from './components/ComoFuncionaHero';
 import ComoFuncionaSteps from './components/ComoFuncionaSteps';
@@ -29,7 +28,6 @@ export default function ComoFuncionaPage() {
         </main>
 
         <ShopFooter />
-        <WhatsAppFAB />
       </div>
     </CartProvider>
   );

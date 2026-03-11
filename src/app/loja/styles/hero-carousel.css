@@ -107,7 +107,7 @@
 /* Estados de focus para acessibilidade */
 .nav-button:focus,
 .slide-indicator:focus {
-  outline: 2px solid #A6C022;
+  outline: 2px solid #FF0068;
   outline-offset: 4px;
 }
 

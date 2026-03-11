@@ -1,0 +1,136 @@
+/* Estilos personalizados para IA Receituário - Cores da Marca Anacli */
+
+/* Animações suaves para elementos */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+/* Cores da marca Anacli */
+.anacli-primary {
+  background-color: hsl(68 68% 45%); /* #A6C022 */
+}
+
+.anacli-secondary {
+  background-color: hsl(65 53% 67%); /* #D1D87F */
+}
+
+.anacli-accent {
+  background-color: hsl(335 100% 50%); /* #FF0068 */
+}
+
+/* Efeitos de hover para cards */
+.benefit-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.benefit-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+}
+
+/* Efeito de glassmorphism */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Botões com efeitos especiais */
+.btn-primary {
+  background: hsl(68 68% 45%);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+/* Animação de loading personalizada */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Efeitos para o modal da câmera */
+.camera-modal {
+  backdrop-filter: blur(8px);
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+    line-height: 1.1;
+  }
+  
+  .hero-description {
+    font-size: 1.125rem;
+  }
+  
+  .benefit-card {
+    padding: 1.5rem;
+  }
+}
+
+/* Acessibilidade */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Estados de foco melhorados */
+.focus-ring:focus {
+  outline: 2px solid hsl(68 68% 45%);
+  outline-offset: 2px;
+}
+
+/* Efeitos de hover para ícones */
+.icon-hover {
+  transition: transform 0.2s ease-in-out;
+}
+
+.icon-hover:hover {
+  transform: scale(1.1);
+}

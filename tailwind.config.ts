@@ -30,6 +30,15 @@ export default {
     },
     extend: {
       colors: {
+        // === DESIGN SYSTEM CLEAN CARD === //
+        'page': 'hsl(var(--page-background))',
+        'card-clean': 'hsl(var(--card-background))',
+        'text-primary-clean': 'hsl(var(--text-primary))',
+        'text-secondary-clean': 'hsl(var(--text-secondary))',
+        'brand-accent': 'hsl(var(--brand-accent))',
+        'border-clean': 'hsl(var(--border-color))',
+        
+        // === SHADCN/UI COMPATIBILITY === //
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -38,8 +47,6 @@ export default {
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
-          light: "hsl(var(--primary-light))",
-          dark: "hsl(var(--primary-dark))",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -69,20 +76,41 @@ export default {
       fontFamily: {
         sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', 'sans-serif'],
       },
-      backgroundImage: {
-        // Removido gradientes - usando cores sólidas
+      fontWeight: {
+        'clean-normal': 'var(--font-weight-normal)',
+        'clean-medium': 'var(--font-weight-medium)',
+        'clean-semibold': 'var(--font-weight-semibold)',
+        'clean-bold': 'var(--font-weight-bold)',
       },
-      boxShadow: {
-        'elegant': 'var(--shadow-elegant)',
-        'soft': 'var(--shadow-soft)',
-      },
-      transitionTimingFunction: {
-        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      spacing: {
+        'card-padding': 'var(--spacing-card-padding)',
+        'card-padding-sm': 'var(--spacing-card-padding-sm)',
+        'card-gap': 'var(--spacing-card-gap)',
+        'section-clean': 'var(--spacing-section)',
       },
       borderRadius: {
+        'card-clean': 'var(--radius-card)',
+        'button-clean': 'var(--radius-button)',
+        'small-clean': 'var(--radius-small)',
+        // Mantendo compatibilidade shadcn/ui
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      boxShadow: {
+        'micro': 'var(--shadow-micro)',
+        'none-clean': 'var(--shadow-none)',
+        // Removendo sombras pesadas
+        'elegant': 'none',
+        'soft': 'none',
+      },
+      transitionDuration: {
+        'fast': 'var(--animation-fast)',
+        'normal': 'var(--animation-normal)',
+        'slow': 'var(--animation-slow)',
+      },
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
       keyframes: {
         "accordion-down": {

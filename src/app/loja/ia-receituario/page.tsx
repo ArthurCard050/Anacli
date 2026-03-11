@@ -2,8 +2,8 @@ import { Metadata } from 'next';
 import { CartProvider } from '../context/CartContext';
 import ShopHeader from '../components/ShopHeader';
 import ShopFooter from '../components/ShopFooter';
-import WhatsAppFAB from '../components/WhatsAppFAB';
 import IAReceituarioContent from './components/IAReceituarioContent';
+import './styles.css';
 
 export const metadata: Metadata = {
   title: 'Leitura de Receituário com IA | Anacli',
@@ -21,7 +21,6 @@ export default function IAReceituarioPage() {
         </main>
 
         <ShopFooter />
-        <WhatsAppFAB />
       </div>
     </CartProvider>
   );

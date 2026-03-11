@@ -19,7 +19,6 @@ import { useCart, CartProvider } from '../../context/CartContext';
 import ShopHeader from '../../components/ShopHeader';
 import ShopFooter from '../../components/ShopFooter';
 import CartDrawer from '../../components/CartDrawer';
-import WhatsAppFAB from '../../components/WhatsAppFAB';
 import type { Exam, ExamPackage } from '../../types';
 
 // Componente de Accordion
@@ -481,7 +480,6 @@ function ProductPageInner({ slug }: { slug: string }) {
       
       {/* Componentes Flutuantes */}
       <CartDrawer />
-      <WhatsAppFAB />
     </div>
   );
 }

@@ -2,94 +2,119 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* Design System - Clean Card Style (Inspirado no Mercado Livre)
+Todas as cores, espaçamentos e tipografia devem seguir este padrão.
+Todas as cores DEVEM estar em HSL.
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 15%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
-
-    /* Anacli Brand Colors */
-    --primary: 68 68% 45%; /* Olive Gold #A6C022 */
-    --primary-foreground: 0 0% 100%;
+    /* === DESIGN TOKENS PRINCIPAIS === */
     
-    --primary-light: 68 68% 55%;
-    --primary-dark: 68 68% 35%;
+    /* Background Principal da Página */
+    --page-background: 0 0% 92%; /* #EBEBEB - Cinza muito claro */
+    
+    /* Background dos Cards/Sessões */
+    --card-background: 0 0% 100%; /* #FFFFFF - Branco puro */
+    
+    /* Cor da Marca (Accent) - APENAS para botões primários e ícones de destaque */
+    --brand-accent: 335 100% 50%; /* Magenta #FF0068 */
+    --brand-accent-foreground: 0 0% 100%;
+    
+    /* Textos */
+    --text-primary: 0 0% 20%; /* #333333 - Títulos e textos de destaque */
+    --text-secondary: 0 0% 40%; /* #666666 - Descrições, preços antigos, textos de apoio */
+    --text-muted: 0 0% 60%; /* Textos ainda mais sutis */
+    
+    /* Bordas */
+    --border-color: 0 0% 88%; /* #E0E0E0 - Bordas sutis no lugar de sombras pesadas */
+    --border-light: 0 0% 94%; /* Bordas ainda mais sutis */
+    
+    /* Border Radius (Arredondamento) */
+    --radius-card: 8px; /* Cards e Containers principais */
+    --radius-button: 4px; /* Botões e Inputs */
+    --radius-small: 6px; /* Elementos menores */
+    
+    /* Sombras - Apenas micro-shadows muito sutis */
+    --shadow-micro: 0 1px 2px 0 rgba(0,0,0,0.05); /* Para elevação mínima */
+    --shadow-none: none; /* Remover sombras pesadas */
+    
+    /* Espaçamentos Padronizados */
+    --spacing-card-padding: 24px; /* Padding interno dos cards */
+    --spacing-card-padding-sm: 16px; /* Padding interno menor */
+    --spacing-card-gap: 16px; /* Gap entre cards */
+    --spacing-section: 32px; /* Espaçamento entre seções */
+    
+    /* === VARIÁVEIS SHADCN/UI (Mantidas para compatibilidade) === */
+    --background: var(--page-background);
+    --foreground: var(--text-primary);
 
-    --secondary: 65 53% 67%; /* Soft Lime #D1D87F */
-    --secondary-foreground: 0 0% 15%;
+    --card: var(--card-background);
+    --card-foreground: var(--text-primary);
 
-    --accent: 335 100% 50%; /* Magenta #FF0068 */
-    --accent-foreground: 0 0% 100%;
+    --popover: var(--card-background);
+    --popover-foreground: var(--text-primary);
+
+    /* Cores da marca (rebaixadas para accent) */
+    --primary: var(--brand-accent); /* Agora é apenas accent */
+    --primary-foreground: var(--brand-accent-foreground);
+    
+    --secondary: 0 0% 96%; /* Neutro claro */
+    --secondary-foreground: var(--text-primary);
+
+    --accent: var(--brand-accent);
+    --accent-foreground: var(--brand-accent-foreground);
 
     --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted-foreground: var(--text-secondary);
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 68 68% 45%;
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--brand-accent);
 
-    --radius: 0.75rem;
+    --radius: var(--radius-button);
 
-    /* Custom Anacli Design Tokens */
-    --hero-bg: 68 68% 95%; /* Light olive for hero background */
-    --section-bg: 65 53% 95%; /* Light secondary for section backgrounds */
+    /* === TIPOGRAFIA === */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-semibold: 600;
+    --font-weight-bold: 700;
 
-    /* Spacing System */
-    --section-spacing: 5rem;
-    --container-padding: 1.5rem;
-
-    /* Animation Durations */
+    /* === ANIMAÇÕES === */
     --animation-fast: 0.15s;
     --animation-normal: 0.3s;
     --animation-slow: 0.5s;
-
-    /* Shadows */
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-    --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
   }
 
   .dark {
-    --background: 0 0% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 0 0% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 0 0% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 68 68% 45%;
+    --page-background: 0 0% 3.9%;
+    --card-background: 0 0% 3.9%;
+    --text-primary: 0 0% 98%;
+    --text-secondary: 0 0% 63.9%;
+    --border-color: 0 0% 14.9%;
+    
+    --background: var(--page-background);
+    --foreground: var(--text-primary);
+    --card: var(--card-background);
+    --card-foreground: var(--text-primary);
+    --popover: var(--card-background);
+    --popover-foreground: var(--text-primary);
+    --primary: var(--brand-accent);
     --primary-foreground: 0 0% 9%;
-
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
-
     --muted: 0 0% 14.9%;
-    --muted-foreground: 0 0% 63.9%;
-
-    --accent: 335 100% 50%;
+    --muted-foreground: var(--text-secondary);
+    --accent: var(--brand-accent);
     --accent-foreground: 0 0% 98%;
-
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 0 0% 14.9%;
-    --input: 0 0% 14.9%;
-    --ring: 68 68% 45%;
+    --border: var(--border-color);
+    --input: var(--border-color);
+    --ring: var(--brand-accent);
   }
 }
 
@@ -97,73 +122,91 @@ All colors MUST be HSL.
   * {
     @apply border-border;
   }
+  
   body {
-    @apply bg-background text-foreground;
+    background-color: hsl(var(--page-background));
+    color: hsl(var(--text-primary));
+    font-family: 'Plus Jakarta Sans', 'Inter', system-ui, sans-serif;
   }
 }
 
-/* Custom utility classes */
+/* === CLASSES UTILITÁRIAS PARA O DESIGN SYSTEM === */
 @layer utilities {
-  .section-spacing {
-    @apply py-16 md:py-24 lg:py-32;
+  /* Backgrounds */
+  .bg-page {
+    background-color: hsl(var(--page-background));
   }
-
-  .container-padding {
-    @apply px-4 sm:px-6 lg:px-8;
+  
+  .bg-card-clean {
+    background-color: hsl(var(--card-background));
   }
-
-  .animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out forwards;
+  
+  /* Textos */
+  .text-primary-clean {
+    color: hsl(var(--text-primary));
   }
-
-  .animate-fade-in {
-    animation: fadeIn 0.6s ease-out forwards;
+  
+  .text-secondary-clean {
+    color: hsl(var(--text-secondary));
   }
-
-  .animate-slide-in-left {
-    animation: slideInLeft 0.6s ease-out forwards;
+  
+  /* Cards padronizados */
+  .card-clean {
+    background-color: hsl(var(--card-background));
+    border-radius: var(--radius-card);
+    padding: var(--spacing-card-padding);
+    border: 1px solid hsl(var(--border-color));
+    box-shadow: var(--shadow-none);
   }
-
-  .animate-slide-in-right {
-    animation: slideInRight 0.6s ease-out forwards;
+  
+  .card-clean-sm {
+    background-color: hsl(var(--card-background));
+    border-radius: var(--radius-small);
+    padding: var(--spacing-card-padding-sm);
+    border: 1px solid hsl(var(--border-light));
+    box-shadow: var(--shadow-none);
+  }
+  
+  /* Botões padronizados */
+  .btn-primary-clean {
+    background-color: hsl(var(--brand-accent));
+    color: hsl(var(--brand-accent-foreground));
+    border-radius: var(--radius-button);
+    font-weight: var(--font-weight-semibold);
+    border: none;
+    box-shadow: var(--shadow-none);
+  }
+  
+  .btn-secondary-clean {
+    background-color: transparent;
+    color: hsl(var(--brand-accent));
+    border-radius: var(--radius-button);
+    font-weight: var(--font-weight-medium);
+    border: 1px solid hsl(var(--border-color));
+    box-shadow: var(--shadow-none);
+  }
+  
+  /* Espaçamentos */
+  .section-spacing-clean {
+    margin-bottom: var(--spacing-section);
+  }
+  
+  .card-gap-clean {
+    gap: var(--spacing-card-gap);
+  }
+  
+  /* Sombras removidas */
+  .no-shadow {
+    box-shadow: var(--shadow-none) !important;
+  }
+  
+  /* Micro shadow apenas quando necessário */
+  .micro-shadow {
+    box-shadow: var(--shadow-micro);
   }
 }
 
-/* Swiper Custom Styles - Inline para evitar render blocking */
-.instagram-carousel {
-  overflow: visible !important;
-  padding-bottom: 20px;
-}
-
-.instagram-carousel .swiper-wrapper {
-  align-items: stretch;
-}
-
-.instagram-carousel .swiper-slide {
-  height: auto;
-  display: flex;
-  align-items: stretch;
-}
-
-.instagram-carousel .swiper-button-next,
-.instagram-carousel .swiper-button-prev {
-  display: none;
-}
-
-.instagram-carousel .swiper-pagination {
-  bottom: -10px;
-}
-
-.instagram-carousel .swiper-pagination-bullet {
-  background: rgba(166, 192, 34, 0.3);
-  opacity: 1;
-}
-
-.instagram-carousel .swiper-pagination-bullet-active {
-  background: #A6C022;
-}
-
-/* Keyframe animations */
+/* === ANIMAÇÕES MANTIDAS === */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -214,7 +257,8 @@ html {
 /* Focus styles for accessibility */
 @layer base {
   *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary;
+    @apply outline-2 outline-offset-2;
+    outline-color: hsl(var(--brand-accent));
   }
 }
 
@@ -225,25 +269,47 @@ html {
   }
 }
 
-/* Mobile touch active states for buttons - FORÇA INVERSÃO DE CORES */
-button:active:not(:disabled):not(.bg-gradient-to-r) {
-  /* Tertiary/Ghost buttons - branco/transparente para magenta */
-  &.bg-white,
-  &.bg-transparent {
-    background-color: hsl(335 100% 50%) !important;
-    color: white !important;
-    border-color: hsl(335 100% 50%) !important;
-  }
-  
-  /* Secondary buttons - magenta para branco */
-  &.bg-accent {
-    background-color: white !important;
-    color: hsl(335 100% 50%) !important;
-    border-color: hsl(335 100% 50%) !important;
-  }
+/* === SWIPER CUSTOMIZADO PARA O DESIGN CLEAN === */
+.instagram-carousel {
+  overflow: visible !important;
+  padding-bottom: 20px;
 }
 
-/* Força cor do ícone também */
-button:active:not(:disabled) svg {
-  color: inherit !important;
+.instagram-carousel .swiper-wrapper {
+  align-items: stretch;
+}
+
+.instagram-carousel .swiper-slide {
+  height: auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.instagram-carousel .swiper-button-next,
+.instagram-carousel .swiper-button-prev {
+  display: none;
+}
+
+.instagram-carousel .swiper-pagination {
+  bottom: -10px;
+}
+
+.instagram-carousel .swiper-pagination-bullet {
+  background: hsl(var(--border-color));
+  opacity: 1;
+}
+
+.instagram-carousel .swiper-pagination-bullet-active {
+  background: hsl(var(--brand-accent));
+}
+
+/* === ESTADOS ATIVOS PARA MOBILE (LIMPOS) === */
+button:active:not(:disabled) {
+  &.btn-primary-clean {
+    background-color: hsl(var(--brand-accent) / 0.9) !important;
+  }
+  
+  &.btn-secondary-clean {
+    background-color: hsl(var(--brand-accent) / 0.1) !important;
+  }
 }

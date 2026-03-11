@@ -1,7 +1,6 @@
 import { Metadata } from 'next';
 import ShopHeader from '../components/ShopHeader';
 import ShopFooter from '../components/ShopFooter';
-import WhatsAppFAB from '../components/WhatsAppFAB';
 import { CartProvider } from '../context/CartContext';
 import PacotesHeroSection from './components/PacotesHeroSection';
 import PacotesListSection from './components/PacotesListSection';
@@ -25,7 +24,6 @@ export default function PacotesPage() {
         </main>
 
         <ShopFooter />
-        <WhatsAppFAB />
       </div>
     </CartProvider>
   );

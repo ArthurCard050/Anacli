@@ -1,6 +1,6 @@
 'use client';
 
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Instagram, Linkedin, ShoppingBag, Package, Zap } from "lucide-react";
 import { mockExams } from '../data/mock-products';
 
 export default function ShopFooter() {
@@ -9,43 +9,32 @@ export default function ShopFooter() {
   // Lista de exames A-Z para SEO
   const examsAZ = [...mockExams].sort((a, b) => a.name.localeCompare(b.name));
 
-  const footerSections = [
-    {
-      title: "E-commerce",
-      links: [
-        { label: "Exames", href: "/loja/exames" },
-        { label: "Pacotes", href: "/loja/pacotes" },
-        { label: "Como Funciona", href: "/loja/como-funciona" },
-        { label: "Preparo para Exames", href: "/loja/exames#preparo" },
-      ],
-    },
-    {
-      title: "Serviços",
-      links: [
-        { label: "Análises Clínicas", href: "/servicos#exames" },
-        { label: "Toxicológicos", href: "/servicos#servicos" },
-        { label: "Check-up", href: "/servicos#servicos" },
-        { label: "Coleta Domiciliar", href: "/servicos#coleta" },
-      ],
-    },
-    {
-      title: "Institucional",
-      links: [
-        { label: "Sobre Nós", href: "/sobre" },
-        { label: "Certificações", href: "/certificacoes" },
-        { label: "Convênios", href: "/convenios" },
-        { label: "Contato", href: "/contato" },
-      ],
-    },
-    {
-      title: "Suporte",
-      links: [
-        { label: "FAQ", href: "/faq" },
-        { label: "Resultados Online", href: "#resultados" },
-        { label: "Política de Privacidade", href: "#privacidade" },
-        { label: "Termos de Uso", href: "#termos" },
-      ],
-    },
+  const ecommerceLinks = [
+    { label: "Todos os Exames", href: "/loja/exames", icon: ShoppingBag },
+    { label: "Pacotes Promocionais", href: "/loja/pacotes", icon: Package },
+    { label: "IA Receituário", href: "/loja/ia-receituario", icon: Zap },
+    { label: "Como Funciona", href: "/loja/como-funciona" },
+    { label: "Coleta Domiciliar", href: "/servicos#coleta" },
+  ];
+
+  const supportLinks = [
+    { label: "FAQ - Perguntas Frequentes", href: "/faq" },
+    { label: "Resultados Online", href: "#resultados" },
+    { label: "Política de Privacidade", href: "/privacidade" },
+    { label: "Termos de Uso", href: "#termos" },
+  ];
+
+  const institutionalLinks = [
+    { label: "Sobre Nós", href: "/sobre" },
+    { label: "Contato", href: "/contato" },
+    { label: "Convênios", href: "/convenios" },
+  ];
+
+  const certificates = [
+    { name: "ISO 9001", image: "/assets/certificados/ISO.svg", alt: "Certificação ISO 9001" },
+    { name: "DICQ", image: "/assets/certificados/DICQ.svg", alt: "Certificação DICQ" },
+    { name: "PNCQ", image: "/assets/certificados/PNCQ.svg", alt: "Certificação PNCQ" },
+    { name: "PREVECAL", image: "/assets/certificados/PREVECAL.svg", alt: "Certificação PREVECAL" },
   ];
 
   const socialLinks = [
@@ -54,134 +43,108 @@ export default function ShopFooter() {
     { icon: Linkedin, href: "#", label: "LinkedIn" },
   ];
 
-  const certificates = [
-    {
-      name: "ISO 9001",
-      image: "/assets/certificados/ISO.svg",
-      alt: "Certificação ISO 9001"
-    },
-    {
-      name: "DICQ",
-      image: "/assets/certificados/DICQ.svg",
-      alt: "Certificação DICQ"
-    },
-    {
-      name: "PNCQ",
-      image: "/assets/certificados/PNCQ.svg",
-      alt: "Certificação PNCQ"
-    },
-    {
-      name: "PREVECAL",
-      image: "/assets/certificados/PREVECAL.svg",
-      alt: "Certificação PREVECAL"
-    }
-  ];
-
   return (
-    <footer className="bg-gray-900 text-white border-t border-primary/20 rounded-t-[20px] md:rounded-t-[40px] lg:rounded-t-[64px]">
-      <div className="container mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+    <footer className="bg-white border-t border-border-clean">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Seção Principal - E-commerce em Destaque */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 pb-12 border-b border-border-clean">
+          
           {/* Brand */}
-          <div className="lg:col-span-1 text-center">
-            <a
-              href="/loja"
-              className="inline-block mb-4 cursor-pointer"
-            >
+          <div>
+            <a href="/loja" className="inline-block mb-4">
               <img
-                src="/assets/Logo-Hor-branca.svg"
-                alt="Anacli - Laboratório de Análises Clínicas"
-                width={120}
-                height={48}
-                className="h-12 w-auto mb-2 hover:opacity-80 transition-opacity mx-auto"
+                src="/assets/logo.svg"
+                alt="Anacli"
+                className="h-10 w-auto hover:opacity-80 transition-opacity"
               />
-              <div className="text-xs text-gray-400 tracking-wide select-none">
-                Loja Online de Exames
-              </div>
             </a>
-            <p className="text-sm text-gray-300 leading-relaxed">
-              Agende seus exames online com praticidade e segurança. Resultados rápidos e confiáveis.
+            <p className="text-text-secondary-clean text-sm mb-4">
+              Agende seus exames online com praticidade e segurança.
             </p>
-          </div>
-
-          {/* Footer Links */}
-          {footerSections.map((section, index) => (
-            <div key={index} className="text-center">
-              <h4 className="font-bold text-white mb-4">{section.title}</h4>
-              <ul className="space-y-2">
-                {section.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-gray-300 hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {/* Certificates and GPTW Section */}
-        <div className="pt-8 border-t border-gray-700 mb-8">
-          <h4 className="text-center text-sm font-semibold text-gray-300 mb-8">
-            Certificações e Reconhecimentos
-          </h4>
-
-          <div className="flex flex-col lg:flex-row items-center justify-center gap-8">
-            {/* GPTW Highlight Card */}
-            <div className="flex-shrink-0">
-              <div className="inline-flex items-center gap-4 bg-primary/20 rounded-2xl p-6 border border-white/10">
-                <img
-                  src="/assets/certificados/GPTW.svg"
-                  alt="Great Place to Work"
-                  className="w-24 h-16 object-contain"
-                />
-                <div className="text-left">
-                  <div className="text-lg font-bold text-white mb-1">
-                    Great Place to Work
-                  </div>
-                  <div className="text-sm text-gray-300">
-                    Certificado como uma das melhores empresas para trabalhar
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Technical Certificates */}
-            <div className="flex items-center gap-6 flex-wrap justify-center">
+            
+            {/* Certificados */}
+            <div className="flex items-center gap-2 flex-wrap">
               {certificates.map((cert, index) => (
                 <div
                   key={index}
                   className="group cursor-pointer"
                   title={cert.alt}
                 >
-                  <div className="w-16 h-10 bg-white/10 rounded-lg p-2 flex items-center justify-center hover:bg-white/20 transition-all duration-300 group-hover:scale-105">
+                  <div className="w-12 h-8 bg-gray-50 rounded border border-border-clean p-1 flex items-center justify-center hover:border-brand-accent/30 transition-all">
                     <img
                       src={cert.image}
                       alt={cert.alt}
-                      className="w-full h-full object-contain opacity-70 group-hover:opacity-100 transition-opacity duration-300"
+                      className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity"
                     />
-                  </div>
-                  <div className="text-xs text-gray-400 text-center mt-1 group-hover:text-gray-300 transition-colors">
-                    {cert.name}
                   </div>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* E-commerce Links */}
+          <div>
+            <h4 className="text-base font-clean-semibold text-text-primary-clean mb-4">E-commerce</h4>
+            <ul className="space-y-2.5">
+              {ecommerceLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="flex items-center gap-2 text-sm text-text-secondary-clean hover:text-brand-accent transition-colors font-clean-medium group"
+                  >
+                    {link.icon && <link.icon className="h-4 w-4 group-hover:scale-110 transition-transform" />}
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Suporte */}
+          <div>
+            <h4 className="text-base font-clean-semibold text-text-primary-clean mb-4">Suporte</h4>
+            <ul className="space-y-2.5">
+              {supportLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-text-secondary-clean hover:text-brand-accent transition-colors block"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+          
+          {/* Institucional */}
+          <div>
+            <h4 className="text-base font-clean-semibold text-text-primary-clean mb-4">Institucional</h4>
+            <ul className="space-y-2.5">
+              {institutionalLinks.map((link, index) => (
+                <li key={index}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-text-secondary-clean hover:text-brand-accent transition-colors block"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
 
         {/* Exames de A a Z (SEO) */}
-        <div className="pt-8 border-t border-gray-700 mb-8">
-          <h4 className="text-center text-sm font-semibold text-gray-300 mb-6">Exames de A a Z</h4>
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 max-w-4xl mx-auto">
+        <div className="mb-8 pb-8 border-b border-border-clean">
+          <h4 className="text-xs font-clean-semibold text-text-secondary-clean mb-4 text-center">Exames Disponíveis</h4>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 max-w-5xl mx-auto">
             {examsAZ.map((exam) => (
               <a
                 key={exam.id}
                 href={`/loja/produto/${exam.slug}`}
-                className="text-xs text-gray-400 hover:text-primary transition-colors"
+                className="text-xs text-text-secondary-clean hover:text-brand-accent transition-colors"
               >
                 {exam.name}
               </a>
@@ -189,26 +152,23 @@ export default function ShopFooter() {
           </div>
         </div>
 
-        {/* Social Links */}
-        <div className="flex justify-center gap-6 mb-8 pt-8 border-t border-gray-700">
-          {socialLinks.map((social, index) => (
-            <a
-              key={index}
-              href={social.href}
-              aria-label={social.label}
-              className="w-10 h-10 rounded-lg bg-gray-800 hover:bg-accent flex items-center justify-center transition-all duration-300 group"
-            >
-              <social.icon className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors" />
-            </a>
-          ))}
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="pt-8 border-t border-gray-700">
-          <div className="text-center">
-            <div className="text-sm text-gray-400">
-              © {currentYear} Laboratório Anacli — Todos os direitos reservados.
-            </div>
+        {/* Bottom Bar - Social + Copyright */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="text-xs text-text-secondary-clean">
+            © {currentYear} Laboratório Anacli. Todos os direitos reservados.
+          </div>
+          
+          <div className="flex gap-3">
+            {socialLinks.map((social, index) => (
+              <a
+                key={index}
+                href={social.href}
+                aria-label={social.label}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-brand-accent/10 flex items-center justify-center transition-all duration-300 group"
+              >
+                <social.icon className="h-4 w-4 text-text-secondary-clean group-hover:text-brand-accent transition-colors" />
+              </a>
+            ))}
           </div>
         </div>
       </div>
