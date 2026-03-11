@@ -71,11 +71,11 @@ export default function ShopFooter() {
                   className="group cursor-pointer"
                   title={cert.alt}
                 >
-                  <div className="w-12 h-8 bg-gray-50 rounded border border-border-clean p-1 flex items-center justify-center hover:border-brand-accent/30 transition-all">
+                  <div className="w-12 h-8 bg-gray-900 rounded border border-gray-700 p-1 flex items-center justify-center hover:border-brand-accent/30 transition-all">
                     <img
                       src={cert.image}
                       alt={cert.alt}
-                      className="w-full h-full object-contain opacity-60 group-hover:opacity-100 transition-opacity"
+                      className="w-full h-full object-contain group-hover:scale-105 transition-transform"
                     />
                   </div>
                 </div>

@@ -88,50 +88,65 @@ export default function HeroSection() {
               Pacotes em Destaque
             </h2>
             <div className="grid gap-4">
-              {featuredProducts.map((product) => (
-                <Card
-                  key={product.id}
-                  className="group overflow-hidden border-gray-200 hover:border-primary hover:shadow-lg transition-all cursor-pointer"
-                >
-                  <div className="flex gap-4 p-4">
-                    <div className="relative w-24 h-24 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                      <div className="absolute inset-0 bg-primary/10" />
-                      {product.discount && (
-                        <div className="absolute top-2 left-2 bg-accent text-white text-xs font-bold px-2 py-1 rounded">
-                          {product.discount}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors mb-1">
-                        {product.title}
-                      </h3>
-                      <p className="text-sm text-gray-600 mb-2 line-clamp-2">
-                        {product.description}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex flex-col">
-                          {product.originalPrice && (
-                            <span className="text-xs text-gray-400 line-through">
-                              R$ {product.originalPrice.toFixed(2)}
+              {featuredProducts.map((product) => {
+                // Mapeia o ID do produto para a imagem correspondente
+                const imageMap: Record<string, string> = {
+                  'checkup-fitness-essencial': '/assets/loja/fitness-essencial.png',
+                  'checkup-fitness-performance': '/assets/loja/fitness-performance.png',
+                };
+                const productImage = imageMap[product.id];
+
+                return (
+                  <div key={product.id} className="flex gap-4">
+                    {/* Card com informações */}
+                    <Card className="group flex-1 border-gray-200 hover:border-primary hover:shadow-lg transition-all cursor-pointer">
+                      <div className="p-6">
+                        {product.discount && (
+                          <div className="inline-block bg-accent text-white text-xs font-bold px-3 py-1 rounded-full mb-2">
+                            {product.discount}
+                          </div>
+                        )}
+                        <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary transition-colors mb-2">
+                          {product.title}
+                        </h3>
+                        <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                          {product.description}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <div className="flex flex-col">
+                            {product.originalPrice && (
+                              <span className="text-xs text-gray-400 line-through">
+                                R$ {product.originalPrice.toFixed(2)}
+                              </span>
+                            )}
+                            <span className="text-xl font-bold text-primary">
+                              R$ {product.price.toFixed(2)}
                             </span>
-                          )}
-                          <span className="text-lg font-bold text-primary">
-                            R$ {product.price.toFixed(2)}
-                          </span>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="rounded-full border-primary text-primary hover:bg-primary hover:text-white"
+                          >
+                            Ver mais
+                          </Button>
                         </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="rounded-full border-primary text-primary hover:bg-primary hover:text-white"
-                        >
-                          Ver mais
-                        </Button>
                       </div>
-                    </div>
+                    </Card>
+
+                    {/* Card com imagem */}
+                    {productImage && (
+                      <Card className="w-40 h-40 border-gray-200 flex items-center justify-center p-4 bg-white">
+                        <img
+                          src={productImage}
+                          alt={product.title}
+                          className="w-full h-full object-contain"
+                        />
+                      </Card>
+                    )}
                   </div>
-                </Card>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
