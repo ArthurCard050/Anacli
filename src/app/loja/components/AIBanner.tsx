@@ -68,7 +68,7 @@ export default function AIBanner() {
                 loop
                 muted
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover scale-105 md:scale-100"
                 src="/assets/loja/Video-IA.mp4"
               >
                 Seu navegador não suporta vídeos.
