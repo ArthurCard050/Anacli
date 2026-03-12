@@ -2,16 +2,13 @@
 
 import { useState, useMemo, useEffect } from "react";
 import {
-  Clock,
-  Star,
-  ShoppingCart,
   Search,
+  ShoppingCart,
   Filter,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useCart } from "../../context/CartContext";
 
@@ -270,6 +267,7 @@ export default function ExamesListSection() {
   //   { value: "vitaminas", label: "Vitaminas" },
   // ];
 
+  //categorias filtradas
   const categoriesAllFiltered = allExams.map((exam) => {
     return {
       value: exam.category,
@@ -277,6 +275,7 @@ export default function ExamesListSection() {
     } 
   })
 
+  //filtro que retira todas as categorias repetidas
   const categoriesAll = categoriesAllFiltered.filter((obj, index, self) =>
     index === self.findIndex(o =>
       o.value === obj.value && o.label === obj.label

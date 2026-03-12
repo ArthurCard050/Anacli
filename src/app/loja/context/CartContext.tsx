@@ -2,7 +2,8 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { CartItem } from '../types';
-import { getExamById, getPackageById } from '../data/mock-products';
+import { getPackageById } from '../data/mock-products';
+import axios from 'axios';
 
 interface CartContextType {
   items: CartItem[];
@@ -24,6 +25,33 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 const STORAGE_KEY = 'anacli-cart';
 const SHIPPING_THRESHOLD = 200; // Frete grátis acima de R$ 200
 const SHIPPING_COST = 15; // Custo do frete
+
+// Cache para exames da API
+let examsCache: any[] = [];
+let examsCacheTime = 0;
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
+
+// Função para buscar exame da API
+async function getExamFromAPI(id: string) {
+  try {
+    // Verificar se o cache ainda é válido
+    const now = Date.now();
+    if (examsCache.length === 0 || now - examsCacheTime > CACHE_DURATION) {
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
+      const response = await axios.get(`${apiUrl}`);
+      if (response.data && Array.isArray(response.data)) {
+        examsCache = response.data;
+        examsCacheTime = now;
+      }
+    }
+
+    // Buscar exame no cache
+    return examsCache.find(exam => exam.id === id);
+  } catch (error) {
+    console.error('Erro ao buscar exame da API:', error);
+    return null;
+  }
+}
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
@@ -51,43 +79,52 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [items]);
 
   // Adicionar item ao carrinho
-  const addItem = (id: string, type: 'exam' | 'package') => {
-    setItems(prev => {
-      const existing = prev.find(item => item.id === id && item.type === type);
-      
-      if (existing) {
-        // Incrementa quantidade
-        return prev.map(item =>
+  const addItem = async (id: string, type: 'exam' | 'package') => {
+    // Verificar se já existe
+    const existing = items.find(item => item.id === id && item.type === type);
+    
+    if (existing) {
+      // Incrementa quantidade
+      setItems(prev =>
+        prev.map(item =>
           item.id === id && item.type === type
             ? { ...item, quantity: item.quantity + 1 }
             : item
-        );
-      }
+        )
+      );
+      setIsOpen(true);
+      return;
+    }
 
-      // Busca informações do produto
-      let name = '';
-      let price = 0;
-      let image = '';
+    // Busca informações do produto
+    let name = '';
+    let price = 0;
+    let image = '';
 
-      if (type === 'exam') {
-        const exam = getExamById(id);
-        if (exam) {
-          name = exam.name;
-          price = exam.price;
-          image = exam.image || '';
-        }
+    if (type === 'exam') {
+      const exam = await getExamFromAPI(id);
+      if (exam) {
+        name = exam.name;
+        price = exam.price;
+        image = exam.image || '';
       } else {
-        const pkg = getPackageById(id);
-        if (pkg) {
-          name = pkg.title;
-          price = pkg.price;
-          image = pkg.image || '';
-        }
+        console.error('Exame não encontrado:', id);
+        return;
       }
+    } else {
+      const pkg = getPackageById(id);
+      if (pkg) {
+        name = pkg.title;
+        price = pkg.price;
+        image = pkg.image || '';
+      } else {
+        console.error('Pacote não encontrado:', id);
+        return;
+      }
+    }
 
-      // Adiciona novo item
-      return [...prev, { id, type, name, price, quantity: 1, image }];
-    });
+    // Adiciona novo item
+    setItems(prev => [...prev, { id, type, name, price, quantity: 1, image }]);
 
     // Abre o carrinho automaticamente
     setIsOpen(true);
