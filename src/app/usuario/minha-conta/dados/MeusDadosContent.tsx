@@ -16,8 +16,6 @@ interface UserData {
   phone: string;
   cpf: string;
   birthDate: string;
-  gender: string;
-  profession: string;
 }
 
 export default function MeusDadosContent() {
@@ -29,18 +27,14 @@ export default function MeusDadosContent() {
     email: '',
     phone: '',
     cpf: '',
-    birthDate: '',
-    gender: '',
-    profession: ''
+    birthDate: ''
   });
   const [originalData, setOriginalData] = useState<UserData>({
     name: '',
     email: '',
     phone: '',
     cpf: '',
-    birthDate: '',
-    gender: '',
-    profession: ''
+    birthDate: ''
   });
 
   useEffect(() => {
@@ -56,9 +50,7 @@ export default function MeusDadosContent() {
         email: user.email || '',
         phone: user.phone || '(11) 99999-9999',
         cpf: user.cpf || '123.456.789-00',
-        birthDate: user.birthDate || '1990-01-01',
-        gender: user.gender || 'Masculino',
-        profession: user.profession || 'Desenvolvedor'
+        birthDate: user.birthDate || '1990-01-01'
       };
       setUserData(data);
       setOriginalData(data);
@@ -217,43 +209,6 @@ export default function MeusDadosContent() {
                         <p className="text-text-primary-clean py-2">
                           {new Date(userData.birthDate).toLocaleDateString('pt-BR')}
                         </p>
-                      )}
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-text-primary-clean mb-2">
-                        Gênero
-                      </label>
-                      {isEditing ? (
-                        <select
-                          value={userData.gender}
-                          onChange={(e) => handleInputChange('gender', e.target.value)}
-                          className="w-full px-3 py-2 border border-border-clean rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                        >
-                          <option value="Masculino">Masculino</option>
-                          <option value="Feminino">Feminino</option>
-                          <option value="Outro">Outro</option>
-                          <option value="Prefiro não informar">Prefiro não informar</option>
-                        </select>
-                      ) : (
-                        <p className="text-text-primary-clean py-2">{userData.gender}</p>
-                      )}
-                    </div>
-
-                    <div className="md:col-span-2">
-                      <label className="block text-sm font-medium text-text-primary-clean mb-2">
-                        Profissão
-                      </label>
-                      {isEditing ? (
-                        <input
-                          type="text"
-                          value={userData.profession}
-                          onChange={(e) => handleInputChange('profession', e.target.value)}
-                          className="w-full px-3 py-2 border border-border-clean rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                          placeholder="Sua profissão"
-                        />
-                      ) : (
-                        <p className="text-text-primary-clean py-2">{userData.profession}</p>
                       )}
                     </div>
                   </div>
