@@ -5,15 +5,7 @@ import Footer from '@/components/Footer';
 import BlogPostContent from '@/app/blog/components/BlogPostContent';
 import { getPosts, getPostBySlug } from '@/lib/wordpress';
 
-export const revalidate = 60;
-
-export async function generateStaticParams() {
-  const posts = await getPosts({ per_page: 100 });
-  
-  return posts.map((post) => ({
-    slug: post.slug,
-  }));
-}
+export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const post = await getPostBySlug(params.slug);

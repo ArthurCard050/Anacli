@@ -1,6 +1,8 @@
 import { mockExams, mockPackages } from '../../data/mock-products';
 import ProductPageContent from './ProductPageContent';
 
+export const dynamic = 'force-dynamic';
+
 // Gerar parâmetros estáticos para todas as páginas de produto
 export function generateStaticParams() {
   const examSlugs = mockExams.map((exam) => ({

@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target } from 'lucide-react';
+import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target, LogOut, Package, MapPin, Lock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../../usuario/context/AuthContext';
 import '../styles/mega-menu.css';
 
 export default function ShopHeader() {
@@ -12,12 +13,22 @@ export default function ShopHeader() {
   const [showMegaMenu, setShowMegaMenu] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+  const [showUserMenu, setShowUserMenu] = useState(false);
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const { itemCount, openCart } = useCart();
+  const { itemCount, openCart, closeCart, isOpen } = useCart();
+  const { user, isAuthenticated, logout } = useAuth();
+
+  // Verificar se estamos no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Detecta scroll para esconder apenas a barra de busca
   useEffect(() => {
+    if (!isClient) return;
+    
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
@@ -26,7 +37,7 @@ export default function ShopHeader() {
     window.addEventListener('scroll', handleScroll, { passive: true });
     
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isClient]);
 
   const examCategories = [
     { 
@@ -109,21 +120,24 @@ export default function ShopHeader() {
 
   // Fechar menu ao clicar fora
   useEffect(() => {
+    if (!isClient) return;
+    
     const handleClickOutside = (event: MouseEvent) => {
       const target = event.target as HTMLElement;
-      if (!target.closest('.mega-menu-container')) {
+      if (!target.closest('.mega-menu-container') && !target.closest('.user-menu-container')) {
         setShowMegaMenu(false);
+        setShowUserMenu(false);
       }
     };
 
-    if (showMegaMenu) {
+    if (showMegaMenu || showUserMenu) {
       document.addEventListener('click', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, [showMegaMenu]);
+  }, [showMegaMenu, showUserMenu, isClient]);
 
   // Cleanup do timeout
   useEffect(() => {
@@ -133,6 +147,15 @@ export default function ShopHeader() {
       }
     };
   }, []);
+
+  // Função para toggle do carrinho
+  const toggleCart = () => {
+    if (isOpen) {
+      closeCart();
+    } else {
+      openCart();
+    }
+  };
 
   return (
     <header 
@@ -276,21 +299,91 @@ export default function ShopHeader() {
               <Search className="h-5 w-5 text-text-primary-clean" />
             </Button>
 
-            {/* Login */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="relative hover:bg-gray-100 transition-all hover:scale-110"
-              aria-label="Login"
-            >
-              <User className="h-5 w-5 text-text-primary-clean" />
-            </Button>
+            {/* Login/User Menu */}
+            <div className="relative user-menu-container">
+              {isAuthenticated && user ? (
+                <div className="relative">
+                  <Button
+                    variant="ghost"
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="relative hover:bg-gray-100 transition-all hover:scale-105 flex items-center gap-2 px-3"
+                    aria-label="Menu do usuário"
+                  >
+                    <User className="h-5 w-5 text-text-primary-clean" />
+                    <span className="hidden md:block text-sm font-medium text-text-primary-clean">
+                      {user.name.split(' ')[0]}
+                    </span>
+                    <ChevronDown className="h-4 w-4 text-text-primary-clean" />
+                  </Button>
+                  
+                  {/* Dropdown do usuário */}
+                  {showUserMenu && (
+                    <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-3 border-b border-gray-100">
+                        <p className="font-medium text-gray-900">{user.name}</p>
+                        <p className="text-sm text-gray-500">{user.email}</p>
+                      </div>
+                      <div className="py-1">
+                        <a
+                          href="/usuario/minha-conta/pedidos"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Package className="h-4 w-4" />
+                          Meus Pedidos
+                        </a>
+                        <a
+                          href="/usuario/minha-conta/dados"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <User className="h-4 w-4" />
+                          Meus Dados
+                        </a>
+                        <a
+                          href="/usuario/minha-conta/enderecos"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <MapPin className="h-4 w-4" />
+                          Endereços
+                        </a>
+                        <a
+                          href="/usuario/minha-conta/senha"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Lock className="h-4 w-4" />
+                          Alterar Senha
+                        </a>
+                        <div className="border-t border-gray-100 my-1"></div>
+                        <button
+                          onClick={() => {
+                            logout();
+                            setShowUserMenu(false);
+                          }}
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors w-full text-left"
+                        >
+                          <LogOut className="h-4 w-4" />
+                          Sair
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Button
+                  variant="ghost"
+                  onClick={() => window.location.href = '/usuario/login'}
+                  className="relative hover:bg-gray-100 transition-all hover:scale-105"
+                  aria-label="Login"
+                >
+                  <User className="h-5 w-5 text-text-primary-clean" />
+                </Button>
+              )}
+            </div>
 
             {/* Cart */}
             <Button
               variant="ghost"
               size="icon"
-              onClick={openCart}
+              onClick={toggleCart}
               className="relative hover:bg-gray-100 transition-all hover:scale-110"
               aria-label="Carrinho"
             >
@@ -323,6 +416,26 @@ export default function ShopHeader() {
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white border-t border-gray-200 shadow-xl animate-in slide-in-from-top duration-300">
           <div className="container mx-auto px-4 py-6 max-h-[80vh] overflow-y-auto">
+            {/* Navegação Principal - Pacotes e Como Funciona */}
+            <div className="mb-6">
+              <div className="flex gap-4">
+                <a 
+                  href="/loja/pacotes" 
+                  className="flex-1 text-center text-white bg-primary hover:bg-primary/90 transition-colors font-semibold py-3 px-4 rounded-xl shadow-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Pacotes
+                </a>
+                <a 
+                  href="/loja/como-funciona" 
+                  className="flex-1 text-center text-primary bg-primary/10 hover:bg-primary/20 transition-colors font-semibold py-3 px-4 rounded-xl border border-primary/20"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Como Funciona
+                </a>
+              </div>
+            </div>
+
             {/* Header do Menu - Igual ao Desktop */}
             <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 mb-6">
               <h2 className="text-lg font-bold mb-1 text-gray-900">Nossos Exames</h2>
@@ -375,72 +488,52 @@ export default function ShopHeader() {
               </div>
             </div>
 
-            {/* Navegação Adicional */}
-            <div className="mt-6 pt-4 border-t border-gray-100 space-y-4">
-              <div className="flex gap-4">
+            {/* Links do Site */}
+            <div className="mt-6 pt-4 border-t border-gray-100">
+              <h4 className="font-semibold text-gray-900 mb-3 text-sm">Site Anacli</h4>
+              <div className="grid grid-cols-2 gap-2">
                 <a 
-                  href="/loja/pacotes" 
-                  className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
+                  href="/" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Pacotes
+                  Página Inicial
                 </a>
                 <a 
-                  href="/loja/como-funciona" 
-                  className="flex-1 text-center text-gray-700 hover:text-primary transition-colors font-medium py-2 px-4 rounded-lg hover:bg-gray-50"
+                  href="/sobre" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  Como Funciona
+                  Sobre Nós
                 </a>
-              </div>
-
-              {/* Links do Site */}
-              <div className="pt-3 border-t border-gray-100">
-                <h4 className="font-semibold text-gray-900 mb-3 text-sm">Site Anacli</h4>
-                <div className="grid grid-cols-2 gap-2">
-                  <a 
-                    href="/" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Página Inicial
-                  </a>
-                  <a 
-                    href="/sobre" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sobre Nós
-                  </a>
-                  <a 
-                    href="/servicos" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Serviços
-                  </a>
-                  <a 
-                    href="/convenios" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Convênios
-                  </a>
-                  <a 
-                    href="/certificacoes" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Certificações
-                  </a>
-                  <a 
-                    href="/contato" 
-                    className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Contato
-                  </a>
-                </div>
+                <a 
+                  href="/servicos" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Serviços
+                </a>
+                <a 
+                  href="/convenios" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Convênios
+                </a>
+                <a 
+                  href="/certificacoes" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Certificações
+                </a>
+                <a 
+                  href="/contato" 
+                  className="text-gray-600 hover:text-primary transition-colors py-2 px-3 rounded-lg hover:bg-gray-50 text-sm"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Contato
+                </a>
               </div>
             </div>
           </div>

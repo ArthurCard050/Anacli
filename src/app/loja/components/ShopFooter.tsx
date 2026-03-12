@@ -35,6 +35,7 @@ export default function ShopFooter() {
     { name: "DICQ", image: "/assets/certificados/DICQ.svg", alt: "Certificação DICQ" },
     { name: "PNCQ", image: "/assets/certificados/PNCQ.svg", alt: "Certificação PNCQ" },
     { name: "PREVECAL", image: "/assets/certificados/PREVECAL.svg", alt: "Certificação PREVECAL" },
+    { name: "GPTW", image: "/assets/certificados/GPTW.svg", alt: "Great Place to Work" },
   ];
 
   const socialLinks = [
@@ -71,11 +72,12 @@ export default function ShopFooter() {
                   className="group cursor-pointer"
                   title={cert.alt}
                 >
-                  <div className="w-12 h-8 bg-gray-900 rounded border border-gray-700 p-1 flex items-center justify-center hover:border-brand-accent/30 transition-all">
+                  <div className="w-12 h-8 bg-white rounded border border-border-clean p-1 flex items-center justify-center hover:border-brand-accent/30 hover:shadow-sm transition-all">
                     <img
                       src={cert.image}
                       alt={cert.alt}
                       className="w-full h-full object-contain group-hover:scale-105 transition-transform"
+                      style={cert.name !== 'GPTW' ? { filter: 'brightness(0) saturate(100%)' } : {}}
                     />
                   </div>
                 </div>

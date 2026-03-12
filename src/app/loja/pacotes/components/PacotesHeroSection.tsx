@@ -1,30 +1,20 @@
 'use client';
 
-import { Package } from 'lucide-react';
-
 export default function PacotesHeroSection() {
   return (
-    <section className="relative bg-white py-20 md:py-24 border-b border-gray-100">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-primary/5 border border-primary/10 rounded-full px-4 py-2 mb-6">
-            <Package className="w-4 h-4 text-primary" />
-            <span className="text-primary text-sm font-medium">Pacotes Especiais</span>
+    <section className="relative w-full overflow-hidden bg-page mt-[120px] md:mt-32">
+      <div className="px-4 sm:px-6 lg:px-8 pt-4 md:pt-0 pb-0">
+        <div className="lg:container lg:mx-auto">
+          <div className="relative w-full h-48 md:h-96 lg:h-[500px] rounded-2xl overflow-hidden shadow-lg">
+            <div className="w-full h-full bg-gray-200 relative" 
+              style={{ 
+                backgroundImage: 'url(/assets/loja/hero-pacotes.png)', 
+                backgroundSize: 'cover', 
+                backgroundPosition: 'center', 
+                backgroundRepeat: 'no-repeat' 
+              }} 
+            />
           </div>
-
-          {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-            Pacotes de Exames
-          </h1>
-
-          {/* Subtitle */}
-          <p className="text-lg md:text-xl text-gray-600 mb-8">
-            Check-ups completos com preços especiais para cuidar da sua saúde com economia e praticidade
-          </p>
-
-          {/* Simple divider */}
-          <div className="w-16 h-1 bg-accent mx-auto"></div>
         </div>
       </div>
     </section>

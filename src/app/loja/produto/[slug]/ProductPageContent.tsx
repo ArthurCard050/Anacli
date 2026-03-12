@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getExamById, getPackageById, mockExams } from '../../data/mock-products';
-import { useCart, CartProvider } from '../../context/CartContext';
+import { useCart } from '../../context/CartContext';
 import ShopHeader from '../../components/ShopHeader';
 import ShopFooter from '../../components/ShopFooter';
 import CartDrawer from '../../components/CartDrawer';
@@ -477,18 +477,11 @@ function ProductPageInner({ slug }: { slug: string }) {
         onAdd={handleAddToCart}
         isAdded={isAdded}
       />
-      
-      {/* Componentes Flutuantes */}
-      <CartDrawer />
     </div>
   );
 }
 
-// Wrapper com CartProvider
+// Wrapper sem CartProvider (agora está no layout)
 export default function ProductPageContent({ slug }: { slug: string }) {
-  return (
-    <CartProvider>
-      <ProductPageInner slug={slug} />
-    </CartProvider>
-  );
+  return <ProductPageInner slug={slug} />;
 }

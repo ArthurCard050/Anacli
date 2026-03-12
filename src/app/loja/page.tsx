@@ -1,26 +1,22 @@
-'use client';
+import type { Metadata } from 'next';
+import LojaPageClient from './LojaPageClient';
 
-import HeroCarousel from './components/HeroCarousel';
-import ShopHeader from './components/ShopHeader';
-import AIBanner from './components/AIBanner';
-import BentoGrid from './components/BentoGrid';
-import ShopFooter from './components/ShopFooter';
-import CartDrawer from './components/CartDrawer';
-import { CartProvider } from './context/CartContext';
+export const dynamic = 'force-dynamic';
+
+export const metadata: Metadata = {
+  title: 'Loja Anacli - Exames Laboratoriais Online',
+  description: 'Compre seus exames laboratoriais online com praticidade e segurança. Resultados rápidos e confiáveis.',
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 export default function LojaPage() {
-  return (
-    <CartProvider>
-      <div className="min-h-screen bg-page">
-        <ShopHeader />
-        <HeroCarousel />
-        <AIBanner />
-        <BentoGrid />
-        <ShopFooter />
-        
-        {/* Componentes Flutuantes */}
-        <CartDrawer />
-      </div>
-    </CartProvider>
-  );
+  return <LojaPageClient />;
 }

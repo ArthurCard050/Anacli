@@ -56,9 +56,17 @@ async function getExamFromAPI(id: string) {
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
+
+  // Verificar se estamos no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Carregar carrinho do localStorage
   useEffect(() => {
+    if (!isClient) return;
+    
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
@@ -67,16 +75,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
         console.error('Erro ao carregar carrinho:', error);
       }
     }
-  }, []);
+  }, [isClient]);
 
   // Salvar carrinho no localStorage
   useEffect(() => {
+    if (!isClient) return;
+    
     if (items.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } else {
       localStorage.removeItem(STORAGE_KEY);
     }
-  }, [items]);
+  }, [items, isClient]);
 
   // Adicionar item ao carrinho
   const addItem = async (id: string, type: 'exam' | 'package') => {
@@ -152,7 +162,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Limpar carrinho
   const clearCart = () => {
     setItems([]);
-    localStorage.removeItem(STORAGE_KEY);
+    if (isClient) {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   };
 
   // Calcular totais
@@ -189,8 +201,42 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error('useCart must be used within CartProvider');
+  
+  // Se não estamos no cliente, retorna valores padrão
+  if (typeof window === 'undefined') {
+    return {
+      items: [],
+      itemCount: 0,
+      subtotal: 0,
+      shipping: 0,
+      total: 0,
+      addItem: () => {},
+      removeItem: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+      isOpen: false,
+      openCart: () => {},
+      closeCart: () => {},
+    };
   }
+  
+  // Se o contexto não está disponível no cliente, também retorna valores padrão
+  if (!context) {
+    return {
+      items: [],
+      itemCount: 0,
+      subtotal: 0,
+      shipping: 0,
+      total: 0,
+      addItem: () => {},
+      removeItem: () => {},
+      updateQuantity: () => {},
+      clearCart: () => {},
+      isOpen: false,
+      openCart: () => {},
+      closeCart: () => {},
+    };
+  }
+  
   return context;
 }
