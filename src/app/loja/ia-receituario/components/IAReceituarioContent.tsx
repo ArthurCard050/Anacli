@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Camera, Sparkles, CheckCircle, Lock, TrendingUp, Brain } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
-import UppyUploader from './UppyUploader';
+import AdaptiveImageUploader from './AdaptiveImageUploader';
 
 export default function IAReceituarioContent() {
   const [showUploader, setShowUploader] = useState(false);
@@ -372,9 +372,9 @@ export default function IAReceituarioContent() {
         </div>
       </div>
 
-      {/* Uppy Uploader Modal */}
+      {/* Adaptive Image Uploader Modal */}
       {showUploader && (
-        <UppyUploader 
+        <AdaptiveImageUploader 
           onClose={() => setShowUploader(false)}
           onFileSelected={handleFileSelected}
         />
