@@ -20,7 +20,7 @@ interface SignUpPageProps {
 
 // --- SUB-COMPONENTS ---
 const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl border border-border bg-foreground/5 backdrop-blur-sm transition-colors focus-within:border-violet-400/70 focus-within:bg-violet-500/10">
+  <div className="rounded-2xl border border-border bg-foreground/5 backdrop-blur-sm transition-colors focus-within:border-primary/70 focus-within:bg-primary/10">
     {children}
   </div>
 );
@@ -162,7 +162,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
               <div className="animate-element animate-delay-800 flex items-center gap-3 text-sm">
                 <input type="checkbox" name="terms" className="custom-checkbox" required />
                 <span className="text-foreground/90">
-                  Concordo com os <a href="#" className="text-violet-400 hover:underline">Termos de Uso</a> e <a href="#" className="text-violet-400 hover:underline">Política de Privacidade</a>
+                  Concordo com os <a href="#" className="text-primary hover:underline">Termos de Uso</a> e <a href="#" className="text-primary hover:underline">Política de Privacidade</a>
                 </span>
               </div>
 
@@ -178,7 +178,7 @@ export const SignUpPage: React.FC<SignUpPageProps> = ({
               Já tem uma conta? <a 
                 href="#" 
                 onClick={(e) => { e.preventDefault(); onSignIn?.(); }} 
-                className="text-violet-400 hover:underline transition-colors"
+                className="text-primary hover:underline transition-colors"
               >
                 Fazer Login
               </a>

@@ -144,6 +144,152 @@ export const mockOrders: Order[] = [
     paymentMethod: 'Cartão de Débito',
     createdAt: '2024-02-20T09:30:00Z',
     updatedAt: '2024-02-22T16:00:00Z'
+  },
+  {
+    id: 'order-004',
+    userId: 'user-123',
+    items: [
+      {
+        id: 'item-6',
+        name: 'Vitamina D',
+        type: 'exam',
+        price: 80.00,
+        quantity: 1
+      }
+    ],
+    total: 80.00,
+    status: 'pending',
+    paymentStatus: 'pending',
+    paymentMethod: 'Boleto',
+    createdAt: '2024-03-12T16:30:00Z',
+    updatedAt: '2024-03-12T16:30:00Z'
+  },
+  {
+    id: 'order-005',
+    userId: 'user-123',
+    items: [
+      {
+        id: 'item-7',
+        name: 'Ultrassom Abdominal',
+        type: 'exam',
+        price: 120.00,
+        quantity: 1
+      },
+      {
+        id: 'item-8',
+        name: 'ECG',
+        type: 'exam',
+        price: 60.00,
+        quantity: 1
+      }
+    ],
+    total: 180.00,
+    status: 'pending',
+    paymentStatus: 'pending',
+    paymentMethod: 'PIX',
+    createdAt: '2024-03-11T09:15:00Z',
+    updatedAt: '2024-03-11T09:15:00Z'
+  },
+  {
+    id: 'order-006',
+    userId: 'user-123',
+    items: [
+      {
+        id: 'item-9',
+        name: 'Raio-X Tórax',
+        type: 'exam',
+        price: 90.00,
+        quantity: 1
+      }
+    ],
+    total: 90.00,
+    status: 'processing',
+    paymentStatus: 'paid',
+    paymentMethod: 'Cartão de Crédito',
+    createdAt: '2024-03-09T11:45:00Z',
+    updatedAt: '2024-03-09T14:20:00Z'
+  },
+  {
+    id: 'order-007',
+    userId: 'user-123',
+    items: [
+      {
+        id: 'item-10',
+        name: 'Hemograma Completo',
+        type: 'exam',
+        price: 45.00,
+        quantity: 1
+      },
+      {
+        id: 'item-11',
+        name: 'Glicemia de Jejum',
+        type: 'exam',
+        price: 25.00,
+        quantity: 1
+      },
+      {
+        id: 'item-12',
+        name: 'Colesterol Total',
+        type: 'exam',
+        price: 35.00,
+        quantity: 1
+      },
+      {
+        id: 'item-13',
+        name: 'Triglicerídeos',
+        type: 'exam',
+        price: 35.00,
+        quantity: 1
+      },
+      {
+        id: 'item-14',
+        name: 'Vitamina D',
+        type: 'exam',
+        price: 80.00,
+        quantity: 1
+      },
+      {
+        id: 'item-15',
+        name: 'Vitamina B12',
+        type: 'exam',
+        price: 65.00,
+        quantity: 1
+      },
+      {
+        id: 'item-16',
+        name: 'TSH',
+        type: 'exam',
+        price: 40.00,
+        quantity: 1
+      },
+      {
+        id: 'item-17',
+        name: 'T4 Livre',
+        type: 'exam',
+        price: 45.00,
+        quantity: 1
+      },
+      {
+        id: 'item-18',
+        name: 'Creatinina',
+        type: 'exam',
+        price: 30.00,
+        quantity: 1
+      },
+      {
+        id: 'item-19',
+        name: 'Ureia',
+        type: 'exam',
+        price: 25.00,
+        quantity: 1
+      }
+    ],
+    total: 425.00,
+    status: 'completed',
+    paymentStatus: 'paid',
+    paymentMethod: 'PIX',
+    createdAt: '2024-02-15T10:30:00Z',
+    updatedAt: '2024-02-18T15:45:00Z'
   }
 ];
 

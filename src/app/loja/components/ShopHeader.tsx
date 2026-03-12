@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target, LogOut } from 'lucide-react';
+import { Search, ShoppingCart, User, ChevronDown, Stethoscope, Droplet, Activity, Heart, Brain, Eye, Menu, X, TestTube, Microscope, Zap, Shield, Target, LogOut, Package, MapPin, Lock } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCart } from '../context/CartContext';
@@ -17,7 +17,7 @@ export default function ShopHeader() {
   const [showUserMenu, setShowUserMenu] = useState(false);
   const menuTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  const { itemCount, openCart } = useCart();
+  const { itemCount, openCart, closeCart, isOpen } = useCart();
   const { user, isAuthenticated, logout } = useAuth();
 
   // Verificar se estamos no cliente
@@ -147,6 +147,15 @@ export default function ShopHeader() {
       }
     };
   }, []);
+
+  // Função para toggle do carrinho
+  const toggleCart = () => {
+    if (isOpen) {
+      closeCart();
+    } else {
+      openCart();
+    }
+  };
 
   return (
     <header 
@@ -309,19 +318,41 @@ export default function ShopHeader() {
                   
                   {/* Dropdown do usuário */}
                   {showUserMenu && (
-                    <div className="absolute right-0 top-full mt-2 w-64 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
+                    <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-50">
                       <div className="px-4 py-3 border-b border-gray-100">
                         <p className="font-medium text-gray-900">{user.name}</p>
                         <p className="text-sm text-gray-500">{user.email}</p>
                       </div>
                       <div className="py-1">
                         <a
-                          href="/usuario/dashboard"
+                          href="/usuario/minha-conta/pedidos"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Package className="h-4 w-4" />
+                          Meus Pedidos
+                        </a>
+                        <a
+                          href="/usuario/minha-conta/dados"
                           className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                         >
                           <User className="h-4 w-4" />
-                          Minha Conta
+                          Meus Dados
                         </a>
+                        <a
+                          href="/usuario/minha-conta/enderecos"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <MapPin className="h-4 w-4" />
+                          Endereços
+                        </a>
+                        <a
+                          href="/usuario/minha-conta/senha"
+                          className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                          <Lock className="h-4 w-4" />
+                          Alterar Senha
+                        </a>
+                        <div className="border-t border-gray-100 my-1"></div>
                         <button
                           onClick={() => {
                             logout();
@@ -352,7 +383,7 @@ export default function ShopHeader() {
             <Button
               variant="ghost"
               size="icon"
-              onClick={openCart}
+              onClick={toggleCart}
               className="relative hover:bg-gray-100 transition-all hover:scale-110"
               aria-label="Carrinho"
             >

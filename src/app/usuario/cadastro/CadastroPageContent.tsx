@@ -40,7 +40,7 @@ export default function CadastroPageContent() {
   // Redirecionar se já estiver logado
   useEffect(() => {
     if (isClient && !isLoading && isAuthenticated) {
-      router.push('/usuario/dashboard');
+      router.push('/usuario/minha-conta/pedidos');
     }
   }, [isClient, isAuthenticated, isLoading, router]);
 
@@ -83,7 +83,7 @@ export default function CadastroPageContent() {
     try {
       const success = await register(registerData);
       if (success) {
-        router.push('/usuario/dashboard');
+        router.push('/usuario/minha-conta/pedidos');
       } else {
         alert('Erro ao criar conta. Tente novamente.');
       }

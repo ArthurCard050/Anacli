@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function MinhaContaRedirect() {
+export default function DashboardRedirect() {
   const router = useRouter();
 
   useEffect(() => {

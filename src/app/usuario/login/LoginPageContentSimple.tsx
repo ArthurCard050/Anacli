@@ -39,7 +39,7 @@ export default function LoginPageContentSimple() {
   // Redirecionar se já estiver logado
   useEffect(() => {
     if (isClient && !isLoading && isAuthenticated) {
-      router.push('/usuario/dashboard');
+      router.push('/usuario/minha-conta/pedidos');
     }
   }, [isClient, isAuthenticated, isLoading, router]);
 
@@ -52,7 +52,7 @@ export default function LoginPageContentSimple() {
     try {
       const success = await login(email, password);
       if (success) {
-        router.push('/usuario/dashboard');
+        router.push('/usuario/minha-conta/pedidos');
       } else {
         alert('Email ou senha incorretos. Tente novamente.');
       }

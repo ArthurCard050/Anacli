@@ -22,7 +22,7 @@ export default function LoginPageContent() {
     // Aguarda um pouco para evitar redirecionamentos durante hidratação
     const timer = setTimeout(() => {
       if (!isLoading && isAuthenticated) {
-        router.push('/usuario/dashboard');
+        router.push('/usuario/minha-conta/pedidos');
       }
     }, 100);
 
@@ -37,7 +37,7 @@ export default function LoginPageContent() {
     try {
       const success = await login(email, password);
       if (success) {
-        router.push('/usuario/dashboard');
+        router.push('/usuario/minha-conta/pedidos');
       } else {
         setError('Email ou senha incorretos. Tente novamente.');
       }

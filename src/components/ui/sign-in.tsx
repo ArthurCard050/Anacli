@@ -21,7 +21,7 @@ interface SignInPageProps {
 
 // --- SUB-COMPONENTS ---
 const GlassInputWrapper = ({ children }: { children: React.ReactNode }) => (
-  <div className="rounded-2xl border border-border bg-foreground/5 backdrop-blur-sm transition-colors focus-within:border-violet-400/70 focus-within:bg-violet-500/10">
+  <div className="rounded-2xl border border-border bg-foreground/5 backdrop-blur-sm transition-colors focus-within:border-primary/70 focus-within:bg-primary/10">
     {children}
   </div>
 );
@@ -113,7 +113,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
                 <a 
                   href="#" 
                   onClick={(e) => { e.preventDefault(); onResetPassword?.(); }} 
-                  className="hover:underline text-violet-400 transition-colors"
+                  className="hover:underline text-primary transition-colors"
                 >
                   Esqueci minha senha
                 </a>
@@ -130,7 +130,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
               Novo em nossa plataforma? <a 
                 href="#" 
                 onClick={(e) => { e.preventDefault(); onCreateAccount?.(); }} 
-                className="text-violet-400 hover:underline transition-colors"
+                className="text-primary hover:underline transition-colors"
               >
                 Criar Conta
               </a>
