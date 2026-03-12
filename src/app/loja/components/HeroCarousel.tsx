@@ -34,7 +34,13 @@ export default function HeroCarousel() {
   const [showArrows, setShowArrows] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
+  const [isClient, setIsClient] = useState(false);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Verificar se estamos no cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Minimum swipe distance (in px)
   const minSwipeDistance = 50;
@@ -63,14 +69,16 @@ export default function HeroCarousel() {
   };
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isClient || !isAutoPlaying) return;
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, isClient]);
 
   useEffect(() => {
+    if (!isClient) return;
+    
     const carousel = carouselRef.current;
     if (!carousel) return;
     const handleScroll = () => {
@@ -81,7 +89,7 @@ export default function HeroCarousel() {
     };
     carousel.addEventListener('scroll', handleScroll);
     return () => carousel.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isClient]);
 
 
   const goToSlide = useCallback((index: number) => {

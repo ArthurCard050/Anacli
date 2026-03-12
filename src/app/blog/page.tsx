@@ -2,12 +2,12 @@ import { Metadata } from 'next';
 import BlogClientPage from './BlogClientPage';
 import { getPosts, getCategories } from '@/lib/wordpress';
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: 'Blog Anacli | Saúde, Bem-estar e Prevenção',
   description: 'Fique por dentro das últimas novidades sobre saúde, exames laboratoriais, prevenção de doenças e bem-estar.',
 };
-
-export const revalidate = 60; // Revalidate every 60 seconds
 
 export default async function BlogPage() {
   try {

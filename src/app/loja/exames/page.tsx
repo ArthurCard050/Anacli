@@ -1,11 +1,11 @@
 import { Metadata } from 'next';
-import { CartProvider } from '../context/CartContext';
 import ShopHeader from '../components/ShopHeader';
 import ShopFooter from '../components/ShopFooter';
-import CartDrawer from '../components/CartDrawer';
 import AIBanner from '../components/AIBanner';
 import ExamesListSection from './components/ExamesListSection';
 import './styles/exames.css';
+
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: 'Exames Laboratoriais | Anacli - Mais de 200 Tipos Disponíveis',
@@ -15,20 +15,15 @@ export const metadata: Metadata = {
 
 export default function ExamesPage() {
   return (
-    <CartProvider>
-      <div className="min-h-screen bg-gray-50">
-        <ShopHeader />
-        
-        <main className="pt-20">
-          <ExamesListSection />
-          <AIBanner />
-        </main>
+    <div className="min-h-screen bg-gray-50">
+      <ShopHeader />
+      
+      <main className="pt-20">
+        <ExamesListSection />
+        <AIBanner />
+      </main>
 
-        <ShopFooter />
-        
-        {/* Componentes Flutuantes */}
-        <CartDrawer />
-      </div>
-    </CartProvider>
+      <ShopFooter />
+    </div>
   );
 }
