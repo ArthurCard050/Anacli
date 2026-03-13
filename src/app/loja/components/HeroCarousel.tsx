@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { ChevronLeft, ChevronRight, Stethoscope, ShoppingCart, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingCart, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ShopHeader from './ShopHeader';
+import { useCart } from '../context/CartContext';
 
 interface Slide {
   id: number;
@@ -11,6 +12,37 @@ interface Slide {
   mobileImage: string;
   alt: string;
 }
+
+interface ExamProperties {
+  id: number,
+  category: string,
+  created_at: string,
+  descricao_completa: string,
+  longDescription: string,
+  preco: number,
+  preparationInfo: string,
+  rotulo: string,
+  shortDescription: string,
+  slug: null,
+  userId: string
+}
+
+interface Items{
+  id: number,
+  exam: ExamProperties,
+  examId: number,
+  order: number,
+  packageId: number
+}
+
+interface ExamPackage {
+  id: number,
+  name: string,
+  originalPrice: number,
+  price: number,
+  items: Items[]
+}
+
 
 const slides: Slide[] = [
   {
@@ -35,11 +67,42 @@ export default function HeroCarousel() {
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const [examPackages, setExamPackages] = useState<ExamPackage[]>([]);
+  const [isLoadingPackages, setIsLoadingPackages] = useState(true);
   const carouselRef = useRef<HTMLDivElement>(null);
+  const { addPackageItems } = useCart();
 
   // Verificar se estamos no cliente
   useEffect(() => {
     setIsClient(true);
+  }, []);
+
+  // Buscar pacotes da API
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        setIsLoadingPackages(true);
+        const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+        
+        const response = await fetch(`${apiUrl}/exam-packages`);
+        
+        if (!response.ok) {
+          throw new Error('Erro ao buscar pacotes');
+        }
+
+        const data: ExamPackage[] = await response.json();
+        
+        // Pegar apenas os 2 primeiros pacotes
+        console.log(data)
+        setExamPackages(data.slice(0, 2));
+      } catch (error) {
+        console.error('Erro ao carregar pacotes:', error);
+      } finally {
+        setIsLoadingPackages(false);
+      }
+    };
+
+    fetchPackages();
   }, []);
 
   // Minimum swipe distance (in px)
@@ -115,6 +178,42 @@ export default function HeroCarousel() {
     carousel.scrollTo({ left: index * cardWidth, behavior: 'smooth' });
   };
 
+  const handleAddPackageToCart = async (pkg: ExamPackage) => {
+    if (!pkg.items || pkg.items.length === 0) {
+      console.error('Pacote sem exames');
+      return;
+    }
+    
+    console.log('Pacote items:', pkg.items);
+    
+    try {
+      setIsLoadingPackages(true)
+      // Extrair IDs dos exames do pacote com verificações
+      const ids: string[] = [];
+      
+      for (const item of pkg.items) {
+        // Verificar se item e item.exam existem
+        if (item && item.exam && item.exam.id) {
+          ids.push(item.exam.id.toString());
+        } else {
+          console.warn('Item inválido encontrado:', item);
+        }
+      }
+      
+      if (ids.length === 0) {
+        console.error('Nenhum exame válido encontrado no pacote');
+        return;
+      }
+      
+      console.log('IDs dos exames:', ids);
+      await addPackageItems(ids);
+    } catch (error) {
+      console.error('Erro ao adicionar pacote ao carrinho:', error);
+    }finally{
+      setIsLoadingPackages(false)
+    }
+  };
+
   return (
     <>
       <ShopHeader />
@@ -173,46 +272,57 @@ export default function HeroCarousel() {
         <div className="hidden lg:block absolute bottom-0 left-0 right-0 z-20">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-8">
             <div className="grid grid-cols-5 gap-4 max-w-7xl mx-auto">
-              <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col h-[240px]">
-                <div className="mb-3 flex-1 flex flex-col items-center">
-                  <h3 className="font-semibold text-gray-900 text-sm leading-tight text-center mb-3">
-                    Fitness Essencial
-                  </h3>
-                  <div className="w-20 h-20 mb-2">
-                    <img src="/assets/loja/hero/checkup-basico.png" alt="Check-up Básico" className="w-20 h-20 object-contain" />
+              {/* Pacotes da API */}
+              {isLoadingPackages ? (
+                <>
+                  <div className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-center h-[240px]">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   </div>
-                </div>
-                <div className="space-y-3 mt-auto">
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="text-xs text-gray-500 line-through">R$ 150,00</div>
-                    <div className="text-lg font-bold text-gray-900">R$ 97,00</div>
+                  <div className="bg-white rounded-lg border border-gray-200 p-4 flex items-center justify-center h-[240px]">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
                   </div>
-                  <Button className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-sm h-9 font-medium transition-colors">
-                    <ShoppingCart className="h-4 w-4 mr-1" />
-                    ADICIONAR
-                  </Button>
-                </div>
-              </div>
-              <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col h-[240px]">
-                <div className="mb-3 flex-1 flex flex-col items-center">
-                  <h3 className="font-semibold text-gray-900 text-sm leading-tight text-center mb-3">
-                    Fitness Performance
-                  </h3>
-                  <div className="w-20 h-20 mb-2">
-                    <img src="/assets/loja/hero/checkup-completo.png" alt="Check-up Completo" className="w-20 h-20 object-contain" />
+                </>
+              ) : (
+                examPackages.map((pkg, index) => (
+                  <div key={pkg.id} className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col h-[240px]">
+                    <div className="mb-3 flex-1 flex flex-col items-center">
+                      <h3 className="font-semibold text-gray-900 text-sm leading-tight text-center mb-3">
+                        {pkg.name}
+                      </h3>
+                      <div className="w-20 h-20 mb-2">
+                        <img 
+                          src={index === 0 ? "/assets/loja/hero/checkup-basico.png" : "/assets/loja/hero/checkup-completo.png"} 
+                          alt={pkg.name} 
+                          className="w-20 h-20 object-contain" 
+                        />
+                      </div>
+                    </div>
+                    <div className="space-y-3 mt-auto">
+                      <div className="flex items-center justify-center gap-2">
+                        {pkg.originalPrice && (
+                          <div className="text-xs text-gray-500 line-through">
+                            R$ {pkg.originalPrice.toFixed(2).replace('.', ',')}
+                          </div>
+                        )}
+                        {pkg.price && (
+                          <div className="text-lg font-bold text-gray-900">
+                            R$ {pkg.price.toFixed(2).replace('.', ',')}
+                          </div>
+                        )}
+                      </div>
+                      <Button 
+                        onClick={() => handleAddPackageToCart(pkg)}
+                        className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-sm h-9 font-medium transition-colors"
+                      >
+                        <ShoppingCart className="h-4 w-4 mr-1" />
+                        ADICIONAR
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-3 mt-auto">
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="text-xs text-gray-500 line-through">R$ 180,00</div>
-                    <div className="text-lg font-bold text-gray-900">R$ 117,00</div>
-                  </div>
-                  <Button className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-sm h-9 font-medium transition-colors">
-                    <ShoppingCart className="h-4 w-4 mr-1" />
-                    ADICIONAR
-                  </Button>
-                </div>
-              </div>
+                ))
+              )}
+              
+              {/* Cards estáticos restantes */}
               <div className="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow flex flex-col h-[240px]">
                 <div className="mb-3 flex-1 flex flex-col items-center">
                   <h3 className="font-semibold text-gray-900 text-sm leading-tight text-center mb-3">
@@ -274,46 +384,57 @@ export default function HeroCarousel() {
         <div className="w-full pl-4">
           <div className="relative">
             <div ref={carouselRef} className="flex gap-3 overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-shadow">
-                <div className="mb-2 flex-1">
-                  <div className="w-16 h-16 mx-auto mb-2">
-                    <img src="/assets/loja/hero/checkup-basico.png" alt="Check-up Básico" className="w-16 h-16 object-contain" />
+              {/* Pacotes da API */}
+              {isLoadingPackages ? (
+                <>
+                  <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex items-center justify-center h-[200px]">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-xs leading-tight text-center mb-1">
-                    Fitness Essencial
-                  </h3>
-                </div>
-                <div className="space-y-2 mt-auto">
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 line-through">R$ 150,00</div>
-                    <div className="text-sm font-bold text-gray-900">R$ 97,00</div>
+                  <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex items-center justify-center h-[200px]">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary"></div>
                   </div>
-                  <Button className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-xs h-8 font-medium transition-colors">
-                    <ShoppingCart className="h-3 w-3 mr-1" />
-                    ADICIONAR
-                  </Button>
-                </div>
-              </div>
-              <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-shadow">
-                <div className="mb-2 flex-1">
-                  <div className="w-16 h-16 mx-auto mb-2">
-                    <img src="/assets/loja/hero/checkup-completo.png" alt="Check-up Completo" className="w-16 h-16 object-contain" />
+                </>
+              ) : (
+                examPackages.map((pkg, index) => (
+                  <div key={pkg.id} className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-shadow">
+                    <div className="mb-2 flex-1">
+                      <div className="w-16 h-16 mx-auto mb-2">
+                        <img 
+                          src={index === 0 ? "/assets/loja/hero/checkup-basico.png" : "/assets/loja/hero/checkup-completo.png"} 
+                          alt={pkg.name} 
+                          className="w-16 h-16 object-contain" 
+                        />
+                      </div>
+                      <h3 className="font-semibold text-gray-900 text-xs leading-tight text-center mb-1">
+                        {pkg.name}
+                      </h3>
+                    </div>
+                    <div className="space-y-2 mt-auto">
+                      <div className="text-center">
+                        {pkg.originalPrice && (
+                          <div className="text-xs text-gray-500 line-through">
+                            R$ {pkg.originalPrice.toFixed(2).replace('.', ',')}
+                          </div>
+                        )}
+                        {pkg.price && (
+                          <div className="text-sm font-bold text-gray-900">
+                            R$ {pkg.price.toFixed(2).replace('.', ',')}
+                          </div>
+                        )}
+                      </div>
+                      <Button 
+                        onClick={() => handleAddPackageToCart(pkg)}
+                        className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-xs h-8 font-medium transition-colors"
+                      >
+                        <ShoppingCart className="h-3 w-3 mr-1" />
+                        ADICIONAR
+                      </Button>
+                    </div>
                   </div>
-                  <h3 className="font-semibold text-gray-900 text-xs leading-tight text-center mb-1">
-                    Fitness Performance
-                  </h3>
-                </div>
-                <div className="space-y-2 mt-auto">
-                  <div className="text-center">
-                    <div className="text-xs text-gray-500 line-through">R$ 180,00</div>
-                    <div className="text-sm font-bold text-gray-900">R$ 117,00</div>
-                  </div>
-                  <Button className="w-full border border-gray-300 text-gray-900 bg-white hover:bg-accent hover:border-accent hover:text-white text-xs h-8 font-medium transition-colors">
-                    <ShoppingCart className="h-3 w-3 mr-1" />
-                    ADICIONAR
-                  </Button>
-                </div>
-              </div>
+                ))
+              )}
+              
+              {/* Cards estáticos restantes */}
               <div className="flex-shrink-0 w-40 bg-white rounded-lg border border-gray-200 p-3 snap-start flex flex-col h-[200px] hover:shadow-md transition-shadow">
                 <div className="mb-2 flex-1">
                   <div className="w-16 h-16 mx-auto mb-2">

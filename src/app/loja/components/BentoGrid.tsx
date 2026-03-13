@@ -1,24 +1,61 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Clock, Calendar, Plus, Check, Info, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { mockExams, mockPackages } from '../data/mock-products';
+import { mockPackages } from '../data/mock-products';
 import { useCart } from '../context/CartContext';
-import type { Exam, ExamPackage } from '../types';
+import type { ExamPackage } from '../types';
+
+interface ApiExam {
+  id: number;
+  name: string;
+  slug: string | null;
+  shortDescription: string;
+  price: number;
+  preparation: string;
+  tags?: string[];
+  popular?: boolean;
+  originalPrice?: number;
+}
 
 export default function BentoGrid() {
   const [addedItems, setAddedItems] = useState<Set<string>>(new Set());
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<ExamPackage | null>(null);
   const [serviceBannerModal, setServiceBannerModal] = useState<string | null>(null);
+  const [exams, setExams] = useState<ApiExam[]>([]);
+  const [isLoadingExams, setIsLoadingExams] = useState(true);
   const { addItem } = useCart();
   const carouselRef = useRef<HTMLDivElement>(null);
 
-  // Usar todos os produtos sem filtro
-  const exams = mockExams;
   const packages = mockPackages;
+
+  // Buscar exames da API
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        setIsLoadingExams(true);
+        const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+        
+        const response = await fetch(`${apiUrl}`);
+        
+        if (!response.ok) {
+          throw new Error('Erro ao buscar exames');
+        }
+
+        const data: ApiExam[] = await response.json();
+        setExams(data);
+      } catch (error) {
+        console.error('Erro ao carregar exames:', error);
+      } finally {
+        setIsLoadingExams(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
 
   const handleAddItem = (id: string, type: 'exam' | 'package') => {
     addItem(id, type);
@@ -299,47 +336,62 @@ export default function BentoGrid() {
           </div>
           
           <div ref={carouselRef} className="flex gap-4 overflow-x-auto pb-4 pl-4 sm:pl-6 lg:pl-8 scrollbar-hide scroll-smooth" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-            {exams.slice(0, 30).map((exam) => {
-              const isAdded = addedItems.has(exam.id);
-              const hasDiscount = exam.originalPrice && exam.originalPrice > exam.price;
-              return (
-                <div key={exam.id} className="card-clean-sm hover:micro-shadow transition-all duration-300 w-[200px] md:w-[220px] flex-shrink-0 flex flex-col">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="font-clean-semibold text-text-primary-clean text-sm line-clamp-2 flex-1 pr-1">{exam.name}</h3>
-                    {(exam.popular || hasDiscount) && (
-                      <div className="flex flex-col gap-0.5 flex-shrink-0">
-                        {exam.popular && <span className="text-[8px] bg-brand-accent/10 text-brand-accent px-1.5 py-0.5 rounded-button-clean font-clean-medium">Popular</span>}
-                        {hasDiscount && <span className="text-[8px] bg-brand-accent/10 text-brand-accent px-1.5 py-0.5 rounded-button-clean font-clean-medium">{Math.round(((exam.originalPrice! - exam.price) / exam.originalPrice!) * 100)}%</span>}
-                      </div>
-                    )}
-                  </div>
-                  <p className="text-[11px] text-text-secondary-clean mb-2 line-clamp-1">{exam.shortDescription}</p>
-                  <div className="flex flex-wrap gap-1 mb-2">
-                    {exam.tags?.slice(0, 2).map((tag, i) => (
-                      <span key={i} className="inline-flex items-center gap-0.5 text-[9px] text-text-secondary-clean bg-gray-100 px-1.5 py-0.5 rounded-button-clean">
-                        {tag.includes('Jejum') && <Clock className="h-2.5 w-2.5" />}
-                        {tag.includes('Resultado') && <Calendar className="h-2.5 w-2.5" />}
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="flex items-end justify-between mt-auto">
-                    <div>
-                      {hasDiscount && <span className="text-[9px] text-text-secondary-clean line-through block">R$ {exam.originalPrice!.toFixed(2)}</span>}
-                      <span className="font-clean-bold text-brand-accent text-base">R$ {exam.price.toFixed(2)}</span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Link href={`/loja/produto/${exam.slug}`}>
-                        <Button size="sm" variant="outline" className="rounded-full w-7 h-7 p-0 border-border-clean hover:border-brand-accent hover:bg-brand-accent/10"><Info className="h-3 w-3 text-text-secondary-clean" /></Button>
-                      </Link>
-                      <Button size="sm" onClick={() => handleAddItem(exam.id, 'exam')} className={`btn-primary-clean rounded-full w-7 h-7 p-0 ${isAdded ? 'bg-green-500 hover:bg-green-600' : ''}`}>
-                        {isAdded ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
-                      </Button>
-                    </div>
-                  </div>
+            {isLoadingExams ? (
+              // Loading skeleton
+              Array.from({ length: 6 }).map((_, i) => (
+                <div key={i} className="card-clean-sm w-[200px] md:w-[220px] flex-shrink-0 animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                  <div className="h-3 bg-gray-200 rounded mb-2 w-3/4"></div>
+                  <div className="h-6 bg-gray-200 rounded mt-4"></div>
                 </div>
-              );
-            })}
+              ))
+            ) : (
+              exams.slice(0, 30).map((exam) => {
+                const isAdded = addedItems.has(exam.id.toString());
+                const hasDiscount = exam.originalPrice && exam.originalPrice > exam.price;
+                const examSlug = exam.id
+                return (
+                  <div key={exam.id} className="card-clean-sm hover:micro-shadow transition-all duration-300 w-[200px] md:w-[220px] flex-shrink-0 flex flex-col">
+                    <div className="flex items-start justify-between mb-2">
+                      <h3 className="font-clean-semibold text-text-primary-clean text-sm line-clamp-2 flex-1 pr-1">{exam.name}</h3>
+                      {/* {(exam.popular) && (
+                        <div className="flex flex-col gap-0.5 flex-shrink-0">
+                          {exam.popular && <span className="text-[8px] bg-brand-accent/10 text-brand-accent px-1.5 py-0.5 rounded-button-clean font-clean-medium">Popular</span>}
+                          {hasDiscount && <span className="text-[8px] bg-brand-accent/10 text-brand-accent px-1.5 py-0.5 rounded-button-clean font-clean-medium">{Math.round(((exam.originalPrice! - exam.preco) / exam.originalPrice!) * 100)}%</span>}
+                        </div>
+                      )} */}
+                    </div>
+                    <p className="text-[11px] text-text-secondary-clean mb-2 line-clamp-1">{exam.shortDescription}</p>
+                    <div className="flex flex-wrap gap-1 mb-2">
+                      {exam.preparation.split(';').slice(0, 2).map((tag, i) => {
+                        console.log(tag)
+                        return (<>
+                            <span key={i} className="inline-flex items-center gap-0.5 text-[9px] text-text-secondary-clean bg-gray-100 px-1.5 py-0.5 rounded-button-clean">
+                              {tag.includes('JEJUM DE') && <Clock className="h-2.5 w-2.5" />}
+                              {/* {tag.includes('Resultado') && <Calendar className="h-2.5 w-2.5" />} */}
+                              {tag.includes("NÃO") ? <span>NÃO PRECISA DE JEJUM</span> : (<span>{tag}</span>)}
+                            </span>
+                          </>)
+                      })}
+                    </div>
+                    <div className="flex items-end justify-between mt-auto">
+                      <div>
+                        {/* {hasDiscount && <span className="text-[9px] text-text-secondary-clean line-through block">R$ {exam.originalPrice!.toFixed(2)}</span>} */}
+                        <span className="font-clean-bold text-brand-accent text-base">R$ {exam.price.toFixed(2).toString().replace(".", ",")}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Link href={`/loja/produto/${examSlug}`}>
+                          <Button size="sm" variant="outline" className="rounded-full w-7 h-7 p-0 border-border-clean hover:border-brand-accent hover:bg-brand-accent/10"><Info className="h-3 w-3 text-text-secondary-clean" /></Button>
+                        </Link>
+                        <Button size="sm" onClick={() => handleAddItem(exam.id.toString(), 'exam')} className={`btn-primary-clean rounded-full w-7 h-7 p-0 ${isAdded ? 'bg-green-500 hover:bg-green-600' : ''}`}>
+                          {isAdded ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
           </div>
         </div>
 

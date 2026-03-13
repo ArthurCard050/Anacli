@@ -12,6 +12,7 @@ interface CartContextType {
   shipping: number;
   total: number;
   addItem: (id: string, type: 'exam' | 'package') => void;
+  addPackageItems: (examIds: string[]) => Promise<void>;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -35,18 +36,21 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 async function getExamFromAPI(id: string) {
   try {
     // Verificar se o cache ainda é válido
-    const now = Date.now();
-    if (examsCache.length === 0 || now - examsCacheTime > CACHE_DURATION) {
-      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
-      const response = await axios.get(`${apiUrl}`);
-      if (response.data && Array.isArray(response.data)) {
-        examsCache = response.data;
-        examsCacheTime = now;
-      }
-    }
-
+    // const now = Date.now();
+    // if (examsCache.length === 0 || now - examsCacheTime > CACHE_DURATION) {
+    const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
+    //   const response = await axios.get(`${apiUrl}`);
+    //   if (response.data && Array.isArray(response.data)) {
+    //     examsCache = response.data;
+    //     examsCacheTime = now;
+    //   }
+    // }
+    const response = await axios.get(`${apiUrl}`);
+    // console.log("tnccccccccc" + response.data)
     // Buscar exame no cache
-    return examsCache.find(exam => exam.id === id);
+
+    let idNumber = parseInt(id)
+    return response.data.find(exam => exam.id === idNumber);
   } catch (error) {
     console.error('Erro ao buscar exame da API:', error);
     return null;
@@ -140,6 +144,65 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setIsOpen(true);
   };
 
+  // Adicionar todos os exames de um pacote ao carrinho
+  const addPackageItems = async (examIds: string[]) => {
+    if (!examIds || examIds.length === 0) {
+      console.error('Nenhum exame fornecido');
+      return;
+    }
+    
+    try {
+      // Buscar informações de todos os exames
+      const examPromises = examIds.map(id => getExamFromAPI(id));
+
+      const exams = await Promise.all(examPromises);
+
+      console.log(exams)
+
+      // Filtrar exames válidos
+      const validExams = exams.filter(exam => exam !== null);
+
+      if (validExams.length === 0) {
+        console.error('Nenhum exame válido encontrado');
+        return;
+      }
+
+      // Adicionar cada exame ao carrinho
+      setItems(prev => {
+        const newItems = [...prev];
+        
+        validExams.forEach(exam => {
+          // Verificar se o exame já existe no carrinho
+          const existingIndex = newItems.findIndex(
+            item => item.id === exam.id && item.type === 'exam'
+          );
+
+          if (existingIndex >= 0) {
+            // Incrementa quantidade se já existe
+            newItems[existingIndex].quantity += 1;
+          } else {
+            // Adiciona novo item
+            newItems.push({
+              id: exam.id,
+              type: 'exam',
+              name: exam.name,
+              price: exam.price,
+              quantity: 1,
+              image: exam.image || ''
+            });
+          }
+        });
+
+        return newItems;
+      });
+
+      // Abre o carrinho automaticamente
+      setIsOpen(true);
+    } catch (error) {
+      console.error('Erro ao adicionar exames do pacote:', error);
+    }
+  };
+
   // Remover item do carrinho
   const removeItem = (id: string) => {
     setItems(prev => prev.filter(item => item.id !== id));
@@ -186,6 +249,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         shipping,
         total,
         addItem,
+        addPackageItems,
         removeItem,
         updateQuantity,
         clearCart,
@@ -210,7 +274,8 @@ export function useCart() {
       subtotal: 0,
       shipping: 0,
       total: 0,
-      addItem: () => {},
+      addItem: async () => {},
+      addPackageItems: async () => {},
       removeItem: () => {},
       updateQuantity: () => {},
       clearCart: () => {},
@@ -228,7 +293,8 @@ export function useCart() {
       subtotal: 0,
       shipping: 0,
       total: 0,
-      addItem: () => {},
+      addItem: async () => {},
+      addPackageItems: async () => {},
       removeItem: () => {},
       updateQuantity: () => {},
       clearCart: () => {},
