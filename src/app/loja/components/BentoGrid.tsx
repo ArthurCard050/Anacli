@@ -346,7 +346,7 @@ export default function BentoGrid() {
                 </div>
               ))
             ) : ( 
-              exams.slice(0, 30).map((exam: any) => {
+              exams.slice(0, 30).map((exam: ApiExam) => {
                 const isAdded = addedItems.has(exam.id.toString());
                 const hasDiscount = exam.originalPrice && exam.originalPrice > exam.price;
                 const examSlug = exam.id
