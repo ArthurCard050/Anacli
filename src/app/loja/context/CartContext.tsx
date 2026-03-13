@@ -50,7 +50,7 @@ async function getExamFromAPI(id: string) {
     // Buscar exame no cache
 
     let idNumber = parseInt(id)
-    return response.data.find(exam => exam.id === idNumber);
+    return response.data.find((exam: any) => exam.id === idNumber);
   } catch (error) {
     console.error('Erro ao buscar exame da API:', error);
     return null;
