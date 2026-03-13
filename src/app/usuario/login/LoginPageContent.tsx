@@ -183,7 +183,7 @@ export default function LoginPageContent() {
         <div className="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
           <h3 className="font-medium text-yellow-800 mb-2">Dados para teste:</h3>
           <p className="text-sm text-yellow-700">
-            <strong>Email:</strong> joao.silva@email.com<br />
+            <strong>Email:</strong> teste@example.com<br />
             <strong>Senha:</strong> senha123
           </p>
         </div>

@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
-import { Package, ChevronLeft, Clock, CheckCircle, Truck, Eye, Download, Calendar, MapPin, X } from 'lucide-react';
+import { Package, ChevronLeft, Clock, CheckCircle, Truck, Calendar, MapPin, X } from 'lucide-react';
 import ShopHeader from '@/app/loja/components/ShopHeader';
 import ShopFooter from '@/app/loja/components/ShopFooter';
 import CartDrawer from '@/app/loja/components/CartDrawer';
 import { CartProvider } from '@/app/loja/context/CartContext';
-import { mockApi } from '../../data/mock-data';
+import { apiGet } from '../../utils/api';
 import { Order } from '../../types';
 import NavigationCards from '../components/NavigationCards';
 
@@ -17,7 +17,6 @@ export default function MeusPedidosContent() {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
   const [loadingData, setLoadingData] = useState(true);
-  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [activeFilter, setActiveFilter] = useState<string>('all');
   const [expandedOrders, setExpandedOrders] = useState<Set<string>>(new Set());
   const [showItemsModal, setShowItemsModal] = useState(false);
@@ -38,15 +37,50 @@ export default function MeusPedidosContent() {
   const loadOrders = async () => {
     try {
       setLoadingData(true);
-      const ordersData = await mockApi.getOrders();
-      setOrders(ordersData.sort((a, b) => 
+      
+      // Buscar pedidos da API
+      const apiOrders = await apiGet<any[]>('/orders');
+      
+      // Transformar dados da API para o formato esperado pelo frontend
+      const transformedOrders: Order[] = apiOrders.map(apiOrder => ({
+        id: apiOrder.id,
+        userId: apiOrder.userId.toString(),
+        items: apiOrder.items.map((item: any) => ({
+          id: item.id.toString(),
+          name: item.exam?.rotulo || item.exam?.descricao_completa || 'Exame',
+          type: 'exam' as const,
+          price: parseFloat(item.price),
+          quantity: item.quantity
+        })),
+        total: parseFloat(apiOrder.total),
+        status: apiOrder.status,
+        paymentStatus: apiOrder.paymentStatus,
+        paymentMethod: formatPaymentMethod(apiOrder.paymentMethod),
+        shippingAddress: undefined,
+        createdAt: apiOrder.createdAt,
+        updatedAt: apiOrder.updatedAt
+      }));
+      
+      setOrders(transformedOrders.sort((a, b) => 
         new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       ));
     } catch (error) {
       console.error('Erro ao carregar pedidos:', error);
+      setOrders([]);
     } finally {
       setLoadingData(false);
     }
+  };
+
+  const formatPaymentMethod = (method: string): string => {
+    const methodMap: Record<string, string> = {
+      'credit_card': 'Cartão de Crédito',
+      'debit_card': 'Cartão de Débito',
+      'pix': 'PIX',
+      'boleto': 'Boleto',
+      'cash': 'Dinheiro'
+    };
+    return methodMap[method] || method;
   };
 
   if (isLoading || !user) {

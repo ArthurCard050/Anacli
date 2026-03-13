@@ -51,12 +51,42 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
     try {
-      const userData = await mockApi.login(email, password);
-      if (userData) {
-        setUser(userData);
-        return true;
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+      
+      const response = await fetch(`${apiUrl}/auth/login`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ login: email, password }),
+      });
+
+      if (!response.ok) {
+        return false;
       }
-      return false;
+
+      const data = await response.json();
+      
+      // Armazenar o token JWT
+      if (data.token && isClient) {
+        localStorage.setItem('anacli-token', data.token);
+      }
+      
+      // Criar objeto User a partir da resposta da API
+      const userData: User = {
+        id: data.user.id.toString(),
+        email: data.user.email,
+        name: data.user.username,
+        phone: data.user.phone,
+        cpf: data.user.cpf,
+        birthDate: data.user.birthDate,
+        address: data.user.address || null,
+        createdAt: data.user.createdAt || new Date().toISOString(),
+        updatedAt: data.user.updatedAt || new Date().toISOString(),
+      };
+      
+      setUser(userData);
+      return true;
     } catch (error) {
       console.error('Erro no login:', error);
       return false;
@@ -86,6 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(null);
     if (isClient) {
       localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('anacli-token');
     }
   };
 
@@ -152,4 +183,10 @@ export function useAuth() {
   }
   
   return context;
+}
+
+// Função helper para obter o token JWT
+export function getAuthToken(): string | null {
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('anacli-token');
 }
