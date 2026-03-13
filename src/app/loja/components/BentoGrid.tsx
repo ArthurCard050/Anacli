@@ -345,8 +345,8 @@ export default function BentoGrid() {
                   <div className="h-6 bg-gray-200 rounded mt-4"></div>
                 </div>
               ))
-            ) : (
-              exams.slice(0, 30).map((exam) => {
+            ) : ( 
+              exams.slice(0, 30).map((exam: any) => {
                 const isAdded = addedItems.has(exam.id.toString());
                 const hasDiscount = exam.originalPrice && exam.originalPrice > exam.price;
                 const examSlug = exam.id
