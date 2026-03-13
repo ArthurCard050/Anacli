@@ -363,8 +363,8 @@ export default function BentoGrid() {
                     </div>
                     <p className="text-[11px] text-text-secondary-clean mb-2 line-clamp-1">{exam.shortDescription}</p>
                     <div className="flex flex-wrap gap-1 mb-2">
-                      {exam.preparation.split(';').slice(0, 2).map((tag, i) => {
-                        console.log(tag)
+                      {exam.preparation.split(';').slice(0, 2).map((tag: any, i: number) => {
+                        // console.log(tag)
                         return (<>
                             <span key={i} className="inline-flex items-center gap-0.5 text-[9px] text-text-secondary-clean bg-gray-100 px-1.5 py-0.5 rounded-button-clean">
                               {tag.includes('JEJUM DE') && <Clock className="h-2.5 w-2.5" />}
