@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
-import { ChevronLeft, User, Mail, Phone, Calendar, FileText, Edit3, Save, X } from 'lucide-react';
+import { useAuth, getAuthToken } from '../../context/AuthContext';
+import { ChevronLeft, User, Mail, Edit3, Save, X, AlertCircle, CheckCircle } from 'lucide-react';
 import ShopHeader from '@/app/loja/components/ShopHeader';
 import ShopFooter from '@/app/loja/components/ShopFooter';
 import CartDrawer from '@/app/loja/components/CartDrawer';
@@ -18,10 +18,22 @@ interface UserData {
   birthDate: string;
 }
 
+interface ApiResponse {
+  id: number;
+  name: string;
+  email: string;
+  phone: string;
+  cpf: string;
+  birthDate: string;
+}
+
 export default function MeusDadosContent() {
-  const { user, isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading, updateUser } = useAuth();
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isLoadingData, setIsLoadingData] = useState(true);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [userData, setUserData] = useState<UserData>({
     name: '',
     email: '',
@@ -43,21 +55,54 @@ export default function MeusDadosContent() {
     }
   }, [isAuthenticated, isLoading, router]);
 
+  // Buscar dados do perfil da API
   useEffect(() => {
-    if (user) {
-      const data = {
-        name: user.name || '',
-        email: user.email || '',
-        phone: user.phone || '(11) 99999-9999',
-        cpf: user.cpf || '123.456.789-00',
-        birthDate: user.birthDate || '1990-01-01'
-      };
-      setUserData(data);
-      setOriginalData(data);
-    }
-  }, [user]);
+    const fetchUserProfile = async () => {
+      if (!isAuthenticated) return;
 
-  if (isLoading || !user) {
+      try {
+        setIsLoadingData(true);
+        const token = getAuthToken();
+        const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+        const response = await fetch(`${apiUrl}/auth/profile`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao buscar dados do perfil');
+        }
+
+        const data: ApiResponse = await response.json();
+        
+        const profileData: UserData = {
+          name: data.name || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          cpf: data.cpf || '',
+          birthDate: data.birthDate || ''
+        };
+
+        setUserData(profileData);
+        setOriginalData(profileData);
+      } catch (error) {
+        console.error('Erro ao carregar perfil:', error);
+        setMessage({ type: 'error', text: 'Erro ao carregar dados do perfil' });
+      } finally {
+        setIsLoadingData(false);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchUserProfile();
+    }
+  }, [isAuthenticated]);
+
+  if (isLoading || isLoadingData || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-page">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -72,12 +117,73 @@ export default function MeusDadosContent() {
     }));
   };
 
-  const handleSave = () => {
-    // Aqui você implementaria a lógica para salvar os dados
-    console.log('Salvando dados:', userData);
-    setOriginalData(userData);
-    setIsEditing(false);
-    // Mostrar mensagem de sucesso
+  const handleSave = async () => {
+    try {
+      setIsSaving(true);
+      setMessage(null);
+      
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      // Preparar dados para envio (todos os campos são opcionais)
+      const updateData: Record<string, string> = {};
+      
+      if (userData.name !== originalData.name) {
+        updateData.username = userData.name;
+      }
+      if (userData.email !== originalData.email) {
+        updateData.email = userData.email;
+      }
+      if (userData.phone !== originalData.phone) {
+        updateData.phone = userData.phone;
+      }
+      if (userData.cpf !== originalData.cpf) {
+        updateData.cpf = userData.cpf;
+      }
+      if (userData.birthDate !== originalData.birthDate) {
+        updateData.birthDate = userData.birthDate;
+      }
+
+      // Se não houver alterações, apenas fecha o modo de edição
+      if (Object.keys(updateData).length === 0) {
+        setIsEditing(false);
+        return;
+      }
+
+      const response = await fetch(`${apiUrl}/auth/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updateData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar dados');
+      }
+
+      // Atualizar contexto de autenticação
+      await updateUser({
+        name: userData.name,
+        email: userData.email,
+        phone: userData.phone,
+        cpf: userData.cpf,
+        birthDate: userData.birthDate,
+      });
+
+      setOriginalData(userData);
+      setIsEditing(false);
+      setMessage({ type: 'success', text: 'Dados atualizados com sucesso!' });
+      
+      // Limpar mensagem após 3 segundos
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Erro ao salvar dados:', error);
+      setMessage({ type: 'error', text: 'Erro ao atualizar dados. Tente novamente.' });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleCancel = () => {
@@ -115,6 +221,22 @@ export default function MeusDadosContent() {
             {/* Navigation Cards */}
             <NavigationCards />
 
+            {/* Message Alert */}
+            {message && (
+              <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+                message.type === 'success' 
+                  ? 'bg-green-50 text-green-800 border border-green-200' 
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}>
+                {message.type === 'success' ? (
+                  <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                )}
+                <p className="text-sm font-medium">{message.text}</p>
+              </div>
+            )}
+
             {/* Action Buttons */}
             <div className="mb-6">
               <div className="flex gap-2 justify-start">
@@ -122,17 +244,28 @@ export default function MeusDadosContent() {
                   <>
                     <button
                       onClick={handleCancel}
-                      className="btn-secondary-clean px-4 py-2 text-sm flex items-center gap-2"
+                      disabled={isSaving}
+                      className="btn-secondary-clean px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <X className="h-4 w-4" />
                       Cancelar
                     </button>
                     <button
                       onClick={handleSave}
-                      className="btn-primary-clean px-4 py-2 text-sm flex items-center gap-2"
+                      disabled={isSaving}
+                      className="btn-primary-clean px-4 py-2 text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      <Save className="h-4 w-4" />
-                      Salvar
+                      {isSaving ? (
+                        <>
+                          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                          Salvando...
+                        </>
+                      ) : (
+                        <>
+                          <Save className="h-4 w-4" />
+                          Salvar
+                        </>
+                      )}
                     </button>
                   </>
                 ) : (

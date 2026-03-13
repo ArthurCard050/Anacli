@@ -98,12 +98,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = async (userData: RegisterData): Promise<boolean> => {
     setIsLoading(true);
     try {
-      const newUser = await mockApi.register(userData);
-      if (newUser) {
-        setUser(newUser);
-        return true;
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+      
+      const response = await fetch(`${apiUrl}/auth/register`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: userData.name,
+          email: userData.email,
+          password: userData.password,
+          confirmPassword: userData.password,
+          phone: userData.phone || '',
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Erro no registro:', errorData);
+        return false;
       }
-      return false;
+
+      const data = await response.json();
+      
+      // Armazenar o token JWT se fornecido
+      if (data.token && isClient) {
+        localStorage.setItem('anacli-token', data.token);
+      }
+      
+      // Criar objeto User a partir da resposta da API
+      const newUser: User = {
+        id: data.user?.id?.toString() || Date.now().toString(),
+        email: data.user?.email || userData.email,
+        name: data.user?.name || data.user?.username || userData.name,
+        phone: data.user?.phone || userData.phone || '',
+        cpf: data.user?.cpf || userData.cpf || '',
+        birthDate: data.user?.birthDate || userData.birthDate || '',
+        address: data.user?.address || null,
+        createdAt: data.user?.createdAt || new Date().toISOString(),
+        updatedAt: data.user?.updatedAt || new Date().toISOString(),
+      };
+      
+      setUser(newUser);
+      return true;
     } catch (error) {
       console.error('Erro no registro:', error);
       return false;

@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
-import { ChevronLeft, Lock, Eye, EyeOff, Shield, CheckCircle } from 'lucide-react';
+import { useAuth, getAuthToken } from '../../context/AuthContext';
+import { ChevronLeft, Lock, Eye, EyeOff, Shield, CheckCircle, AlertCircle } from 'lucide-react';
 import ShopHeader from '@/app/loja/components/ShopHeader';
 import ShopFooter from '@/app/loja/components/ShopFooter';
 import CartDrawer from '@/app/loja/components/CartDrawer';
@@ -31,7 +31,7 @@ export default function AlterarSenhaContent() {
   });
   const [errors, setErrors] = useState<Partial<PasswordForm>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -66,9 +66,9 @@ export default function AlterarSenhaContent() {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
     
-    // Limpar mensagem de sucesso
-    if (successMessage) {
-      setSuccessMessage('');
+    // Limpar mensagem
+    if (message) {
+      setMessage(null);
     }
   };
 
@@ -114,26 +114,46 @@ export default function AlterarSenhaContent() {
     }
 
     setIsSubmitting(true);
+    setMessage(null);
     
     try {
-      // Simular chamada da API
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      
-      // Aqui você implementaria a lógica real de alteração de senha
-      console.log('Alterando senha:', {
-        currentPassword: formData.currentPassword,
-        newPassword: formData.newPassword
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      const response = await fetch(`${apiUrl}/auth/change-password`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+          confirmPassword: formData.confirmPassword
+        }),
       });
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(errorData.message || 'Erro ao alterar senha');
+      }
+
+      const data = await response.json();
       
-      setSuccessMessage('Senha alterada com sucesso!');
+      setMessage({ type: 'success', text: data.msg || 'Senha alterada com sucesso!' });
       setFormData({
         currentPassword: '',
         newPassword: '',
         confirmPassword: ''
       });
+
+      // Limpar mensagem após 5 segundos
+      setTimeout(() => setMessage(null), 5000);
       
     } catch (error) {
-      setErrors({ currentPassword: 'Senha atual incorreta' });
+      console.error('Erro ao alterar senha:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Erro ao alterar senha. Verifique sua senha atual e tente novamente.';
+      setMessage({ type: 'error', text: errorMessage });
     } finally {
       setIsSubmitting(false);
     }
@@ -171,11 +191,19 @@ export default function AlterarSenhaContent() {
             {/* Navigation Cards */}
             <NavigationCards />
 
-            {/* Mensagem de Sucesso */}
-            {successMessage && (
-              <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center gap-3">
-                <CheckCircle className="h-5 w-5 text-green-600" />
-                <span className="text-green-800">{successMessage}</span>
+            {/* Mensagem de Feedback */}
+            {message && (
+              <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+                message.type === 'success' 
+                  ? 'bg-green-50 text-green-800 border border-green-200' 
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}>
+                {message.type === 'success' ? (
+                  <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                )}
+                <p className="text-sm font-medium">{message.text}</p>
               </div>
             )}
 

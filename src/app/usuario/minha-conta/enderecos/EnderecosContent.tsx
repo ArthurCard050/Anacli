@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '../../context/AuthContext';
-import { ChevronLeft, MapPin, Plus, Edit3, Trash2, Home, Building, Star } from 'lucide-react';
+import { useAuth, getAuthToken } from '../../context/AuthContext';
+import { ChevronLeft, MapPin, Plus, Edit3, Trash2, Home, Building, Star, AlertCircle, CheckCircle } from 'lucide-react';
 import ShopHeader from '@/app/loja/components/ShopHeader';
 import ShopFooter from '@/app/loja/components/ShopFooter';
 import CartDrawer from '@/app/loja/components/CartDrawer';
@@ -24,37 +24,33 @@ interface Address {
   isDefault: boolean;
 }
 
+interface ApiAddress {
+  id: number;
+  userId: number;
+  street: string;
+  number: string;
+  complement?: string;
+  neighborhood: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  label?: string;
+  type?: string;
+  isDefault?: boolean;
+}
+
+interface ApiAddressResponse {
+  msg: string;
+  address: ApiAddress;
+}
+
 export default function EnderecosContent() {
   const { user, isAuthenticated, isLoading } = useAuth();
   const router = useRouter();
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      id: '1',
-      label: 'Casa',
-      type: 'home',
-      street: 'Rua das Flores',
-      number: '123',
-      complement: 'Apto 45',
-      neighborhood: 'Centro',
-      city: 'São Paulo',
-      state: 'SP',
-      zipCode: '01234-567',
-      isDefault: true
-    },
-    {
-      id: '2',
-      label: 'Trabalho',
-      type: 'work',
-      street: 'Av. Paulista',
-      number: '1000',
-      complement: 'Sala 1001',
-      neighborhood: 'Bela Vista',
-      city: 'São Paulo',
-      state: 'SP',
-      zipCode: '01310-100',
-      isDefault: false
-    }
-  ]);
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState<Address | null>(null);
   const [newAddress, setNewAddress] = useState<Partial<Address>>({
@@ -76,7 +72,60 @@ export default function EnderecosContent() {
     }
   }, [isAuthenticated, isLoading, router]);
 
-  if (isLoading || !user) {
+  // Buscar endereços da API
+  useEffect(() => {
+    const fetchAddresses = async () => {
+      if (!isAuthenticated) return;
+
+      try {
+        setIsLoadingAddresses(true);
+        const token = getAuthToken();
+        const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+        const response = await fetch(`${apiUrl}/addresses`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Erro ao buscar endereços');
+        }
+
+        const data: ApiAddress[] = await response.json();
+        
+        // Converter dados da API para o formato do componente
+        const formattedAddresses: Address[] = data.map(addr => ({
+          id: addr.id.toString(),
+          label: addr.label || 'Endereço',
+          type: (addr.type as 'home' | 'work' | 'other') || 'home',
+          street: addr.street,
+          number: addr.number,
+          complement: addr.complement,
+          neighborhood: addr.neighborhood,
+          city: addr.city,
+          state: addr.state,
+          zipCode: addr.zipCode,
+          isDefault: addr.isDefault || false
+        }));
+
+        setAddresses(formattedAddresses);
+      } catch (error) {
+        console.error('Erro ao carregar endereços:', error);
+        setMessage({ type: 'error', text: 'Erro ao carregar endereços' });
+      } finally {
+        setIsLoadingAddresses(false);
+      }
+    };
+
+    if (isAuthenticated) {
+      fetchAddresses();
+    }
+  }, [isAuthenticated]);
+
+  if (isLoading || isLoadingAddresses || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-page">
         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
@@ -95,27 +144,66 @@ export default function EnderecosContent() {
     }
   };
 
-  const handleAddAddress = () => {
-    if (newAddress.street && newAddress.number && newAddress.city) {
-      const address: Address = {
-        id: Date.now().toString(),
-        label: newAddress.label || 'Novo endereço',
-        type: newAddress.type as 'home' | 'work' | 'other',
+  const handleAddAddress = async () => {
+    if (!newAddress.street || !newAddress.number || !newAddress.city) {
+      setMessage({ type: 'error', text: 'Preencha todos os campos obrigatórios' });
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setMessage(null);
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      const addressData = {
         street: newAddress.street,
         number: newAddress.number,
-        complement: newAddress.complement,
+        complement: newAddress.complement || '',
         neighborhood: newAddress.neighborhood || '',
         city: newAddress.city,
         state: newAddress.state || '',
         zipCode: newAddress.zipCode || '',
+        label: newAddress.label || 'Endereço',
+        type: newAddress.type || 'home',
         isDefault: addresses.length === 0 || newAddress.isDefault || false
       };
 
-      if (address.isDefault) {
+      const response = await fetch(`${apiUrl}/addresses`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addressData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao adicionar endereço');
+      }
+
+      const responseData: ApiAddressResponse = await response.json();
+      const data = responseData.address;
+
+      const newAddr: Address = {
+        id: data.id.toString(),
+        label: data.label || 'Endereço',
+        type: (data.type as 'home' | 'work' | 'other') || 'home',
+        street: data.street,
+        number: data.number,
+        complement: data.complement,
+        neighborhood: data.neighborhood,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zipCode,
+        isDefault: data.isDefault || false
+      };
+
+      if (newAddr.isDefault) {
         setAddresses(prev => prev.map(addr => ({ ...addr, isDefault: false })));
       }
 
-      setAddresses(prev => [...prev, address]);
+      setAddresses(prev => [...prev, newAddr]);
       setNewAddress({
         label: '',
         type: 'home',
@@ -129,18 +217,145 @@ export default function EnderecosContent() {
         isDefault: false
       });
       setShowAddForm(false);
+      setMessage({ type: 'success', text: 'Endereço adicionado com sucesso!' });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Erro ao adicionar endereço:', error);
+      setMessage({ type: 'error', text: 'Erro ao adicionar endereço. Tente novamente.' });
+    } finally {
+      setIsSaving(false);
     }
   };
 
-  const handleDeleteAddress = (id: string) => {
-    setAddresses(prev => prev.filter(addr => addr.id !== id));
+  const handleUpdateAddress = async () => {
+    if (!editingAddress) return;
+    
+    if (!editingAddress.street || !editingAddress.number || !editingAddress.city) {
+      setMessage({ type: 'error', text: 'Preencha todos os campos obrigatórios' });
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      setMessage(null);
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      const addressData = {
+        street: editingAddress.street,
+        number: editingAddress.number,
+        complement: editingAddress.complement || '',
+        neighborhood: editingAddress.neighborhood || '',
+        city: editingAddress.city,
+        state: editingAddress.state || '',
+        zipCode: editingAddress.zipCode || '',
+        label: editingAddress.label || 'Endereço',
+        type: editingAddress.type || 'home',
+        isDefault: editingAddress.isDefault || false
+      };
+
+      const response = await fetch(`${apiUrl}/addresses/${editingAddress.id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addressData),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar endereço');
+      }
+
+      if (editingAddress.isDefault) {
+        setAddresses(prev => prev.map(addr => ({
+          ...addr,
+          isDefault: addr.id === editingAddress.id
+        })));
+      } else {
+        setAddresses(prev => prev.map(addr => 
+          addr.id === editingAddress.id ? editingAddress : addr
+        ));
+      }
+
+      setEditingAddress(null);
+      setMessage({ type: 'success', text: 'Endereço atualizado com sucesso!' });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Erro ao atualizar endereço:', error);
+      setMessage({ type: 'error', text: 'Erro ao atualizar endereço. Tente novamente.' });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
-  const handleSetDefault = (id: string) => {
-    setAddresses(prev => prev.map(addr => ({
-      ...addr,
-      isDefault: addr.id === id
-    })));
+  const handleDeleteAddress = async (id: string) => {
+    if (!confirm('Tem certeza que deseja excluir este endereço?')) {
+      return;
+    }
+
+    try {
+      setMessage(null);
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      const response = await fetch(`${apiUrl}/addresses/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao excluir endereço');
+      }
+
+      setAddresses(prev => prev.filter(addr => addr.id !== id));
+      setMessage({ type: 'success', text: 'Endereço excluído com sucesso!' });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Erro ao excluir endereço:', error);
+      setMessage({ type: 'error', text: 'Erro ao excluir endereço. Tente novamente.' });
+    }
+  };
+
+  const handleSetDefault = async (id: string) => {
+    try {
+      setMessage(null);
+      const token = getAuthToken();
+      const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL || 'http://localhost:3001';
+
+      const address = addresses.find(addr => addr.id === id);
+      if (!address) return;
+
+      const response = await fetch(`${apiUrl}/addresses/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...address,
+          isDefault: true
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Erro ao definir endereço padrão');
+      }
+
+      setAddresses(prev => prev.map(addr => ({
+        ...addr,
+        isDefault: addr.id === id
+      })));
+      
+      setMessage({ type: 'success', text: 'Endereço padrão atualizado!' });
+      setTimeout(() => setMessage(null), 3000);
+    } catch (error) {
+      console.error('Erro ao definir endereço padrão:', error);
+      setMessage({ type: 'error', text: 'Erro ao definir endereço padrão. Tente novamente.' });
+    }
   };
 
   const handleInputChange = (field: keyof Address, value: string | boolean) => {
@@ -180,6 +395,22 @@ export default function EnderecosContent() {
 
             {/* Navigation Cards */}
             <NavigationCards />
+
+            {/* Message Alert */}
+            {message && (
+              <div className={`mb-6 p-4 rounded-lg flex items-center gap-3 ${
+                message.type === 'success' 
+                  ? 'bg-green-50 text-green-800 border border-green-200' 
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}>
+                {message.type === 'success' ? (
+                  <CheckCircle className="h-5 w-5 flex-shrink-0" />
+                ) : (
+                  <AlertCircle className="h-5 w-5 flex-shrink-0" />
+                )}
+                <p className="text-sm font-medium">{message.text}</p>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="mb-6">
@@ -399,7 +630,6 @@ export default function EnderecosContent() {
                       <option value="RJ">Rio de Janeiro</option>
                       <option value="MG">Minas Gerais</option>
                       <option value="RS">Rio Grande do Sul</option>
-                      {/* Adicionar outros estados */}
                     </select>
                   </div>
 
@@ -424,22 +654,31 @@ export default function EnderecosContent() {
                       setShowAddForm(false);
                       setEditingAddress(null);
                     }}
-                    className="btn-secondary-clean px-6 py-2"
+                    disabled={isSaving}
+                    className="btn-secondary-clean px-6 py-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Cancelar
                   </button>
                   <button
-                    onClick={handleAddAddress}
-                    className="btn-primary-clean px-6 py-2"
+                    onClick={editingAddress ? handleUpdateAddress : handleAddAddress}
+                    disabled={isSaving}
+                    className="btn-primary-clean px-6 py-2 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
                   >
-                    {editingAddress ? 'Salvar alterações' : 'Adicionar endereço'}
+                    {isSaving ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                        Salvando...
+                      </>
+                    ) : (
+                      editingAddress ? 'Salvar alterações' : 'Adicionar endereço'
+                    )}
                   </button>
                 </div>
               </div>
             )}
 
             {/* Estado vazio */}
-            {addresses.length === 0 && (
+            {addresses.length === 0 && !showAddForm && (
               <div className="text-center py-16">
                 <MapPin className="h-16 w-16 text-gray-300 mx-auto mb-4" />
                 <h3 className="text-lg font-semibold text-text-primary-clean mb-2">

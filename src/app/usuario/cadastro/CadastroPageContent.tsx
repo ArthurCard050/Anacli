@@ -46,6 +46,7 @@ export default function CadastroPageContent() {
 
   const handleSignUp = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    
     const formData = new FormData(event.currentTarget);
     
     const name = formData.get('name') as string;
@@ -71,7 +72,7 @@ export default function CadastroPageContent() {
       return;
     }
 
-    const registerData: RegisterData & { password: string } = {
+    const registerData: RegisterData = {
       name,
       email,
       phone: phone || '',
@@ -85,9 +86,10 @@ export default function CadastroPageContent() {
       if (success) {
         router.push('/usuario/minha-conta/pedidos');
       } else {
-        alert('Erro ao criar conta. Tente novamente.');
+        alert('Erro ao criar conta. Verifique seus dados e tente novamente.');
       }
     } catch (error) {
+      console.error('Erro ao criar conta:', error);
       alert('Erro interno. Tente novamente mais tarde.');
     }
   };
