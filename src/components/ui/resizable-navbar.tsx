@@ -219,7 +219,7 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: navItems.length * 0.1 }}
-                  className="mt-2"
+                  className="mt-2 flex flex-col gap-3"
                 >
                   <HierarchicalButton
                     hierarchy="secondary"
@@ -232,6 +232,18 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
                     }}
                   >
                     Resultados de Exames
+                  </HierarchicalButton>
+                  <HierarchicalButton
+                    hierarchy="secondary"
+                    size="md"
+                    fullWidth={true}
+                    className="bg-green-500 hover:bg-green-600 text-white focus:ring-green-500 border-green-500"
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      window.open("https://api.whatsapp.com/send?phone=557530300030&text=Ol%C3%A1.%20Vim%20atrav%C3%A9s%20do%20site%20e%20desejo%20agendar%20um%20atendimento.");
+                    }}
+                  >
+                    Atendimento via WhatsApp
                   </HierarchicalButton>
                 </motion.div>
 
