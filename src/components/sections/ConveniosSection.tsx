@@ -36,10 +36,10 @@ const conveniosFileira2 = [
 
 const ConveniosSection = () => {
   return (
-    <section id="convenios" className="section-spacing bg-secondary/10">
+    <section id="convenios" className="py-20 md:py-32 bg-secondary/10">
       <div className="container mx-auto px-">
         <motion.div
-          className="text-center mb-6 sm:mb-20"
+          className="text-center mb-12 sm:mb-20"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -157,7 +157,7 @@ const ConveniosSection = () => {
         </div>
 
         <motion.div
-          className="flex justify-center mt-0 sm:mt-16"
+          className="flex justify-center mt-12 sm:mt-16"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
