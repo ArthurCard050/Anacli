@@ -1,7 +1,6 @@
 'use client';
 
 import { MapPin, Phone, Mail, Clock, Map } from "lucide-react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
 import OptimizedImage from "@/components/ui/OptimizedImage";
 
@@ -27,7 +26,7 @@ const locations = [
     hours: "Seg - Sex: 6h às 18h | Sáb: 6h às 12h",
     image: "/assets/unidade.avif",
     imageMobile: "/assets/unidade - mobile.avif",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.5234567890123!2d-38.9667890!3d-12.2547890!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDE1JzE3LjIiUyAzOMKwNTgnMDAuNCJX!5e0!3m2!1spt-BR!2sbr!4v1234567890123!5m2!1spt-BR!2sbr",
+    mapUrl: "https://maps.app.goo.gl/S5pB2jZHZs9g1ARV6",
     whatsapp: "5575999999999"
   },
   {
@@ -143,47 +142,17 @@ const ContactSection = () => {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                    {/* Maps Modal */}
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <HierarchicalButton
-                          hierarchy="tertiary"
-                          size="md"
-                          icon={<Map className="h-4 w-4" />}
-                          iconPosition="left"
-                          className="w-full sm:flex-1"
-                        >
-                          Abrir no Maps
-                        </HierarchicalButton>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-4xl w-[calc(100%-2rem)] sm:w-full rounded-2xl">
-                        <DialogHeader>
-                          <DialogTitle className="text-lg sm:text-xl font-bold text-gray-900">
-                            {location.name}
-                          </DialogTitle>
-                        </DialogHeader>
-                        <div className="mt-4">
-                          <div className="mb-4 p-3 sm:p-4 bg-gray-50 rounded-xl">
-                            <div className="flex items-start sm:items-center gap-2 text-gray-700">
-                              <MapPin className="h-4 w-4 text-primary flex-shrink-0 mt-0.5 sm:mt-0" />
-                              <span className="font-medium text-sm sm:text-base">{location.address}, {location.city}</span>
-                            </div>
-                          </div>
-                          <div className="w-full h-[400px] sm:h-[500px] rounded-xl overflow-hidden border border-gray-200">
-                            <iframe
-                              src={location.mapUrl}
-                              width="100%"
-                              height="100%"
-                              style={{ border: 0 }}
-                              allowFullScreen
-                              loading="lazy"
-                              referrerPolicy="no-referrer-when-downgrade"
-                              title={`Mapa da ${location.name}`}
-                            />
-                          </div>
-                        </div>
-                      </DialogContent>
-                    </Dialog>
+                    {/* Maps Button */}
+                    <HierarchicalButton
+                      hierarchy="tertiary"
+                      size="md"
+                      icon={<Map className="h-4 w-4" />}
+                      iconPosition="left"
+                      className="w-full sm:flex-1"
+                      onClick={() => window.open(location.name === "Laboratório Anacli - Unidade Principal" ? "https://maps.app.goo.gl/S5pB2jZHZs9g1ARV6" : location.mapUrl, '_blank')}
+                    >
+                      Abrir no Maps
+                    </HierarchicalButton>
 
                     {/* WhatsApp Button - Ação principal */}
                     <HierarchicalButton

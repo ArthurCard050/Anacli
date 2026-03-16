@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Mail } from "lucide-react";
+import { Menu, X, Phone, Mail, Instagram, Facebook } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
@@ -233,6 +233,36 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
                   >
                     Resultados de Exames
                   </HierarchicalButton>
+                </motion.div>
+
+                {/* Social Media Links */}
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: (navItems.length + 1) * 0.1 }}
+                  className="mt-6 pt-4 border-t border-gray-200"
+                >
+                  <p className="text-sm font-medium text-foreground/60 mb-3">Siga-nos</p>
+                  <div className="flex gap-3">
+                    <a
+                      href="https://www.instagram.com/lab_anacli/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 hover:bg-primary/10 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Instagram className="h-5 w-5 text-primary" />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/laboratorioanacli"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-100 hover:bg-primary/10 transition-colors"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Facebook className="h-5 w-5 text-primary" />
+                    </a>
+                  </div>
                 </motion.div>
               </nav>
             </motion.div>

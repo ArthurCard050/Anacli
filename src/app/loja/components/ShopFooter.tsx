@@ -1,6 +1,6 @@
 'use client';
 
-import { Facebook, Instagram, Linkedin, ShoppingBag, Package, Zap } from "lucide-react";
+import { Facebook, Instagram, ShoppingBag, Package, Zap } from "lucide-react";
 import { mockExams } from '../data/mock-products';
 
 export default function ShopFooter() {
@@ -39,9 +39,8 @@ export default function ShopFooter() {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    { icon: Facebook, href: "https://www.facebook.com/laboratorioanacli", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/lab_anacli/", label: "Instagram" },
   ];
 
   return (

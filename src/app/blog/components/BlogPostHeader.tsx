@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Linkedin, Copy, MessageCircle } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Share2, Facebook, Twitter, Copy, MessageCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -52,9 +52,6 @@ export default function BlogPostHeader({
         break;
       case 'twitter':
         window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`, '_blank');
-        break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
         break;
       case 'whatsapp':
         window.open(`https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`, '_blank');
@@ -156,15 +153,6 @@ export default function BlogPostHeader({
                 title="Compartilhar no Twitter"
               >
                 <Twitter className="h-4 w-4" />
-              </Button>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => handleShare('linkedin')}
-                className="hover:bg-blue-50 hover:text-blue-700 hover:border-blue-700"
-                title="Compartilhar no LinkedIn"
-              >
-                <Linkedin className="h-4 w-4" />
               </Button>
               <Button
                 variant="outline"

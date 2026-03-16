@@ -1,6 +1,6 @@
 'use client';
 
-import { Facebook, Instagram, Linkedin } from "lucide-react";
+import { Facebook, Instagram } from "lucide-react";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -41,9 +41,8 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { icon: Facebook, href: "#", label: "Facebook" },
-    { icon: Instagram, href: "#", label: "Instagram" },
-    { icon: Linkedin, href: "#", label: "LinkedIn" },
+    { icon: Facebook, href: "https://www.facebook.com/laboratorioanacli", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/lab_anacli/", label: "Instagram" },
   ];
 
   const certificates = [

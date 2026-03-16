@@ -108,8 +108,8 @@ export default function RootLayout({
       'Sa 06:00-12:00'
     ],
     sameAs: [
-      'https://instagram.com/lab_anacli',
-      'https://facebook.com/anacli'
+      'https://www.instagram.com/lab_anacli/',
+      'https://www.facebook.com/laboratorioanacli'
     ],
     medicalSpecialty: [
       'Clinical Laboratory Services',
