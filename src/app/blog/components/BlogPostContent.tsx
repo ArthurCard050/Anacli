@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { Tag, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -33,6 +34,13 @@ interface BlogPostContentProps {
 
 export default function BlogPostContent({ post, relatedPosts }: BlogPostContentProps) {
   const postUrl = typeof window !== 'undefined' ? window.location.href : `https://anacli.com.br/blog/${post.slug}`;
+  const [bioExpanded, setBioExpanded] = useState(false);
+
+  // Divide a bio na primeira quebra de linha
+  const bioLines = post.authorBio ? post.authorBio.split('\n') : [];
+  const bioPreview = bioLines[0] || '';
+  const bioRest = bioLines.slice(1).join('\n');
+  const hasBioMore = bioRest.trim().length > 0;
 
   return (
     <article className="min-h-screen bg-gray-50">
@@ -115,13 +123,38 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
               )}
 
               <div className="flex-1">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">
+                <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-2">
                   Sobre {post.author}
                 </h3>
-                <p className="text-gray-600 leading-relaxed mb-4 whitespace-pre-line">
-                  {post.authorBio}
-                </p>
-                <Link href="/blog">
+                <div className="mb-4">
+                  <p className="text-gray-600 leading-relaxed whitespace-pre-line text-sm md:text-base">
+                    {bioPreview}
+                    {hasBioMore && !bioExpanded && (
+                      <>
+                        {' '}
+                        <button
+                          onClick={() => setBioExpanded(true)}
+                          className="text-primary font-medium hover:underline text-sm"
+                        >
+                          Ler mais
+                        </button>
+                      </>
+                    )}
+                  </p>
+                  {hasBioMore && bioExpanded && (
+                    <>
+                      <p className="text-gray-600 leading-relaxed whitespace-pre-line text-sm md:text-base mt-2">
+                        {bioRest}
+                      </p>
+                      <button
+                        onClick={() => setBioExpanded(false)}
+                        className="text-primary font-medium hover:underline text-sm mt-1"
+                      >
+                        Recolher
+                      </button>
+                    </>
+                  )}
+                </div>                <Link href="/blog">
                   <Button variant="outline" size="sm" className="hover:bg-primary hover:text-white">
                     Ver todos os artigos
                   </Button>
