@@ -41,6 +41,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
         excerpt={post.excerpt}
         category={post.category}
         author={post.author}
+        authorAvatar={post.authorAvatar}
         date={post.date}
         readTime={post.readTime}
         image={post.image}
@@ -117,7 +118,7 @@ export default function BlogPostContent({ post, relatedPosts }: BlogPostContentP
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
                   Sobre {post.author}
                 </h3>
-                <p className="text-gray-600 leading-relaxed mb-4">
+                <p className="text-gray-600 leading-relaxed mb-4 whitespace-pre-line">
                   {post.authorBio}
                 </p>
                 <Link href="/blog">

@@ -12,6 +12,7 @@ interface BlogPostHeaderProps {
   excerpt: string;
   category: string;
   author: string;
+  authorAvatar?: string;
   date: string;
   readTime: string;
   image: string;
@@ -22,6 +23,7 @@ export default function BlogPostHeader({
   excerpt,
   category,
   author,
+  authorAvatar,
   date,
   readTime,
   image,
@@ -112,8 +114,18 @@ export default function BlogPostHeader({
             {/* Meta Info */}
             <div className="flex flex-wrap items-center gap-6 pb-6 border-b border-gray-200">
               <div className="flex items-center gap-2 text-gray-600">
-                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center">
-                  <User className="h-5 w-5 text-white" />
+                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-primary flex items-center justify-center">
+                  {authorAvatar ? (
+                    <Image
+                      src={authorAvatar}
+                      alt={author}
+                      width={40}
+                      height={40}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-5 w-5 text-white" />
+                  )}
                 </div>
                 <div>
                   <p className="font-semibold text-sm">{author}</p>
