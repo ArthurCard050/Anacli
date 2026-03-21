@@ -47,7 +47,7 @@ export default function AdaptiveImageUploader({ onClose, onFileSelected }: Adapt
         <div className="bg-white rounded-3xl p-8 shadow-2xl">
           <div className="flex items-center gap-4">
             <div className="w-8 h-8 border-3 border-brand-accent border-t-transparent rounded-full animate-spin"></div>
-            <span className="text-lg font-clean-medium text-slate-700">Carregando...</span>
+            <span className="text-lg font-clean-medium text-slate-700">Loading... </span>
           </div>
         </div>
       </div>
