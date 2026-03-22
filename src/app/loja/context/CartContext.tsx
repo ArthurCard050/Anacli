@@ -13,6 +13,7 @@ interface CartContextType {
   total: number;
   addItem: (id: string, type: 'exam' | 'package') => void;
   addPackageItems: (examIds: string[]) => Promise<void>;
+  addItemsByName: (examNames: string[]) => Promise<{ found: number; notFound: string[] }>;
   removeItem: (id: string) => void;
   updateQuantity: (id: string, quantity: number) => void;
   clearCart: () => void;
@@ -24,37 +25,41 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'anacli-cart';
-const SHIPPING_THRESHOLD = 200; // Frete grátis acima de R$ 200
-const SHIPPING_COST = 15; // Custo do frete
+const SHIPPING_THRESHOLD = 200;
+const SHIPPING_COST = 15;
 
-// Cache para exames da API
-let examsCache: any[] = [];
-let examsCacheTime = 0;
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
-
-// Função para buscar exame da API
+// Função para buscar exame da API por ID
 async function getExamFromAPI(id: string) {
   try {
-    // Verificar se o cache ainda é válido
-    // const now = Date.now();
-    // if (examsCache.length === 0 || now - examsCacheTime > CACHE_DURATION) {
     const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
-    //   const response = await axios.get(`${apiUrl}`);
-    //   if (response.data && Array.isArray(response.data)) {
-    //     examsCache = response.data;
-    //     examsCacheTime = now;
-    //   }
-    // }
     const response = await axios.get(`${apiUrl}`);
-    // console.log("tnccccccccc" + response.data)
-    // Buscar exame no cache
-
-    let idNumber = parseInt(id)
+    let idNumber = parseInt(id);
     return response.data.find((exam: any) => exam.id === idNumber);
   } catch (error) {
     console.error('Erro ao buscar exame da API:', error);
     return null;
   }
+}
+
+// Função para buscar todos os exames da API
+async function getAllExamsFromAPI(): Promise<any[]> {
+  try {
+    const apiUrl = process.env.NEXT_PUBLIC_VARIAVEL_API_URL;
+    const response = await axios.get(`${apiUrl}`);
+    return Array.isArray(response.data) ? response.data : [];
+  } catch (error) {
+    console.error('Erro ao buscar exames da API:', error);
+    return [];
+  }
+}
+
+// Normaliza string para comparação (remove acentos, lowercase)
+function normalizeStr(str: string): string {
+  return str
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .trim();
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -203,6 +208,56 @@ export function CartProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  // Adicionar exames ao carrinho pelo nome (retornado pela IA)
+  const addItemsByName = async (examNames: string[]): Promise<{ found: number; notFound: string[] }> => {
+    if (!examNames || examNames.length === 0) return { found: 0, notFound: [] };
+
+    const allExams = await getAllExamsFromAPI();
+    const notFound: string[] = [];
+    const toAdd: any[] = [];
+
+    for (const name of examNames) {
+      const normalizedName = normalizeStr(name);
+      const match = allExams.find((exam: any) =>
+        normalizeStr(exam.name).includes(normalizedName) ||
+        normalizedName.includes(normalizeStr(exam.name))
+      );
+
+      if (match) {
+        toAdd.push(match);
+      } else {
+        notFound.push(name);
+      }
+    }
+
+    if (toAdd.length > 0) {
+      setItems(prev => {
+        const newItems = [...prev];
+        toAdd.forEach(exam => {
+          const existingIndex = newItems.findIndex(
+            item => item.id === String(exam.id) && item.type === 'exam'
+          );
+          if (existingIndex >= 0) {
+            newItems[existingIndex].quantity += 1;
+          } else {
+            newItems.push({
+              id: String(exam.id),
+              type: 'exam',
+              name: exam.name,
+              price: exam.price,
+              quantity: 1,
+              image: exam.image || '',
+            });
+          }
+        });
+        return newItems;
+      });
+      setIsOpen(true);
+    }
+
+    return { found: toAdd.length, notFound };
+  };
+
   // Remover item do carrinho
   const removeItem = (id: string) => {
     setItems(prev => prev.filter(item => item.id !== id));
@@ -250,6 +305,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         total,
         addItem,
         addPackageItems,
+        addItemsByName,
         removeItem,
         updateQuantity,
         clearCart,
@@ -276,6 +332,7 @@ export function useCart() {
       total: 0,
       addItem: async () => {},
       addPackageItems: async () => {},
+      addItemsByName: async () => ({ found: 0, notFound: [] }),
       removeItem: () => {},
       updateQuantity: () => {},
       clearCart: () => {},
@@ -295,6 +352,7 @@ export function useCart() {
       total: 0,
       addItem: async () => {},
       addPackageItems: async () => {},
+      addItemsByName: async () => ({ found: 0, notFound: [] }),
       removeItem: () => {},
       updateQuantity: () => {},
       clearCart: () => {},

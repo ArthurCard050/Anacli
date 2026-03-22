@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Camera, Upload, CheckCircle, AlertCircle, Lightbulb, Image as ImageIcon, Loader2, ShoppingCart, X, RotateCcw, Zap, Smartphone, Images } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/app/loja/context/CartContext';
+import { useAnalyzeExam } from '../hooks/useAnalyzeExam';
 import '../styles/modern-uploader.css';
 
 interface MobileImageUploaderProps {
@@ -12,30 +13,18 @@ interface MobileImageUploaderProps {
 }
 
 interface DetectedExam {
-  id: string;
   name: string;
-  price: number;
 }
 
 type Step = 'instructions' | 'capture' | 'processing' | 'confirmation';
 
-// Mock de exames detectados pela IA (em produção, viriam da API)
-const mockDetectedExams: DetectedExam[] = [
-  { id: 'hemograma-completo', name: 'Hemograma Completo', price: 45.90 },
-  { id: 'glicemia-jejum', name: 'Glicemia em Jejum', price: 25.90 },
-  { id: 'colesterol-total', name: 'Colesterol Total e Frações', price: 55.90 },
-  { id: 'tsh', name: 'TSH', price: 39.90 },
-  { id: 'ureia-creatinina', name: 'Ureia e Creatinina', price: 35.90 },
-];
-
 export default function MobileImageUploader({ onClose }: MobileImageUploaderProps) {
-  const { addItem } = useCart();
+  const { addItemsByName } = useCart();
+  const { analyzeExam } = useAnalyzeExam();
   const [currentStep, setCurrentStep] = useState<Step>('instructions');
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [detectedExams, setDetectedExams] = useState<DetectedExam[]>([]);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [showFullTerms, setShowFullTerms] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [notFoundExams, setNotFoundExams] = useState<string[]>([]);
   const [isCapturing, setIsCapturing] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +32,7 @@ export default function MobileImageUploader({ onClose }: MobileImageUploaderProp
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const streamRef = useRef<MediaStream | null>(null);
 
-  const handleFileSelect = useCallback((file: File) => {
+  const handleFileSelect = useCallback(async (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert('Por favor, selecione apenas arquivos de imagem.');
       return;
@@ -57,16 +46,25 @@ export default function MobileImageUploader({ onClose }: MobileImageUploaderProp
     const reader = new FileReader();
     reader.onloadend = () => {
       setUploadedImage(reader.result as string);
-      setCurrentStep('processing');
-      
-      // Simular processamento da IA
-      setTimeout(() => {
-        setDetectedExams(mockDetectedExams);
-        setCurrentStep('confirmation');
-      }, 3000);
     };
     reader.readAsDataURL(file);
-  }, []);
+
+    setCurrentStep('processing');
+
+    const examNames = await analyzeExam(file);
+
+    if (examNames.length === 0) {
+      setDetectedExams([]);
+      setCurrentStep('confirmation');
+      return;
+    }
+
+    const { notFound } = await addItemsByName(examNames);
+
+    setDetectedExams(examNames.map(name => ({ name })));
+    setNotFoundExams(notFound);
+    setCurrentStep('confirmation');
+  }, [analyzeExam, addItemsByName]);
 
   const startCamera = async () => {
     try {
@@ -121,23 +119,8 @@ export default function MobileImageUploader({ onClose }: MobileImageUploaderProp
   };
 
   const handleAddToCart = () => {
-    if (!agreedToTerms) return;
-    
-    setIsAddingToCart(true);
-    
-    // Adicionar cada exame detectado ao carrinho
-    detectedExams.forEach(exam => {
-      addItem(exam.id, 'exam');
-    });
-    
-    // Pequeno delay para feedback visual
-    setTimeout(() => {
-      setIsAddingToCart(false);
-      onClose();
-    }, 500);
+    // Deprecated: cart is now populated automatically on image analysis
   };
-
-  const totalPrice = detectedExams.reduce((sum, exam) => sum + exam.price, 0);
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black flex flex-col">
@@ -504,117 +487,53 @@ export default function MobileImageUploader({ onClose }: MobileImageUploaderProp
                 </div>
               </div>
               <h3 className="text-2xl font-clean-bold text-slate-900 mb-2">
-                Análise Concluída!
+                {detectedExams.length > notFoundExams.length ? 'Exames Adicionados!' : 'Análise Concluída'}
               </h3>
               <p className="text-base text-slate-600 font-clean-medium">
-                <span className="font-clean-bold text-brand-accent">{detectedExams.length} exames</span> identificados
+                {detectedExams.length - notFoundExams.length > 0 ? (
+                  <><span className="font-clean-bold text-brand-accent">{detectedExams.length - notFoundExams.length} exame{detectedExams.length - notFoundExams.length > 1 ? 's' : ''}</span> adicionado{detectedExams.length - notFoundExams.length > 1 ? 's' : ''} ao carrinho</>
+                ) : (
+                  'Nenhum exame encontrado no catálogo'
+                )}
               </p>
             </div>
 
-            {/* Mobile Exams List */}
-            <div className="mb-6">
-              <h4 className="text-lg font-clean-bold text-slate-900 mb-4">
-                Exames Detectados
-              </h4>
-              <div className="space-y-3">
-                {detectedExams.map((exam, index) => (
-                  <div
-                    key={exam.id}
-                    className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-accent to-[#FF3D8F] flex items-center justify-center">
-                          <span className="text-sm font-clean-bold text-white">
-                            {index + 1}
-                          </span>
-                        </div>
-                        <div>
-                          <h5 className="text-base font-clean-bold text-slate-900">
-                            {exam.name}
-                          </h5>
-                          <p className="text-xs text-slate-600 font-clean-medium">
-                            Exame laboratorial
-                          </p>
-                        </div>
+            {/* Added Exams List */}
+            {detectedExams.filter(e => !notFoundExams.includes(e.name)).length > 0 && (
+              <div className="mb-6">
+                <h4 className="text-lg font-clean-bold text-slate-900 mb-4">
+                  Exames Adicionados
+                </h4>
+                <div className="space-y-3">
+                  {detectedExams.filter(e => !notFoundExams.includes(e.name)).map((exam, index) => (
+                    <div key={index} className="bg-white border border-slate-200 rounded-2xl p-4 shadow-sm flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center flex-shrink-0">
+                        <CheckCircle className="h-5 w-5 text-white" />
                       </div>
-                      <div className="text-right">
-                        <div className="text-lg font-clean-bold text-[#A6C022]">
-                          R$ {exam.price.toFixed(2)}
-                        </div>
-                      </div>
+                      <span className="text-base font-clean-bold text-slate-900">{exam.name}</span>
                     </div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* Mobile Total */}
-              <div className="mt-4 bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200 rounded-2xl p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
-                      <ShoppingCart className="h-4 w-4 text-white" />
-                    </div>
-                    <span className="text-lg font-clean-bold text-slate-900">
-                      Total
-                    </span>
-                  </div>
-                  <span className="text-2xl font-clean-bold text-brand-accent">
-                    R$ {totalPrice.toFixed(2)}
-                  </span>
+                  ))}
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Mobile Terms Agreement */}
-            <div className="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6 mb-6">
-              <div className="flex items-start gap-4 mb-4">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={agreedToTerms}
-                  onChange={(e) => setAgreedToTerms(e.target.checked)}
-                  className="mt-1 w-5 h-5 rounded border-2 border-amber-300 text-brand-accent focus:ring-2 focus:ring-brand-accent cursor-pointer"
-                />
-                <label htmlFor="terms" className="flex-1 cursor-pointer">
-                  <h5 className="text-base font-clean-bold text-slate-900 mb-2">
-                    Confirmação de Responsabilidade
-                  </h5>
-                  <p className="text-sm text-slate-700 font-clean-medium leading-relaxed">
-                    Confirmo que revisei todos os exames e estão corretos conforme minha receita médica.
-                  </p>
-                </label>
-              </div>
-              
-              <button
-                onClick={() => setShowFullTerms(!showFullTerms)}
-                className="text-sm font-clean-bold text-brand-accent hover:text-[#FF3D8F] transition-colors flex items-center gap-1"
-              >
-                {showFullTerms ? 'Ocultar detalhes' : 'Ver detalhes'}
-                <svg 
-                  className={`h-3 w-3 transition-transform duration-200 ${showFullTerms ? 'rotate-180' : ''}`}
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              
-              {showFullTerms && (
-                <div className="mt-4 p-4 bg-white rounded-xl border border-amber-200">
-                  <div className="text-xs text-slate-600 font-clean-medium space-y-2 leading-relaxed">
-                    <p>Ao confirmar, você declara que:</p>
-                    <ul className="list-disc pl-4 space-y-1">
-                      <li>Revisou todos os exames identificados pela IA</li>
-                      <li>Confirma que correspondem à sua receita médica</li>
-                      <li>Assume responsabilidade pela conferência</li>
-                      <li>Apresentará a receita original na coleta</li>
-                    </ul>
-                  </div>
+            {/* Not Found Exams */}
+            {notFoundExams.length > 0 && (
+              <div className="mb-6 bg-amber-50 border border-amber-200 rounded-2xl p-5">
+                <div className="flex items-start gap-3 mb-3">
+                  <AlertCircle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <h4 className="text-base font-clean-bold text-slate-900">Não encontrados no catálogo</h4>
                 </div>
-              )}
-            </div>
+                <ul className="space-y-1 pl-8">
+                  {notFoundExams.map((name, i) => (
+                    <li key={i} className="flex items-center gap-2 text-sm text-slate-700 font-clean-medium">
+                      <div className="w-1.5 h-1.5 rounded-full bg-amber-500 flex-shrink-0"></div>
+                      {name}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Mobile Action Buttons */}
             <div className="space-y-3">
@@ -626,25 +545,11 @@ export default function MobileImageUploader({ onClose }: MobileImageUploaderProp
                 Nova Captura
               </Button>
               <Button
-                onClick={handleAddToCart}
-                disabled={!agreedToTerms || isAddingToCart}
-                className={`w-full h-12 font-clean-bold rounded-xl transition-all duration-300 ${
-                  agreedToTerms && !isAddingToCart
-                    ? 'bg-gradient-to-r from-brand-accent to-[#FF3D8F] text-white shadow-lg'
-                    : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                }`}
+                onClick={onClose}
+                className="w-full h-12 font-clean-bold rounded-xl bg-gradient-to-r from-brand-accent to-[#FF3D8F] text-white shadow-lg transition-all duration-300"
               >
-                {isAddingToCart ? (
-                  <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Adicionando...
-                  </>
-                ) : (
-                  <>
-                    <ShoppingCart className="h-4 w-4 mr-2" />
-                    Adicionar ao Carrinho
-                  </>
-                )}
+                <ShoppingCart className="h-4 w-4 mr-2" />
+                Ver Carrinho
               </Button>
             </div>
           </div>
