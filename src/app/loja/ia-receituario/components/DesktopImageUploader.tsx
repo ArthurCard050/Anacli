@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Upload, CheckCircle, AlertCircle, Lightbulb, Image as ImageIcon, Loader2, ShoppingCart, X, RotateCcw, Zap, FileImage, Monitor } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCart } from '@/app/loja/context/CartContext';
+import { useAnalyzeExam } from '../hooks/useAnalyzeExam';
 import '../styles/modern-uploader.css';
 
 interface DesktopImageUploaderProps {
@@ -12,35 +13,23 @@ interface DesktopImageUploaderProps {
 }
 
 interface DetectedExam {
-  id: string;
   name: string;
-  price: number;
 }
 
 type Step = 'instructions' | 'upload' | 'processing' | 'confirmation';
 
-// Mock de exames detectados pela IA (em produção, viriam da API)
-const mockDetectedExams: DetectedExam[] = [
-  { id: 'hemograma-completo', name: 'Hemograma Completo', price: 45.90 },
-  { id: 'glicemia-jejum', name: 'Glicemia em Jejum', price: 25.90 },
-  { id: 'colesterol-total', name: 'Colesterol Total e Frações', price: 55.90 },
-  { id: 'tsh', name: 'TSH', price: 39.90 },
-  { id: 'ureia-creatinina', name: 'Ureia e Creatinina', price: 35.90 },
-];
-
 export default function DesktopImageUploader({ onClose }: DesktopImageUploaderProps) {
-  const { addItem } = useCart();
+  const { addItemsByName } = useCart();
+  const { analyzeExam } = useAnalyzeExam();
   const [currentStep, setCurrentStep] = useState<Step>('instructions');
   const [uploadedImage, setUploadedImage] = useState<string | null>(null);
   const [detectedExams, setDetectedExams] = useState<DetectedExam[]>([]);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [showFullTerms, setShowFullTerms] = useState(false);
-  const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const [notFoundExams, setNotFoundExams] = useState<string[]>([]);
   const [isDragOver, setIsDragOver] = useState(false);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = useCallback((file: File) => {
+  const handleFileSelect = useCallback(async (file: File) => {
     if (!file.type.startsWith('image/')) {
       alert('Por favor, selecione apenas arquivos de imagem.');
       return;
@@ -54,16 +43,27 @@ export default function DesktopImageUploader({ onClose }: DesktopImageUploaderPr
     const reader = new FileReader();
     reader.onloadend = () => {
       setUploadedImage(reader.result as string);
-      setCurrentStep('processing');
-      
-      // Simular processamento da IA
-      setTimeout(() => {
-        setDetectedExams(mockDetectedExams);
-        setCurrentStep('confirmation');
-      }, 3000);
     };
     reader.readAsDataURL(file);
-  }, []);
+
+    setCurrentStep('processing');
+
+    // Chama a API real de análise
+    const examNames = await analyzeExam(file);
+
+    if (examNames.length === 0) {
+      setDetectedExams([]);
+      setCurrentStep('confirmation');
+      return;
+    }
+
+    // Adiciona ao carrinho automaticamente e obtém os não encontrados
+    const { notFound } = await addItemsByName(examNames);
+
+    setDetectedExams(examNames.map(name => ({ name })));
+    setNotFoundExams(notFound);
+    setCurrentStep('confirmation');
+  }, [analyzeExam, addItemsByName]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -85,24 +85,7 @@ export default function DesktopImageUploader({ onClose }: DesktopImageUploaderPr
     setIsDragOver(false);
   }, []);
 
-  const handleAddToCart = () => {
-    if (!agreedToTerms) return;
-    
-    setIsAddingToCart(true);
-    
-    // Adicionar cada exame detectado ao carrinho
-    detectedExams.forEach(exam => {
-      addItem(exam.id, 'exam');
-    });
-    
-    // Pequeno delay para feedback visual
-    setTimeout(() => {
-      setIsAddingToCart(false);
-      onClose();
-    }, 500);
-  };
-
-  const totalPrice = detectedExams.reduce((sum, exam) => sum + exam.price, 0);
+  const addedExams = detectedExams.filter(e => !notFoundExams.includes(e.name));
 
   return (
     <div className="fixed inset-0 z-[9999] bg-black/95 backdrop-blur-md flex items-center justify-center p-4">
@@ -467,134 +450,64 @@ export default function DesktopImageUploader({ onClose }: DesktopImageUploaderPr
                     </div>
                   </div>
                   <h3 className="text-4xl font-clean-bold text-slate-900 mb-6">
-                    Análise Concluída!
+                    {addedExams.length > 0 ? 'Exames Adicionados ao Carrinho!' : 'Análise Concluída'}
                   </h3>
                   <p className="text-xl text-slate-600 font-clean-medium">
-                    Identificamos <span className="font-clean-bold text-brand-accent">{detectedExams.length} exames</span> na sua receita
+                    {addedExams.length > 0 && (
+                      <>
+                        <span className="font-clean-bold text-brand-accent">{addedExams.length} exame{addedExams.length > 1 ? 's' : ''}</span> adicionado{addedExams.length > 1 ? 's' : ''} ao carrinho automaticamente
+                      </>
+                    )}
+                    {addedExams.length === 0 && 'Nenhum exame encontrado no catálogo para esta receita.'}
                   </p>
                 </div>
 
-                {/* Exams List */}
-                <div className="mb-12">
-                  <h4 className="text-3xl font-clean-bold text-slate-900 mb-8">
-                    Exames Detectados
-                  </h4>
-                  <div className="space-y-6">
-                    {detectedExams.map((exam, index) => (
-                      <div
-                        key={exam.id}
-                        className="group relative overflow-hidden rounded-2xl bg-white border border-slate-200/50 p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-                      >
-                        <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-brand-accent/5 to-[#FF3D8F]/5 rounded-full -translate-y-20 translate-x-20 group-hover:scale-150 transition-transform duration-500"></div>
-                        <div className="relative flex items-center justify-between">
-                          <div className="flex items-center gap-6">
-                            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-brand-accent to-[#FF3D8F] flex items-center justify-center shadow-lg">
-                              <span className="text-xl font-clean-bold text-white">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <div>
-                              <h5 className="text-xl font-clean-bold text-slate-900">
-                                {exam.name}
-                              </h5>
-                              <p className="text-base text-slate-600 font-clean-medium">
-                                Exame laboratorial
-                              </p>
-                            </div>
+                {/* Added Exams List */}
+                {addedExams.length > 0 && (
+                  <div className="mb-12">
+                    <h4 className="text-3xl font-clean-bold text-slate-900 mb-8">
+                      Exames Adicionados
+                    </h4>
+                    <div className="space-y-4">
+                      {addedExams.map((exam, index) => (
+                        <div
+                          key={index}
+                          className="flex items-center gap-6 rounded-2xl bg-white border border-slate-200/50 p-6 shadow-sm"
+                        >
+                          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center shadow-md flex-shrink-0">
+                            <CheckCircle className="h-6 w-6 text-white" />
                           </div>
-                          <div className="text-right">
-                            <div className="text-3xl font-clean-bold text-[#A6C022]">
-                              R$ {exam.price.toFixed(2)}
-                            </div>
-                          </div>
+                          <span className="text-xl font-clean-bold text-slate-900">{exam.name}</span>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {/* Total */}
-                  <div className="mt-8 rounded-2xl bg-gradient-to-br from-slate-50 to-slate-100 border border-slate-200/50 p-8">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-slate-600 to-slate-700 flex items-center justify-center">
-                          <ShoppingCart className="h-6 w-6 text-white" />
-                        </div>
-                        <span className="text-2xl font-clean-bold text-slate-900">
-                          Total do Pedido
-                        </span>
-                      </div>
-                      <span className="text-4xl font-clean-bold text-brand-accent">
-                        R$ {totalPrice.toFixed(2)}
-                      </span>
+                      ))}
                     </div>
                   </div>
-                </div>
-                {/* Terms Agreement */}
-                <div className="rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/50 p-10 mb-12">
-                  <div className="flex items-start gap-8 mb-8">
-                    <div className="relative">
-                      <input
-                        type="checkbox"
-                        id="terms"
-                        checked={agreedToTerms}
-                        onChange={(e) => setAgreedToTerms(e.target.checked)}
-                        className="w-7 h-7 rounded-lg border-2 border-amber-300 text-brand-accent focus:ring-2 focus:ring-brand-accent cursor-pointer"
-                      />
-                    </div>
-                    <label htmlFor="terms" className="flex-1 cursor-pointer">
-                      <h5 className="text-xl font-clean-bold text-slate-900 mb-3">
-                        Confirmação de Responsabilidade
-                      </h5>
-                      <p className="text-slate-700 font-clean-medium leading-relaxed text-lg">
-                        Confirmo que revisei todos os exames listados acima e que estão corretos conforme minha receita médica.
-                      </p>
-                    </label>
-                  </div>
-                  
-                  {/* Terms Details */}
-                  <div className="pl-16">
-                    <button
-                      onClick={() => setShowFullTerms(!showFullTerms)}
-                      className="group flex items-center gap-3 text-brand-accent hover:text-[#FF3D8F] transition-colors font-clean-bold text-lg"
-                    >
-                      {showFullTerms ? 'Ocultar detalhes' : 'Ver detalhes completos'}
-                      <svg 
-                        className={`h-5 w-5 transition-transform duration-300 ${showFullTerms ? 'rotate-180' : ''} group-hover:scale-110`}
-                        fill="none" 
-                        viewBox="0 0 24 24" 
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    
-                    {showFullTerms && (
-                      <div className="mt-8 p-8 bg-white rounded-2xl border border-amber-200/50 shadow-lg">
-                        <h6 className="text-lg font-clean-bold text-slate-900 mb-6">
-                          Termo de Responsabilidade Detalhado
-                        </h6>
-                        <div className="text-base text-slate-600 font-clean-medium space-y-4 leading-relaxed">
-                          <p>
-                            Ao confirmar, você declara e concorda que:
-                          </p>
-                          <ul className="list-disc pl-8 space-y-3">
-                            <li>Revisou cuidadosamente todos os exames identificados pela IA e confirma que correspondem exatamente aos exames solicitados em sua receita médica.</li>
-                            <li>Está ciente de que a tecnologia de IA, embora avançada, pode estar sujeita a erros de interpretação, especialmente em casos de caligrafia médica de difícil leitura.</li>
-                            <li>Assume total responsabilidade pela conferência e validação dos exames listados antes de prosseguir com o agendamento.</li>
-                            <li>Compromete-se a informar imediatamente o laboratório caso identifique qualquer divergência entre os exames listados e sua receita médica original.</li>
-                            <li>Entende que exames incorretos, faltantes ou adicionais indevidamente podem resultar em custos adicionais ou necessidade de nova coleta.</li>
-                            <li>Concorda em apresentar a receita médica original no momento da coleta para validação final pelo laboratório.</li>
-                          </ul>
-                          <div className="mt-6 p-6 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="font-clean-bold text-slate-800 text-lg">
-                              O laboratório Anacli se reserva o direito de solicitar esclarecimentos ou recusar a realização de exames que não estejam claramente especificados na receita médica original.
-                            </p>
-                          </div>
-                        </div>
+                )}
+
+                {/* Not Found Exams */}
+                {notFoundExams.length > 0 && (
+                  <div className="mb-12 rounded-2xl bg-amber-50 border border-amber-200 p-8">
+                    <div className="flex items-start gap-4 mb-4">
+                      <AlertCircle className="h-6 w-6 text-amber-600 flex-shrink-0 mt-1" />
+                      <div>
+                        <h4 className="text-xl font-clean-bold text-slate-900 mb-2">
+                          Exames não encontrados no catálogo
+                        </h4>
+                        <p className="text-slate-600 font-clean-medium mb-4">
+                          Os exames abaixo foram identificados na receita mas não estão disponíveis no catálogo:
+                        </p>
+                        <ul className="space-y-2">
+                          {notFoundExams.map((name, i) => (
+                            <li key={i} className="flex items-center gap-2 text-slate-700 font-clean-medium">
+                              <div className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></div>
+                              {name}
+                            </li>
+                          ))}
+                        </ul>
                       </div>
-                    )}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* Action Buttons */}
                 <div className="flex gap-6">
@@ -606,25 +519,11 @@ export default function DesktopImageUploader({ onClose }: DesktopImageUploaderPr
                     Enviar Nova Receita
                   </Button>
                   <Button
-                    onClick={handleAddToCart}
-                    disabled={!agreedToTerms || isAddingToCart}
-                    className={`flex-1 h-20 text-xl font-clean-bold rounded-2xl transition-all duration-300 ${
-                      agreedToTerms && !isAddingToCart
-                        ? 'bg-gradient-to-r from-brand-accent to-[#FF3D8F] hover:from-[#FF3D8F] hover:to-brand-accent text-white shadow-2xl hover:shadow-3xl hover:scale-105'
-                        : 'bg-slate-200 text-slate-400 cursor-not-allowed'
-                    }`}
+                    onClick={onClose}
+                    className="flex-1 h-20 text-xl font-clean-bold rounded-2xl bg-gradient-to-r from-brand-accent to-[#FF3D8F] hover:from-[#FF3D8F] hover:to-brand-accent text-white shadow-2xl hover:scale-105 transition-all duration-300"
                   >
-                    {isAddingToCart ? (
-                      <>
-                        <Loader2 className="h-7 w-7 mr-4 animate-spin" />
-                        Processando...
-                      </>
-                    ) : (
-                      <>
-                        <ShoppingCart className="h-7 w-7 mr-4" />
-                        Adicionar ao Carrinho
-                      </>
-                    )}
+                    <ShoppingCart className="h-7 w-7 mr-4" />
+                    Ver Carrinho
                   </Button>
                 </div>
               </div>
