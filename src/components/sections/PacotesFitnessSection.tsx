@@ -89,7 +89,7 @@ export default function PacotesFitnessSection() {
   };
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden bg-gray-50">
+    <section id="checkup-fitness" className="relative py-16 md:py-24 overflow-hidden bg-gray-50">
       {/* Subtle background decoration */}
       <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-accent/5 blur-3xl" />

@@ -10,6 +10,7 @@ import HybridBentoSection from '@/components/sections/HybridBentoSection'
 import NewsSectionWrapper from '@/components/sections/NewsSectionWrapper'
 import InstagramSection from '@/components/sections/InstagramSection'
 import ContactSection from '@/components/sections/ContactSection'
+import PromoPopup from '@/components/PromoPopup'
 
 // Componente de loading otimizado
 const SectionSkeleton = () => (
@@ -19,6 +20,7 @@ const SectionSkeleton = () => (
 export default async function HomePage() {
   return (
     <div className="min-h-screen">
+      <PromoPopup />
       <Header />
       <main>
         <HeroSection />
