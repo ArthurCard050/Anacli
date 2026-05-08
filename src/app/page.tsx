@@ -2,6 +2,7 @@ import { Suspense } from 'react'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import HeroSection from '@/components/sections/HeroSection'
+import PacotesFitnessSection from '@/components/sections/PacotesFitnessSection'
 import CertificatesSection from '@/components/sections/CertificatesSection'
 import MissionSection from '@/components/sections/MissionSection'
 import ConveniosSection from '@/components/sections/ConveniosSection'
@@ -21,6 +22,7 @@ export default async function HomePage() {
       <Header />
       <main>
         <HeroSection />
+        <PacotesFitnessSection />
         <CertificatesSection />
         <MissionSection />
         <Suspense fallback={<SectionSkeleton />}>
