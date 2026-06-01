@@ -212,7 +212,7 @@ export default function DicionarioClient() {
             ) : (
               <div className="col-span-2 text-center py-12 text-slate-400 flex flex-col items-center justify-center gap-2">
                 <AlertTriangle className="h-8 w-8 text-slate-300" />
-                <p className="text-sm font-medium">Nenhum resultado para "{searchQuery}".</p>
+                <p className="text-sm font-medium">Nenhum resultado para &quot;{searchQuery}&quot;.</p>
               </div>
             )}
           </AnimatePresence>

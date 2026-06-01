@@ -389,7 +389,7 @@ export default function FraminghamClient() {
                 • <strong>Colesterol Total:</strong> O somatório de todos os tipos de colesterol.
               </p>
               <p>
-                • <strong>HDL-Colesterol:</strong> O colesterol de alta densidade (conhecido popularmente como colesterol "bom").
+                • <strong>HDL-Colesterol:</strong> O colesterol de alta densidade (conhecido popularmente como colesterol &quot;bom&quot;).
               </p>
               <p>
                 A <strong>Pressão Arterial Sistólica</strong> é o valor máximo verificado no braço com aparelho de pressão (ex: 130 mmHg para pressão sistólica de 13).
