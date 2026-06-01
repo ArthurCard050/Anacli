@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Phone, Mail, Instagram, Facebook } from "lucide-react";
+import { Menu, X, Phone, Mail, Instagram, Facebook, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { HierarchicalButton } from "@/components/ui/hierarchical-button";
@@ -9,9 +9,15 @@ import OptimizedImage from "@/components/ui/OptimizedImage";
 import { cn } from "@/lib/utils";
 import { useShouldAnimate } from "@/hooks/useReducedMotion";
 
-interface NavItem {
+interface SubmenuItem {
   name: string;
   link: string;
+}
+
+interface NavItem {
+  name: string;
+  link?: string;
+  submenu?: SubmenuItem[];
 }
 
 interface ResizableNavbarProps {
@@ -25,6 +31,20 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
     { name: "Sobre", link: "/sobre" },
     { name: "Serviços", link: "/servicos" },
     { name: "Convênios", link: "/convenios" },
+    {
+      name: "Ferramentas",
+      submenu: [
+        { name: "Portal de Ferramentas", link: "/ferramentas" },
+        { name: "Calculadora HOMA-IR", link: "/ferramentas/homa-ir" },
+        { name: "Função Renal (TFG)", link: "/ferramentas/funcao-renal" },
+        { name: "Risco Cardiovascular", link: "/ferramentas/risco-cardiovascular" },
+        { name: "Idade Gestacional (DPP)", link: "/ferramentas/idade-gestacional" },
+        { name: "Conversor de Unidades", link: "/ferramentas/conversor-unidades" },
+        { name: "Planejador de Jejum", link: "/ferramentas/calculadora-jejum" },
+        { name: "Dicionário de Exames (Siglas)", link: "/ferramentas/dicionario-exames" },
+        { name: "Guia de Preparo para Exames", link: "/ferramentas/guia-preparo" },
+      ]
+    },
     { name: "Blog", link: "/blog" },
     { name: "FAQ", link: "/faq" },
     { name: "Certificações", link: "/certificacoes" },
@@ -34,6 +54,8 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [hoveredMenu, setHoveredMenu] = useState<string | null>(null);
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<string | null>(null);
   const shouldAnimate = useShouldAnimate(); // Desktop = true, Mobile = false
 
   useEffect(() => {
@@ -144,18 +166,63 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8">
-              {navItems.map((item) => (
-                <motion.a
-                  key={item.name}
-                  href={item.link}
-                  className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors duration-300 relative group"
-                  whileHover={{ y: -2 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </motion.a>
-              ))}
+              {navItems.map((item) => {
+                const hasSubmenu = !!item.submenu;
+                return (
+                  <div
+                    key={item.name}
+                    className="relative"
+                    onMouseEnter={() => hasSubmenu && setHoveredMenu(item.name)}
+                    onMouseLeave={() => hasSubmenu && setHoveredMenu(null)}
+                  >
+                    {hasSubmenu ? (
+                      <div className="flex items-center">
+                        <button
+                          className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors duration-300 flex items-center gap-1 py-3 relative group focus:outline-none cursor-pointer"
+                        >
+                          {item.name}
+                          <ChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-200", hoveredMenu === item.name && "rotate-180")} />
+                          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                        </button>
+                      </div>
+                    ) : (
+                      <motion.a
+                        href={item.link}
+                        className="text-sm font-medium text-foreground/90 hover:text-primary transition-colors duration-300 relative group block py-3"
+                        whileHover={{ y: -2 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {item.name}
+                        <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                      </motion.a>
+                    )}
+
+                    {hasSubmenu && (
+                      <AnimatePresence>
+                        {hoveredMenu === item.name && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                            transition={{ duration: 0.15 }}
+                            className="absolute left-1/2 -translate-x-1/2 mt-0 w-64 bg-white border border-slate-100 rounded-xl shadow-xl p-3 grid grid-cols-1 gap-1 z-[120]"
+                          >
+                            {item.submenu?.map((sub) => (
+                              <a
+                                key={sub.name}
+                                href={sub.link}
+                                className="block px-3 py-2.5 rounded-lg text-xs hover:bg-slate-50 transition-all font-semibold text-slate-600 hover:text-primary"
+                              >
+                                {sub.name}
+                              </a>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+                  </div>
+                );
+              })}
               <HierarchicalButton
                 hierarchy="secondary"
                 size="sm"
@@ -202,19 +269,61 @@ const ResizableNavbar: React.FC<ResizableNavbarProps> = ({
               transition={{ duration: 0.3 }}
             >
               <nav className="container mx-auto px-6 py-6 flex flex-col gap-4">
-                {navItems.map((item, index) => (
-                  <motion.a
-                    key={item.name}
-                    href={item.link}
-                    className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors py-2"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    {item.name}
-                  </motion.a>
-                ))}
+                {navItems.map((item, index) => {
+                  const hasSubmenu = !!item.submenu;
+                  const isSubmenuOpen = mobileSubmenuOpen === item.name;
+
+                  return (
+                    <motion.div
+                      key={item.name}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex flex-col"
+                    >
+                      {hasSubmenu ? (
+                        <>
+                          <button
+                            onClick={() => setMobileSubmenuOpen(isSubmenuOpen ? null : item.name)}
+                            className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors py-2 flex items-center justify-between text-left focus:outline-none cursor-pointer"
+                          >
+                            <span>{item.name}</span>
+                            <ChevronDown className={cn("h-4 w-4 transition-transform duration-200", isSubmenuOpen && "rotate-180")} />
+                          </button>
+                          <AnimatePresence>
+                            {isSubmenuOpen && (
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{ opacity: 1, height: "auto" }}
+                                exit={{ opacity: 0, height: 0 }}
+                                className="overflow-hidden pl-4 flex flex-col gap-1 border-l border-slate-100 mt-1 mb-2"
+                              >
+                                {item.submenu?.map((sub) => (
+                                  <a
+                                    key={sub.name}
+                                    href={sub.link}
+                                    className="text-xs font-semibold text-foreground/60 hover:text-primary py-2 transition-colors"
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                  >
+                                    {sub.name}
+                                  </a>
+                                ))}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </>
+                      ) : (
+                        <a
+                          href={item.link}
+                          className="text-sm font-medium text-foreground/80 hover:text-primary transition-colors py-2"
+                          onClick={() => setIsMobileMenuOpen(false)}
+                        >
+                          {item.name}
+                        </a>
+                      )}
+                    </motion.div>
+                  );
+                })}
                 <motion.div
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
