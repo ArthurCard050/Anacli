@@ -46,6 +46,7 @@ export function middleware(request: NextRequest) {
     '/privacidade',
     '/exclusao-dados',
     '/loja-login',
+    '/admin',
   ];
 
   // Prefixos de rotas dinâmicas válidas
@@ -53,6 +54,7 @@ export function middleware(request: NextRequest) {
     '/blog/',
     '/loja/',
     '/loja-anacli/',
+    '/admin/',
     '/_next/',
     '/api/',
     '/assets/',
