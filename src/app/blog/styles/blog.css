@@ -163,7 +163,10 @@ html {
   }
 }
 
+/* ============================================= */
 /* Melhorias de tipografia para o conteúdo do blog */
+/* ============================================= */
+
 .prose {
   color: #374151;
   line-height: 1.75;
@@ -181,25 +184,75 @@ html {
 .prose h2 {
   scroll-margin-top: 100px;
   letter-spacing: -0.025em;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2.5em;
+  margin-bottom: 1em;
 }
 
 .prose h3 {
   scroll-margin-top: 100px;
   letter-spacing: -0.015em;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #111827;
+  margin-top: 2em;
+  margin-bottom: 0.75em;
 }
 
 .prose h4 {
   scroll-margin-top: 100px;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  margin-top: 1.75em;
+  margin-bottom: 0.5em;
 }
+
+/* ============================================= */
+/* LISTAS - Unordered (ul) e Ordered (ol)        */
+/* ============================================= */
 
 .prose ul,
 .prose ol {
   padding-left: 1.75em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ul ul {
+  list-style-type: circle;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose ul ul ul {
+  list-style-type: square;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose ol ol {
+  list-style-type: lower-alpha;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose ol ol ol {
+  list-style-type: lower-roman;
 }
 
 .prose li {
-  margin-top: 0.75em;
-  margin-bottom: 0.75em;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  padding-left: 0.375em;
 }
 
 .prose li > p {
@@ -207,42 +260,301 @@ html {
   margin-bottom: 0.5em;
 }
 
-.prose blockquote {
+.prose li::marker {
+  color: #A6C022;
+  font-weight: 600;
+}
+
+/* WordPress block list */
+.prose .wp-block-list {
+  padding-left: 1.75em;
+  margin-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.prose ul.wp-block-list {
+  list-style-type: disc;
+}
+
+.prose ol.wp-block-list {
+  list-style-type: decimal;
+}
+
+/* ============================================= */
+/* BLOCKQUOTES / CITAÇÕES                        */
+/* ============================================= */
+
+.prose blockquote,
+.prose .wp-block-quote {
   font-style: italic;
-  background: #f9fafb;
-  padding: 1.5em;
-  border-radius: 0.5em;
-  margin: 2em 0;
-}
-
-.prose code {
-  background: #f3f4f6;
-  padding: 0.2em 0.4em;
-  border-radius: 0.25em;
-  font-size: 0.875em;
-  font-weight: 500;
-}
-
-.prose pre {
-  background: #1f2937;
-  color: #f9fafb;
-  padding: 1.5em;
+  background: linear-gradient(135deg, #fef9f0 0%, #fdf2f8 100%);
+  padding: 1.5em 2em;
   border-radius: 0.75em;
-  overflow-x: auto;
   margin: 2em 0;
+  border-left: 4px solid #A6C022;
+  position: relative;
+  color: #4a3728;
 }
 
-.prose pre code {
+.prose blockquote::before,
+.prose .wp-block-quote::before {
+  content: '\201C';
+  font-size: 4rem;
+  color: #A6C022;
+  opacity: 0.25;
+  position: absolute;
+  top: -0.15em;
+  left: 0.3em;
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+
+.prose blockquote p,
+.prose .wp-block-quote p {
+  margin-top: 0;
+  margin-bottom: 0.5em;
+  position: relative;
+  z-index: 1;
+  font-size: 1.05em;
+  line-height: 1.7;
+}
+
+.prose blockquote p:last-child,
+.prose .wp-block-quote p:last-child {
+  margin-bottom: 0;
+}
+
+.prose blockquote cite,
+.prose .wp-block-quote cite,
+.prose .wp-block-quote__citation {
+  display: block;
+  margin-top: 1em;
+  font-size: 0.875em;
+  font-style: normal;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+/* Pullquote - citação em destaque */
+.prose .wp-block-pullquote {
+  border-top: 4px solid #A6C022;
+  border-bottom: 4px solid #A6C022;
+  border-left: none;
+  padding: 2em 1.5em;
+  margin: 2.5em 0;
+  text-align: center;
+  background: transparent;
+}
+
+.prose .wp-block-pullquote::before {
+  display: none;
+}
+
+.prose .wp-block-pullquote blockquote {
+  border-left: none;
   background: transparent;
   padding: 0;
-  color: inherit;
+  margin: 0;
 }
+
+.prose .wp-block-pullquote blockquote::before {
+  display: none;
+}
+
+.prose .wp-block-pullquote p {
+  font-size: 1.25em;
+  font-weight: 500;
+  color: #111827;
+}
+
+/* ============================================= */
+/* BOTÕES WORDPRESS                              */
+/* ============================================= */
+
+.prose .wp-block-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75em;
+  margin: 2em 0;
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose .wp-block-button {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose .wp-block-button__link,
+.prose .wp-block-button a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75em 1.75em;
+  border-radius: 9999px;
+  font-weight: 600;
+  font-size: 0.95em;
+  text-decoration: none !important;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background-color: #A6C022;
+  color: #fff !important;
+  box-shadow: 0 2px 8px rgba(166, 192, 34, 0.25);
+}
+
+.prose .wp-block-button__link:hover,
+.prose .wp-block-button a:hover {
+  background-color: #8fa51c;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(166, 192, 34, 0.35);
+}
+
+/* Botão outline */
+.prose .wp-block-button.is-style-outline .wp-block-button__link,
+.prose .wp-block-button.is-style-outline a {
+  background-color: transparent;
+  color: #A6C022 !important;
+  border-color: #A6C022;
+}
+
+.prose .wp-block-button.is-style-outline .wp-block-button__link:hover,
+.prose .wp-block-button.is-style-outline a:hover {
+  background-color: #A6C022;
+  color: #fff !important;
+}
+
+/* ============================================= */
+/* GRUPOS E COLUNAS WORDPRESS                    */
+/* ============================================= */
+
+.prose .wp-block-group {
+  margin: 2em 0;
+}
+
+.prose .wp-block-group.has-background {
+  padding: 2em;
+  border-radius: 1em;
+}
+
+/* Grupo com borda (usado para caixas de destaque) */
+.prose .wp-block-group.has-border-color {
+  border-width: 2px;
+  border-style: solid;
+  padding: 1.5em 2em;
+  border-radius: 1em;
+}
+
+/* Colunas */
+.prose .wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  margin: 2em 0;
+}
+
+.prose .wp-block-column {
+  flex: 1 1 0;
+  min-width: 200px;
+}
+
+/* ============================================= */
+/* SEPARADORES / HR                              */
+/* ============================================= */
+
+.prose hr,
+.prose .wp-block-separator {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 2.5em 0;
+}
+
+.prose .wp-block-separator.is-style-wide {
+  border-top-width: 2px;
+}
+
+.prose .wp-block-separator.is-style-dots {
+  border: none;
+  text-align: center;
+  margin: 2.5em 0;
+}
+
+.prose .wp-block-separator.is-style-dots::before {
+  content: '···';
+  font-size: 1.5em;
+  letter-spacing: 1em;
+  color: #9ca3af;
+}
+
+/* ============================================= */
+/* IMAGENS E GALERIAS WORDPRESS                  */
+/* ============================================= */
 
 .prose img {
   margin: 2.5em auto;
   max-width: 100%;
   height: auto;
+  border-radius: 0.75em;
 }
+
+.prose .wp-block-image {
+  margin: 2.5em 0;
+}
+
+.prose .wp-block-image img {
+  margin: 0 auto;
+  border-radius: 0.75em;
+}
+
+.prose .wp-block-image figcaption {
+  text-align: center;
+  font-size: 0.875em;
+  color: #6b7280;
+  margin-top: 0.75em;
+  font-style: italic;
+}
+
+.prose .wp-block-image.aligncenter {
+  text-align: center;
+}
+
+.prose .wp-block-image.alignleft {
+  float: left;
+  margin-right: 1.5em;
+  margin-bottom: 1em;
+  max-width: 50%;
+}
+
+.prose .wp-block-image.alignright {
+  float: right;
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+  max-width: 50%;
+}
+
+/* Galeria */
+.prose .wp-block-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1em;
+  margin: 2em 0;
+  list-style: none;
+  padding: 0;
+}
+
+.prose .wp-block-gallery .wp-block-image {
+  margin: 0;
+}
+
+.prose .wp-block-gallery .wp-block-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ============================================= */
+/* FIGURAS E CAPTIONS                            */
+/* ============================================= */
 
 .prose figure {
   margin: 2.5em 0;
@@ -252,24 +564,59 @@ html {
   text-align: center;
   font-size: 0.875em;
   color: #6b7280;
-  margin-top: 1em;
+  margin-top: 0.75em;
 }
 
-.prose table {
+/* ============================================= */
+/* EMBEDS E IFRAMES                              */
+/* ============================================= */
+
+.prose .wp-block-embed {
+  margin: 2em 0;
+}
+
+.prose .wp-block-embed__wrapper {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 0.75em;
+}
+
+.prose .wp-block-embed__wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ============================================= */
+/* TABELAS WORDPRESS                             */
+/* ============================================= */
+
+.prose table,
+.prose .wp-block-table table {
   width: 100%;
   margin: 2em 0;
   border-collapse: collapse;
+  border-radius: 0.5em;
+  overflow: hidden;
 }
 
-.prose th {
-  background: #f9fafb;
+.prose th,
+.prose .wp-block-table th {
+  background: #f3f4f6;
   font-weight: 600;
   padding: 0.75em 1em;
   text-align: left;
   border-bottom: 2px solid #e5e7eb;
+  color: #111827;
 }
 
-.prose td {
+.prose td,
+.prose .wp-block-table td {
   padding: 0.75em 1em;
   border-bottom: 1px solid #e5e7eb;
 }
@@ -278,7 +625,251 @@ html {
   border-bottom: none;
 }
 
-/* Espaçamento entre seções */
+.prose .wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+  background: #f9fafb;
+}
+
+/* ============================================= */
+/* CÓDIGO                                        */
+/* ============================================= */
+
+.prose code {
+  background: #f3f4f6;
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  font-size: 0.875em;
+  font-weight: 500;
+}
+
+.prose pre,
+.prose .wp-block-code {
+  background: #1f2937;
+  color: #f9fafb;
+  padding: 1.5em;
+  border-radius: 0.75em;
+  overflow-x: auto;
+  margin: 2em 0;
+}
+
+.prose pre code,
+.prose .wp-block-code code {
+  background: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+/* ============================================= */
+/* ESTILOS DE TEXTO INLINE (WP)                  */
+/* ============================================= */
+
+/* Negrito / Strong */
+.prose strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+/* Itálico */
+.prose em {
+  font-style: italic;
+}
+
+/* Riscado */
+.prose s,
+.prose del {
+  text-decoration: line-through;
+  color: #9ca3af;
+}
+
+/* Marca (highlight) */
+.prose mark,
+.prose .has-inline-color {
+  background: linear-gradient(120deg, rgba(166, 192, 34, 0.2) 0%, rgba(166, 192, 34, 0.15) 100%);
+  padding: 0.1em 0.3em;
+  border-radius: 0.2em;
+}
+
+/* Subscrito e Sobrescrito */
+.prose sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+}
+
+.prose sup {
+  font-size: 0.75em;
+  vertical-align: super;
+}
+
+/* ============================================= */
+/* CORES DE BACKGROUND DO WORDPRESS              */
+/* ============================================= */
+
+.prose .has-background {
+  padding: 1.5em 2em;
+  border-radius: 0.75em;
+  margin: 1.5em 0;
+}
+
+/* Cores de texto WordPress */
+.prose .has-text-color {
+  /* mantém a cor inline do WP */
+}
+
+/* Paleta de cores WordPress padrão */
+.prose .has-pale-pink-background-color { background-color: #f78da7; }
+.prose .has-vivid-red-background-color { background-color: #cf2e2e; }
+.prose .has-luminous-vivid-orange-background-color { background-color: #ff6900; }
+.prose .has-luminous-vivid-amber-background-color { background-color: #fcb900; }
+.prose .has-light-green-cyan-background-color { background-color: #7bdcb5; }
+.prose .has-vivid-green-cyan-background-color { background-color: #00d084; }
+.prose .has-pale-cyan-blue-background-color { background-color: #8ed1fc; }
+.prose .has-vivid-cyan-blue-background-color { background-color: #0693e3; }
+.prose .has-vivid-purple-background-color { background-color: #9b51e0; }
+.prose .has-white-background-color { background-color: #ffffff; }
+.prose .has-very-light-gray-background-color,
+.prose .has-cyan-bluish-gray-background-color { background-color: #f0f0f0; }
+.prose .has-very-dark-gray-background-color { background-color: #313131; color: #fff; }
+.prose .has-black-background-color { background-color: #000000; color: #fff; }
+
+/* Cores de texto WordPress padrão */
+.prose .has-pale-pink-color { color: #f78da7; }
+.prose .has-vivid-red-color { color: #cf2e2e; }
+.prose .has-luminous-vivid-orange-color { color: #ff6900; }
+.prose .has-luminous-vivid-amber-color { color: #fcb900; }
+.prose .has-light-green-cyan-color { color: #7bdcb5; }
+.prose .has-vivid-green-cyan-color { color: #00d084; }
+.prose .has-pale-cyan-blue-color { color: #8ed1fc; }
+.prose .has-vivid-cyan-blue-color { color: #0693e3; }
+.prose .has-vivid-purple-color { color: #9b51e0; }
+.prose .has-white-color { color: #ffffff; }
+.prose .has-very-light-gray-color,
+.prose .has-cyan-bluish-gray-color { color: #abb8c3; }
+.prose .has-very-dark-gray-color { color: #313131; }
+.prose .has-black-color { color: #000000; }
+
+/* ============================================= */
+/* TAMANHOS DE TEXTO WORDPRESS                   */
+/* ============================================= */
+
+.prose .has-small-font-size { font-size: 0.8125em; }
+.prose .has-regular-font-size,
+.prose .has-normal-font-size { font-size: 1em; }
+.prose .has-medium-font-size { font-size: 1.25em; }
+.prose .has-large-font-size { font-size: 1.5em; }
+.prose .has-x-large-font-size,
+.prose .has-larger-font-size { font-size: 2em; }
+
+/* ============================================= */
+/* ALINHAMENTO WORDPRESS                         */
+/* ============================================= */
+
+.prose .has-text-align-center { text-align: center; }
+.prose .has-text-align-right { text-align: right; }
+.prose .has-text-align-left { text-align: left; }
+
+.prose .aligncenter {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.prose .alignwide {
+  margin-left: -2em;
+  margin-right: -2em;
+  max-width: calc(100% + 4em);
+}
+
+.prose .alignfull {
+  margin-left: -3em;
+  margin-right: -3em;
+  max-width: calc(100% + 6em);
+}
+
+/* ============================================= */
+/* CAIXAS DE DESTAQUE / CALLOUTS                 */
+/* ============================================= */
+
+/* Grupo com borda customizada (tipo callout/menção) */
+.prose .wp-block-group:has(.has-background) {
+  margin: 2em 0;
+}
+
+/* Detalhes / Accordion do WP */
+.prose details {
+  margin: 1.5em 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.75em;
+  overflow: hidden;
+}
+
+.prose details summary {
+  padding: 1em 1.5em;
+  font-weight: 600;
+  color: #111827;
+  cursor: pointer;
+  background: #f9fafb;
+  transition: background 0.2s;
+}
+
+.prose details summary:hover {
+  background: #f3f4f6;
+}
+
+.prose details[open] summary {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.prose details > *:not(summary) {
+  padding: 0 1.5em;
+}
+
+/* ============================================= */
+/* COVER (imagem de fundo com texto)             */
+/* ============================================= */
+
+.prose .wp-block-cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  padding: 2em;
+  margin: 2em 0;
+  border-radius: 1em;
+  overflow: hidden;
+  color: #fff;
+}
+
+.prose .wp-block-cover img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  margin: 0;
+  border-radius: 0;
+}
+
+.prose .wp-block-cover__inner-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.prose .wp-block-cover .has-background-dim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* ============================================= */
+/* ESPAÇAMENTO ENTRE SEÇÕES                      */
+/* ============================================= */
+
 .prose > * + * {
   margin-top: 1.5em;
 }
@@ -287,4 +878,59 @@ html {
 .prose > h3 + *,
 .prose > h4 + * {
   margin-top: 1em;
+}
+
+/* Spacer block */
+.prose .wp-block-spacer {
+  display: block;
+}
+
+/* ============================================= */
+/* RESPONSIVIDADE                                */
+/* ============================================= */
+
+@media (max-width: 768px) {
+  .prose .wp-block-columns {
+    flex-direction: column;
+  }
+
+  .prose .wp-block-column {
+    min-width: 100%;
+  }
+
+  .prose .wp-block-image.alignleft,
+  .prose .wp-block-image.alignright {
+    float: none;
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+  }
+
+  .prose .alignwide,
+  .prose .alignfull {
+    margin-left: -1em;
+    margin-right: -1em;
+    max-width: calc(100% + 2em);
+  }
+
+  .prose .wp-block-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .prose .wp-block-button__link,
+  .prose .wp-block-button a {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* ============================================= */
+/* CLEARFIX para floats                          */
+/* ============================================= */
+
+.prose::after {
+  content: '';
+  display: table;
+  clear: both;
 }
