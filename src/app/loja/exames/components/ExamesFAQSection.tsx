@@ -106,8 +106,8 @@ export default function ExamesFAQSection() {
               </div>
               <h3 className="font-semibold text-gray-900 mb-2">Horário de Funcionamento</h3>
               <p className="text-sm text-gray-600 mb-4">
-                Segunda a Sexta: 6h às 18h<br />
-                Sábado: 6h às 12h
+                Segunda a Sexta: 6:30 às 18:00<br />
+                Sábado: 7:00 às 11:00
               </p>
               <Button variant="outline" size="sm" className="w-full">
                 Ver Horários

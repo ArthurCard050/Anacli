@@ -105,8 +105,8 @@ export default function RootLayout({
       longitude: -38.9663
     },
     openingHours: [
-      'Mo-Fr 06:00-18:00',
-      'Sa 06:00-12:00'
+      'Mo-Fr 06:30-18:00',
+      'Sa 07:00-11:00'
     ],
     sameAs: [
       'https://www.instagram.com/lab_anacli/',

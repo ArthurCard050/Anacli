@@ -74,7 +74,7 @@ const ServicosCtaSection = () => {
                   </svg>
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-1">Horário</h4>
-                <p className="text-sm text-gray-600">Seg a Sáb: 6h às 17h</p>
+                <p className="text-sm text-gray-600">Seg-Sex: 6:30 às 18:00 | Sáb: 7:00 às 11:00</p>
               </div>
               <div className="text-center p-4">
                 <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-3">

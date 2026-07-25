@@ -32,7 +32,7 @@ const contatoInfo = [
   {
     icon: <Clock className="w-6 h-6" />,
     title: "Horário",
-    info: "Seg a Sáb: 6h às 17h",
+    info: "Seg-Sex: 6:30 às 18:00 | Sáb: 7:00 às 11:00",
     description: "Atendimento presencial",
     action: null,
     color: "bg-orange-500"

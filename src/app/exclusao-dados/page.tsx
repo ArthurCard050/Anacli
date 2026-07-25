@@ -71,7 +71,7 @@ export default function ExclusaoDadosPage() {
                         (75) 3030-0030
                       </a>
                       <p className="text-sm text-gray-600 mt-1">
-                        Horário: Segunda a Sexta, 6h às 18h | Sábado, 6h às 12h
+                        Horário: Segunda a Sexta, 6:30 às 18:00 | Sábado, 7:00 às 11:00
                       </p>
                     </div>
                   </div>

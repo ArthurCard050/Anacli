@@ -100,8 +100,8 @@ const FaqContactSection = () => {
                 <div>
                   <h4 className="font-semibold text-gray-900 mb-2">Horário de Atendimento</h4>
                   <div className="space-y-1 text-sm text-gray-600">
-                    <p>Segunda a Sexta: 6:00 às 16:00</p>
-                    <p>Sábado: 6:00 às 12:00</p>
+                    <p>Segunda a Sexta: 6:30 às 18:00</p>
+                    <p>Sábado: 7:00 às 11:00</p>
                     <p>Domingo: Fechado</p>
                   </div>
                 </div>

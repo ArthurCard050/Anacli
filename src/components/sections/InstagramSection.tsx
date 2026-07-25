@@ -6,11 +6,6 @@ import InstagramVideoCarousel from "@/components/ui/InstagramVideoCarousel"
 
 const instagramReels = [
   {
-    id: 1,
-    title: "O diagnóstico é o primeiro passo…",
-    videoSrc: "/assets/reels/O diagnóstico é o primeiro passo…Mas é no tratamento que a esperança se transforma em ação. 💗Co.mp4",
-  },
-  {
     id: 2,
     title: "É cada figura que passa por aqui 😂🍭🍬",
     videoSrc: "/assets/reels/É cada figura que passa por aqui 😂🍭🍬.mp4",

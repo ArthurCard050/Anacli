@@ -23,7 +23,7 @@ const locations = [
     city: "Feira de Santana – BA",
     phone: "(75) 3030-0030",
     email: "contato@anacli.com.br",
-    hours: "Seg - Sex: 6h às 18h | Sáb: 6h às 12h",
+    hours: "Seg - Sex: 6:30 às 18:00 | Sáb: 7:00 às 11:00",
     image: "/assets/unidade.avif",
     imageMobile: "/assets/unidade - mobile.avif",
     mapUrl: "https://maps.app.goo.gl/S5pB2jZHZs9g1ARV6",
